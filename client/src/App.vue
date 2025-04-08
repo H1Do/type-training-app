@@ -1,5 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useThemeStore } from './store/theme';
 
-<template></template>
+const theme = useThemeStore();
+</script>
+
+<template>
+    <div :class="['app', theme.theme]">
+        <RouterView />
+    </div>
+</template>
 
 <style lang="scss"></style>
