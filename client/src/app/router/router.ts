@@ -1,5 +1,5 @@
+import { AuthPage } from '@pages';
 import { createRouter, createWebHistory } from 'vue-router';
-import AuthPage from '../pages/AuthPage.vue';
 
 const routes = [
     {

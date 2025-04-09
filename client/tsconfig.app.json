@@ -10,7 +10,16 @@
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
+            "@styles/*": ["./src/shared/styles/*"],
+            "@pages/*": ["./src/pages/*"],
+            "@ui/*": ["./src/shared/ui/*"],
+            "@services/*": ["./src/shared/services/*"],
+            "@models/*": ["./src/shared/models/*"],
+            "@pages": ["./src/pages"],
+            "@ui": ["./src/shared/ui"],
+            "@services": ["./src/shared/services"],
+            "@models": ["./src/shared/models"]
         }
     },
     "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]

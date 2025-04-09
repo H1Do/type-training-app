@@ -1,9 +1,3 @@
-<template>
-    <button :disabled="disabled" :type="type" class="button">
-        <slot />
-    </button>
-</template>
-
 <script setup lang="ts">
 import type { PropType } from 'vue';
 
@@ -19,6 +13,12 @@ const props = defineProps({
 });
 </script>
 
+<template>
+    <button :disabled="disabled" :type="type" class="button">
+        <slot />
+    </button>
+</template>
+
 <style scoped lang="scss">
 .button {
     background-color: var(--background-color);
@@ -33,13 +33,15 @@ const props = defineProps({
 
     &:hover {
         background-color: var(--primary-color);
-        border: 1px solid var(--primary-color);
         color: var(--background-color);
+        border: 1px solid var(--primary-color);
     }
+
     &:active {
         background-color: var(--secondary-color);
         color: var(--background-color);
     }
+
     &:disabled {
         opacity: 0.7;
         cursor: not-allowed;

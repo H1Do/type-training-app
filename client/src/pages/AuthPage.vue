@@ -1,14 +1,20 @@
 <template>
     <div>AuthPage</div>
-    <CButton @click="handleClick">asdf</CButton>
+    <ToggleThemeButton />
+    <CInput
+        v-model="email"
+        type="email"
+        placeholder="Email"
+        name="email"
+        id="email"
+        required
+    />
 </template>
 
 <script setup lang="ts">
-import CButton from '@/components/UI/CButton.vue';
-
-const handleClick = () => {
-    console.log('Button clicked');
-};
+import { CInput, ToggleThemeButton } from '@ui';
+import { ref } from 'vue';
+const email = ref('');
 </script>
 
 <style scoped lang="scss"></style>

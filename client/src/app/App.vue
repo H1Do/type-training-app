@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useThemeStore } from './store/theme';
+import { useThemeStore } from '@models';
 
 const theme = useThemeStore();
 </script>
@@ -9,5 +9,3 @@ const theme = useThemeStore();
         <RouterView />
     </div>
 </template>
-
-<style lang="scss"></style>

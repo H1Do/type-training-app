@@ -9,9 +9,6 @@ export const useThemeStore = defineStore('theme', {
     state: () => ({
         theme: Theme.LIGHT,
     }),
-    getters: {
-        currentTheme: (state) => state.theme,
-    },
     actions: {
         toggleTheme() {
             this.theme = this.theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
