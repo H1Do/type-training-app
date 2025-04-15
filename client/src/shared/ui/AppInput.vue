@@ -55,6 +55,8 @@ const emit = defineEmits(['update:modelValue']);
 </template>
 
 <style scoped lang="scss">
+@use '@/shared/styles/variables' as *;
+
 .input {
     background-color: var(--background-color);
     color: var(--primary-color);

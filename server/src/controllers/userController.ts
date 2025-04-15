@@ -63,6 +63,13 @@ class UserController {
         return res.status(200).json({ message: 'User logged in successfully' });
     }
 
+    async logout(req: AuthRequest, res: Response, next: NextFunction) {
+        res.clearCookie('token');
+        return res
+            .status(200)
+            .json({ message: 'User logged out successfully' });
+    }
+
     async getUser(req: AuthRequest, res: Response, next: NextFunction) {
         const userId = req.user?.id;
         if (!userId) {

@@ -5,10 +5,20 @@
         --primary-color: #{$black};
         --secondary-color: #{$gray};
         --background-color: #{$white};
+
+        --header-background-color: var(--primary-color);
+        --header-text-color: var(--background-color);
+        --footer-background-color: var(--primary-color);
+        --footer-text-color: var(--background-color);
     }
     &.dark-theme {
         --primary-color: #{$white};
         --secondary-color: #{$light-gray};
         --background-color: #{$black};
+
+        --header-background-color: var(--primary-color);
+        --header-text-color: var(--background-color);
+        --footer-background-color: var(--primary-color);
+        --footer-text-color: var(--background-color);
     }
 }

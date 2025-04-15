@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
 
-const props = defineProps({
+defineProps({
     type: {
         type: String as PropType<'button' | 'submit' | 'reset'>,
         default: 'button',
@@ -20,6 +20,8 @@ const props = defineProps({
 </template>
 
 <style scoped lang="scss">
+@use '@/shared/styles/variables' as *;
+
 .button {
     background-color: var(--background-color);
     color: var(--primary-color);

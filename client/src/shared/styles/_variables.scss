@@ -8,6 +8,25 @@ $dark-gray: #a9a9a9;
 $red: #ff0000;
 $green: #008000;
 $blue: #0000ff;
+$yellow: #ffff00;
+$purple: #800080;
+$orange: #ffa500;
+
+$error: $red;
+$success: $green;
+$info: $blue;
+$warning: $orange;
 
 // transition
 $transition-duration: 0.2s;
+
+// sizes
+$header-height: 32px;
+$footer-height: 20px;
+
+$header-padding: 12px;
+$footer-padding: 12px;
+
+$font-size: 16px;
+$header-font-size: 1.1rem;
+$footer-font-size: 0.6rem;

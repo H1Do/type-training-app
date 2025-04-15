@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useThemeStore } from '@models';
-import CButton from './CButton.vue';
+import { useThemeStore } from '@/shared/models/theme';
+import AppButton from './AppButton.vue';
 
 const themeStore = useThemeStore();
 </script>
 
 <template>
-    <CButton @click="themeStore.toggleTheme">Switch theme</CButton>
+    <AppButton @click="themeStore.toggleTheme">Switch theme</AppButton>
 </template>
 
 <style scoped lang="scss"></style>

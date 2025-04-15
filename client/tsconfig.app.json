@@ -9,18 +9,10 @@
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
         "noUncheckedSideEffectImports": true,
+        "baseUrl": "./",
         "paths": {
-            "@/*": ["./src/*"],
-            "@styles/*": ["./src/shared/styles/*"],
-            "@pages/*": ["./src/pages/*"],
-            "@ui/*": ["./src/shared/ui/*"],
-            "@services/*": ["./src/shared/services/*"],
-            "@models/*": ["./src/shared/models/*"],
-            "@pages": ["./src/pages"],
-            "@ui": ["./src/shared/ui"],
-            "@services": ["./src/shared/services"],
-            "@models": ["./src/shared/models"]
+            "@/*": ["src/*"]
         }
     },
-    "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+    "include": ["src/**/*"]
 }
