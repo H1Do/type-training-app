@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
-import LoginForm from '@/widgets/LoginForm.vue';
-import RegistrationForm from '@/widgets/RegistrationForm.vue';
+import { inject, ref, type Ref } from 'vue';
+import LoginForm from './ui/LoginForm.vue';
+import RegistrationForm, {
+    type RegistrationModelValueType,
+} from './ui/RegistrationForm.vue';
 import AppLink from '@/shared/ui/AppLink.vue';
 import VFlex from '@/shared/ui/VFlex.vue';
+import { useUserStore } from '@/shared/models/user';
+import { UserApi } from '@/shared/services/userApi';
+
+const user = useUserStore();
+const userApi = inject<UserApi>('userApi');
 
 type AuthType = 'login' | 'registration';
 
@@ -14,29 +21,40 @@ const loginForm = ref({
     password: '',
 });
 
-const registrationForm = ref({
+const registrationForm = ref<RegistrationModelValueType>({
     email: '',
     login: '',
     password: '',
     confirmPassword: '',
 });
+
+const onSubmit = () => {
+    if (!userApi) {
+        throw new Error('UserApi is not provided');
+    }
+    if (type.value === 'login') {
+        const { email, password } = loginForm.value;
+        user.login(email, password, userApi);
+    } else {
+        const { email, login, password } = registrationForm.value;
+        user.registration(login, password, email, userApi);
+    }
+};
 </script>
 
 <template>
-    <VFlex align="center" gap="16px">
+    <VFlex align="center" gap="4px" class="tile">
         <Transition name="fade" mode="out-in">
             <LoginForm
                 v-if="type === 'login'"
-                :model-value="loginForm"
-                @update:model-value="loginForm = $event"
-                @submit="console.log($event)"
+                v-model:modelValue="loginForm"
+                @submit="onSubmit"
                 key="login"
             />
             <RegistrationForm
                 v-else
-                :model-value="registrationForm"
-                @update:model-value="registrationForm = $event"
-                @submit="console.log($event)"
+                v-model:modelValue="registrationForm"
+                @submit="onSubmit"
                 key="registration"
             />
         </Transition>
@@ -51,9 +69,16 @@ const registrationForm = ref({
 </template>
 
 <style scoped lang="scss">
+@use '@/shared/styles/variables' as *;
+
+.tile {
+    max-width: 200px;
+}
+
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity $transition-duration-slow ease,
+        transform $transition-duration-slow ease;
 }
 .fade-enter-from,
 .fade-leave-to {

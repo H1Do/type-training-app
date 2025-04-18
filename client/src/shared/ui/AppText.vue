@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
-
-defineProps({
-    size: {
-        type: String,
-        default: '16px',
+withDefaults(
+    defineProps<{
+        size?: string;
+        align?: 'left' | 'center' | 'right';
+        textStyle?: 'normal' | 'error' | 'warning';
+    }>(),
+    {
+        size: '16px',
+        textStyle: 'normal',
     },
-    textStyle: {
-        type: String as PropType<'normal' | 'error' | 'warning'>,
-        default: 'normal',
-    },
-});
+);
 </script>
 
 <template>
-    <span :class="`text-${textStyle}`" :style="{ fontSize: size }">
+    <span
+        :class="[`text-${textStyle}`, `align-${align}`]"
+        :style="{ fontSize: size }"
+    >
         <slot />
     </span>
 </template>
@@ -32,5 +34,17 @@ defineProps({
 
 .text-warning {
     color: $warning;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.align-right {
+    text-align: right;
 }
 </style>

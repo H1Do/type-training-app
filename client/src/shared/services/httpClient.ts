@@ -1,6 +1,6 @@
 import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios';
 
-export class HttpApi {
+export class HttpClient {
     private readonly $host;
 
     constructor() {

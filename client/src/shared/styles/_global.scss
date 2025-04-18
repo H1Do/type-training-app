@@ -1,5 +1,19 @@
 @use './variables' as *;
 
+:root {
+    --transition-duration: $transition-duration;
+    --transition-duration-fast: $transition-duration-fast;
+    --transition-duration-slow: $transition-duration-slow;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --transition-duration: 0s;
+        --transition-duration-fast: 0s;
+        --transition-duration-slow: 0s;
+    }
+}
+
 html {
     font-size: $font-size;
 }

@@ -1,15 +1,15 @@
-import { HttpApi } from './httpApi';
+import { HttpClient } from './httpClient';
 import type { User } from '../models/user';
 
 export class UserApi {
-    constructor(private httpService: HttpApi) {}
+    constructor(private httpClient: HttpClient) {}
 
     registration = async (
         username: string,
         password: string,
         email: string,
     ): Promise<User> => {
-        const { data } = await this.httpService.post<User>(
+        const { data } = await this.httpClient.post<User>(
             'api/user/registration',
             {
                 username,
@@ -21,7 +21,7 @@ export class UserApi {
     };
 
     login = async (email: string, password: string): Promise<User> => {
-        const { data } = await this.httpService.post<User>('api/user/login', {
+        const { data } = await this.httpClient.post<User>('api/user/login', {
             email,
             password,
         });
@@ -29,11 +29,11 @@ export class UserApi {
     };
 
     logout = async (): Promise<void> => {
-        await this.httpService.post('api/user/logout');
+        await this.httpClient.post('api/user/logout');
     };
 
     getUser = async (): Promise<User> => {
-        const { data } = await this.httpService.get<User>('api/user');
+        const { data } = await this.httpClient.get<User>('api/user');
         console.log(data);
         return data;
     };

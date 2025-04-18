@@ -1,38 +1,30 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
-
-defineProps({
-    modelValue: {
-        type: String,
-        default: '',
+withDefaults(
+    defineProps<{
+        modelValue?: string;
+        type?: 'text' | 'email' | 'password';
+        disabled?: boolean;
+        placeholder?: string;
+        name?: string;
+        id?: string;
+        required?: boolean;
+    }>(),
+    {
+        type: 'text',
+        disabled: false,
+        placeholder: '',
+        name: '',
+        id: '',
+        required: false,
     },
-    placeholder: {
-        type: String,
-        default: '',
-    },
-    type: {
-        type: String as PropType<'text' | 'email' | 'password'>,
-        default: 'text',
-    },
-    disabled: {
-        type: Boolean,
-        default: false,
-    },
-    name: {
-        type: String,
-        default: '',
-    },
-    id: {
-        type: String,
-        default: '',
-    },
-    required: {
-        type: Boolean,
-        default: false,
-    },
-});
+);
 
 const emit = defineEmits(['update:modelValue']);
+
+const handleInput = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    emit('update:modelValue', target.value);
+};
 </script>
 
 <template>
@@ -44,12 +36,7 @@ const emit = defineEmits(['update:modelValue']);
         :id="id"
         :required="required"
         :value="modelValue"
-        @input="
-            (event) => {
-				const target = event.target as HTMLInputElement | null;
-				if (target) emit('update:modelValue', target.value);
-			}
-        "
+        @input="handleInput"
         class="input"
     />
 </template>

@@ -1,29 +1,19 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
-
-defineProps({
-    to: {
-        type: String,
-        required: false,
-        default: '',
+withDefaults(
+    defineProps<{
+        to?: string;
+        params?: Record<string, unknown>;
+        replace?: boolean;
+        disabled?: boolean;
+        type?: 'normal' | 'external' | 'button';
+    }>(),
+    {
+        to: '',
+        replace: false,
+        disabled: false,
+        type: 'normal',
     },
-    params: {
-        type: Object,
-        default: () => ({}),
-    },
-    replace: {
-        type: Boolean,
-        default: false,
-    },
-    disabled: {
-        type: Boolean,
-        default: false,
-    },
-    type: {
-        type: String as PropType<'normal' | 'external' | 'button'>,
-        default: 'normal',
-    },
-});
+);
 </script>
 
 <template>

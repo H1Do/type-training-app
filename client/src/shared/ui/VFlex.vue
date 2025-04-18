@@ -1,22 +1,16 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
-
-defineProps({
-    align: {
-        type: String as PropType<'start' | 'center' | 'end' | 'stretch'>,
-        default: 'start',
+withDefaults(
+    defineProps<{
+        align?: 'start' | 'center' | 'end' | 'stretch';
+        justify?: 'start' | 'center' | 'between' | 'around' | 'evenly' | 'end';
+        gap?: '0px' | '4px' | '8px' | '12px' | '16px';
+    }>(),
+    {
+        align: 'start',
+        justify: 'start',
+        gap: '0px',
     },
-    justify: {
-        type: String as PropType<
-            'start' | 'center' | 'between' | 'around' | 'evenly' | 'end'
-        >,
-        default: 'start',
-    },
-    gap: {
-        type: String as PropType<'0px' | '4px' | '8px' | '12px' | '16px'>,
-        default: '0px',
-    },
-});
+);
 </script>
 
 <template>

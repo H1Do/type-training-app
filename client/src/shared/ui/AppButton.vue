@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
-
-defineProps({
-    type: {
-        type: String as PropType<'button' | 'submit' | 'reset'>,
-        default: 'button',
+withDefaults(
+    defineProps<{
+        type: 'button' | 'submit' | 'reset';
+        disabled?: boolean;
+    }>(),
+    {
+        type: 'button',
+        disabled: false,
     },
-    disabled: {
-        type: Boolean,
-        default: false,
-    },
-});
+);
 </script>
 
 <template>
@@ -47,6 +45,12 @@ defineProps({
     &:disabled {
         opacity: 0.7;
         cursor: not-allowed;
+
+        &:hover {
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
     }
 }
 </style>

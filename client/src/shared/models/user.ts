@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import { UserApi } from '../services/userApi';
-import { inject } from 'vue';
 
 export interface User {
     username: string;
@@ -22,19 +21,13 @@ export const useUserStore = defineStore('user', {
         error: '',
     }),
     actions: {
-        getUserApi(): UserApi {
-            const userApi = inject<UserApi>('userApi');
-            if (!userApi) throw new Error('UserApi not provided');
-            return userApi;
-        },
         clearUserState(errorMessage?: string) {
             this.error = errorMessage ?? '';
             this.username = '';
             this.email = '';
             this.isAuthenticated = false;
         },
-        async checkAuth() {
-            const userApi = this.getUserApi();
+        async checkAuth(userApi: UserApi) {
             try {
                 const data = await userApi.getUser();
                 this.error = '';
@@ -42,25 +35,28 @@ export const useUserStore = defineStore('user', {
                 this.email = data.email;
                 this.isAuthenticated = true;
                 return true;
-            } catch (error) {
-                this.clearUserState(String(error));
+            } catch {
+                this.clearUserState('');
                 return false;
             }
         },
-        async login(email: string, password: string) {
-            const userApi = this.getUserApi();
+        async login(email: string, password: string, userApi: UserApi) {
             try {
                 const data = await userApi.login(email, password);
                 this.error = '';
                 this.username = data.username;
                 this.email = data.email;
                 this.isAuthenticated = true;
-            } catch (error) {
-                this.clearUserState(String(error));
+            } catch {
+                this.clearUserState('Invalid email or password');
             }
         },
-        async registration(username: string, password: string, email: string) {
-            const userApi = this.getUserApi();
+        async registration(
+            username: string,
+            password: string,
+            email: string,
+            userApi: UserApi,
+        ) {
             try {
                 const data = await userApi.registration(
                     username,
@@ -71,18 +67,20 @@ export const useUserStore = defineStore('user', {
                 this.username = data.username;
                 this.email = data.email;
                 this.isAuthenticated = true;
-            } catch (error) {
-                this.clearUserState(String(error));
+            } catch {
+                this.clearUserState('Email already exists');
             }
         },
-        async logout() {
-            const userApi = this.getUserApi();
+        async logout(userApi: UserApi) {
             try {
                 await userApi.logout();
                 this.clearUserState();
-            } catch (error) {
-                this.error = String(error);
+            } catch {
+                this.error = 'Logout failed';
             }
+        },
+        setError(error: string) {
+            this.error = error;
         },
     },
 });
