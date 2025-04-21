@@ -3,14 +3,26 @@ $white: #ffffff;
 $black: #000000;
 $gray: #808080;
 $light-gray: #d3d3d3;
-$dark-gray: #a9a9a9;
+$dark-gray: #484848;
 
-$red: #ff0000;
+$light-red: #ff0000;
+$red: #b00000;
+$dark-red: #800000;
+$light-green: #ccffcc;
 $green: #008000;
+$dark-green: #006400;
+$light-blue: #44ffff;
 $blue: #0000ff;
+$dark-blue: #000080;
+$light-yellow: #ffffcc;
 $yellow: #ffff00;
+$dark-yellow: #808000;
+$light-purple: #ff99ff;
 $purple: #800080;
+$dark-purple: #4b0082;
+$light-orange: #ffcc99;
 $orange: #ffa500;
+$dark-orange: #ff8c00;
 
 $error: $red;
 $success: $green;
@@ -24,11 +36,19 @@ $transition-duration-slow: 0.3s;
 
 // sizes
 $header-height: 32px;
-$footer-height: 20px;
+$footer-height: 24px;
 
 $header-padding: 12px;
 $footer-padding: 12px;
 
 $font-size: 16px;
-$header-font-size: 1.1rem;
+$header-font-size: 1.2rem;
 $footer-font-size: 0.6rem;
+
+$border-width: 2px;
+$border-radius: 6px;
+
+// modals
+$z-index-modal: 1000;
+$container-background-color-modal: rgba(0, 0, 0, 0.5);
+$box-shadow-modal: 0 10px 30px rgba(0, 0, 0, 0.3);

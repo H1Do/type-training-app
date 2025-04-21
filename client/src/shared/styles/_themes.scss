@@ -1,6 +1,6 @@
 @use './variables' as *;
 
-.app {
+body {
     &.light-theme {
         --primary-color: #{$black};
         --secondary-color: #{$gray};
@@ -10,6 +10,13 @@
         --header-text-color: var(--background-color);
         --footer-background-color: var(--primary-color);
         --footer-text-color: var(--background-color);
+
+        --accept-color: #{$green};
+        --accept-color-hover: #{$dark-green};
+        --decline-color: #{$red};
+        --decline-color-hover: #{$dark-red};
+        --cancel-color: #{$gray};
+        --cancel-color-hover: #{$dark-gray};
     }
     &.dark-theme {
         --primary-color: #{$white};
@@ -20,5 +27,12 @@
         --header-text-color: var(--background-color);
         --footer-background-color: var(--primary-color);
         --footer-text-color: var(--background-color);
+
+        --accept-color: #{$green};
+        --accept-color-hover: #{$dark-green};
+        --decline-color: #{$red};
+        --decline-color-hover: #{$dark-red};
+        --cancel-color: #{$gray};
+        --cancel-color-hover: #{$dark-gray};
     }
 }

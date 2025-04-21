@@ -17,3 +17,8 @@
 html {
     font-size: $font-size;
 }
+
+body {
+    position: relative;
+    max-width: 1440px;
+}

@@ -7,9 +7,12 @@ import RegistrationForm, {
 import AppLink from '@/shared/ui/AppLink.vue';
 import VFlex from '@/shared/ui/VFlex.vue';
 import { useUserStore } from '@/shared/models/user';
-import { UserApi } from '@/shared/services/userApi';
+import { UserApi } from '@/shared/domains/userApi';
+import { useRouter } from 'vue-router';
+import { RouteNames } from '@/app/router/router';
 
 const user = useUserStore();
+const router = useRouter();
 const userApi = inject<UserApi>('userApi');
 
 type AuthType = 'login' | 'registration';
@@ -28,16 +31,22 @@ const registrationForm = ref<RegistrationModelValueType>({
     confirmPassword: '',
 });
 
-const onSubmit = () => {
+const onSubmit = async () => {
     if (!userApi) {
         throw new Error('UserApi is not provided');
     }
     if (type.value === 'login') {
         const { email, password } = loginForm.value;
-        user.login(email, password, userApi);
+        await user.login(email, password, userApi);
+        if (user.isAuthenticated) {
+            router.push(RouteNames.MAIN);
+        }
     } else {
         const { email, login, password } = registrationForm.value;
-        user.registration(login, password, email, userApi);
+        await user.registration(login, password, email, userApi);
+        if (user.isAuthenticated) {
+            router.push(RouteNames.MAIN);
+        }
     }
 };
 </script>

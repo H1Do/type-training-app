@@ -1,16 +1,30 @@
-import AuthPage from '@/pages/AuthPage.vue';
 import { useUserStore } from '@/shared/models/user';
 import { createRouter, createWebHistory } from 'vue-router';
 
 export enum RouteNames {
     MAIN = '/',
     AUTH = '/auth',
+    PROFILE = '/profile',
 }
 
 const routes = [
     {
+        path: RouteNames.MAIN,
+        component: () => import('@/pages/MainPage.vue'),
+    },
+    {
         path: RouteNames.AUTH,
-        component: AuthPage,
+        component: () => import('@/pages/AuthPage.vue'),
+        meta: {
+            requiredAuthStatus: false,
+        },
+    },
+    {
+        path: RouteNames.PROFILE,
+        component: () => import('@/pages/ProfilePage.vue'),
+        meta: {
+            requiredAuthStatus: true,
+        },
     },
 ];
 
@@ -22,8 +36,12 @@ export const router = createRouter({
 router.beforeEach(async (to, _, next) => {
     const userStore = useUserStore();
 
-    if (to.meta.requiresAuth && !userStore.isAuthenticated) {
-        next({ name: RouteNames.AUTH });
+    const reqAuth = to.meta.requiredAuthStatus;
+
+    if (reqAuth && !userStore.isAuthenticated) {
+        next({ path: RouteNames.AUTH });
+    } else if (reqAuth === false && userStore.isAuthenticated) {
+        next({ path: RouteNames.MAIN });
     } else {
         next();
     }

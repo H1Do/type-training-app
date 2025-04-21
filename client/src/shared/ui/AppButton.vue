@@ -1,7 +1,7 @@
 <script setup lang="ts">
 withDefaults(
     defineProps<{
-        type: 'button' | 'submit' | 'reset';
+        type?: 'button' | 'submit' | 'reset';
         disabled?: boolean;
     }>(),
     {
@@ -23,8 +23,8 @@ withDefaults(
 .button {
     background-color: var(--background-color);
     color: var(--primary-color);
-    border: 1px solid var(--primary-color);
-    border-radius: 6px;
+    border: $border-width solid var(--primary-color);
+    border-radius: $border-radius;
     padding: 6px 12px;
     font-size: 16px;
     cursor: pointer;
@@ -34,7 +34,7 @@ withDefaults(
     &:hover {
         background-color: var(--primary-color);
         color: var(--background-color);
-        border: 1px solid var(--primary-color);
+        border-color: var(--primary-color);
     }
 
     &:active {
@@ -49,7 +49,7 @@ withDefaults(
         &:hover {
             background-color: var(--background-color);
             color: var(--primary-color);
-            border: 1px solid var(--primary-color);
+            border-color: var(--primary-color);
         }
     }
 }

@@ -61,10 +61,6 @@ withDefaults(
         color: var(--secondary-color);
     }
 
-    &:active {
-        color: var(--primary-color);
-    }
-
     &:disabled {
         opacity: 0.7;
         cursor: not-allowed;

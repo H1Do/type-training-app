@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { UserApi } from '../services/userApi';
+import { UserApi } from '../domains/userApi';
 
 export interface User {
     username: string;

@@ -1,10 +1,31 @@
 <script setup lang="ts">
 import { RouteNames } from '@/app/router/router';
+import { useUserApi } from '@/shared/domains/userApi';
+import { useConfirmDialog, useModalService } from '@/shared/hooks/modal';
 import { useUserStore } from '@/shared/models/user';
 import AppLink from '@/shared/ui/AppLink.vue';
+import HFlex from '@/shared/ui/HFlex.vue';
 import { User } from 'lucide-vue-next';
+import { storeToRefs } from 'pinia';
 
-const { isAuthenticated, username } = useUserStore();
+const modalService = useModalService();
+const userApi = useUserApi();
+
+const userStore = useUserStore();
+
+const { logout } = userStore;
+const { isAuthenticated, username } = storeToRefs(userStore);
+
+const onLogout = async () => {
+    const acceptStatus = await useConfirmDialog(modalService, {
+        title: 'Logout',
+        message: 'Are you sure want to logout?',
+    });
+
+    if (acceptStatus) {
+        logout(userApi);
+    }
+};
 </script>
 
 <template>
@@ -15,15 +36,20 @@ const { isAuthenticated, username } = useUserStore();
             </AppLink>
         </div>
         <nav class="nav">
-            <AppLink to="/about" class="app-link">About</AppLink>
-            <AppLink to="/contact" class="app-link">Contact</AppLink>
-            <AppLink to="/help" class="app-link">Help</AppLink>
+            <AppLink to="/main" class="app-link">Main</AppLink>
+            <AppLink to="/training" class="app-link">Training</AppLink>
+            <AppLink to="/settings" class="app-link">Settings</AppLink>
         </nav>
         <div class="user-actions">
-            <AppLink v-if="isAuthenticated" to="/profile" class="app-link">
-                <User class="app-link-icon" />
-                {{ username }}
-            </AppLink>
+            <HFlex v-if="isAuthenticated" gap="16px" align="center">
+                <AppLink to="/profile" class="app-link">
+                    <User class="app-link-icon" />
+                    {{ username }}
+                </AppLink>
+                <AppLink type="button" class="app-link" @click="onLogout">
+                    Logout
+                </AppLink>
+            </HFlex>
             <AppLink v-else :to="RouteNames.AUTH" class="app-link">
                 Login/Register
             </AppLink>
@@ -53,7 +79,15 @@ const { isAuthenticated, username } = useUserStore();
 }
 
 .app-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     color: var(--header-text-color);
     text-decoration: none;
+}
+
+.app-link-icon {
+    height: 20px;
+    width: 20px;
 }
 </style>

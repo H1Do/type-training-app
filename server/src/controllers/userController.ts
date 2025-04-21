@@ -6,15 +6,15 @@ import { NextFunction, Response } from 'express';
 import { AuthRequest } from '@/types/requestTypes';
 import { UserDto } from '@/types/userTypes';
 
+const JWT_EXPIRES_IN = '1h';
+const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
+
 const generateToken = (id: string) => {
     if (!process.env.JWT_SECRET) {
-        throw new Error(
-            'JWT_SECRET is not defined in the environment variables',
-        );
+        throw new Error('JWT_SECRET is not defined');
     }
-
     return jwt.sign({ id }, process.env.JWT_SECRET, {
-        expiresIn: '1h',
+        expiresIn: JWT_EXPIRES_IN,
     });
 };
 
@@ -33,9 +33,16 @@ class UserController {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({ username, password: hashedPassword, email });
         await user.save();
-        const token = generateToken(String(user._id));
 
-        res.cookie('token', token, { httpOnly: true });
+        const token = generateToken(String(user._id));
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: COOKIE_MAX_AGE,
+            path: '/',
+        });
+
         return res
             .status(201)
             .json({ message: 'User registered successfully' });
@@ -59,7 +66,14 @@ class UserController {
         }
 
         const token = generateToken(String(user._id));
-        res.cookie('token', token, { httpOnly: true });
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: COOKIE_MAX_AGE,
+            path: '/',
+        });
+
         return res.status(200).json({ message: 'User logged in successfully' });
     }
 

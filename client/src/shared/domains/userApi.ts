@@ -1,5 +1,6 @@
 import { HttpClient } from './httpClient';
 import type { User } from '../models/user';
+import { inject } from 'vue';
 
 export class UserApi {
     constructor(private httpClient: HttpClient) {}
@@ -34,7 +35,12 @@ export class UserApi {
 
     getUser = async (): Promise<User> => {
         const { data } = await this.httpClient.get<User>('api/user');
-        console.log(data);
         return data;
     };
 }
+
+export const useUserApi = () => {
+    const userApi = inject<UserApi>('userApi');
+    if (!userApi) throw new Error('userApi not provided');
+    return userApi;
+};

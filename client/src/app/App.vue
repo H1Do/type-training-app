@@ -1,31 +1,40 @@
 <script setup lang="ts">
-import { useThemeStore } from '@/shared/models/theme';
-import { useUserStore } from '@/shared/models/user';
+import { Theme, useThemeStore } from '@/shared/models/theme';
 import AppFooter from '@/widgets/AppFooter.vue';
 import AppHeader from '@/widgets/AppHeader.vue';
 import PageWrapper from '@/widgets/PageWrapper.vue';
-import { onMounted } from 'vue';
+import ModalProvider from './providers/ModalProvider.vue';
+import { watch } from 'vue';
+import MessageProvider from './providers/MessageProvider.vue';
 
 const theme = useThemeStore();
-const user = useUserStore();
 
-onMounted(() => {
-    user.checkAuth();
-});
+watch(
+    () => theme.theme,
+    (newTheme) => {
+        document.body.classList.remove(Theme.LIGHT, Theme.DARK);
+        document.body.classList.add(newTheme);
+    },
+    { immediate: true },
+);
 </script>
 
 <template>
-    <div :class="['app', theme.theme]">
+    <div class="app">
         <AppHeader />
         <PageWrapper>
             <RouterView />
         </PageWrapper>
         <AppFooter />
+
+        <ModalProvider />
+        <MessageProvider />
     </div>
 </template>
 
 <style lang="scss">
 .app {
+    position: relative;
     width: 100%;
     max-width: 1440px;
     height: 100vh;
