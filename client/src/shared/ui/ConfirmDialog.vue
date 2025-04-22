@@ -57,6 +57,7 @@ const handleConfirm = () => emit('resolve', true);
 
     &__title {
         font-size: $header-font-size;
+        font-size: 1.3rem;
         font-weight: 500;
     }
 

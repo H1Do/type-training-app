@@ -10,10 +10,12 @@ import { useUserStore } from '@/shared/models/user';
 import { UserApi } from '@/shared/domains/userApi';
 import { useRouter } from 'vue-router';
 import { RouteNames } from '@/app/router/router';
+import { useMessageService } from '@/shared/services/MessageService';
 
 const user = useUserStore();
 const router = useRouter();
 const userApi = inject<UserApi>('userApi');
+const messageService = useMessageService();
 
 type AuthType = 'login' | 'registration';
 
@@ -37,13 +39,19 @@ const onSubmit = async () => {
     }
     if (type.value === 'login') {
         const { email, password } = loginForm.value;
-        await user.login(email, password, userApi);
+        await user.login(email, password, userApi, messageService);
         if (user.isAuthenticated) {
             router.push(RouteNames.MAIN);
         }
     } else {
         const { email, login, password } = registrationForm.value;
-        await user.registration(login, password, email, userApi);
+        await user.registration(
+            login,
+            password,
+            email,
+            userApi,
+            messageService,
+        );
         if (user.isAuthenticated) {
             router.push(RouteNames.MAIN);
         }

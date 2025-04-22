@@ -3,12 +3,21 @@ import { RouteNames } from '@/app/router/router';
 import { useUserApi } from '@/shared/domains/userApi';
 import { useConfirmDialog, useModalService } from '@/shared/hooks/modal';
 import { useUserStore } from '@/shared/models/user';
+import { useMessageService } from '@/shared/services/MessageService';
 import AppLink from '@/shared/ui/AppLink.vue';
 import HFlex from '@/shared/ui/HFlex.vue';
-import { User } from 'lucide-vue-next';
+import {
+    HomeIcon,
+    Keyboard,
+    LogInIcon,
+    LogOutIcon,
+    Settings,
+    User,
+} from 'lucide-vue-next';
 import { storeToRefs } from 'pinia';
 
 const modalService = useModalService();
+const messageService = useMessageService();
 const userApi = useUserApi();
 
 const userStore = useUserStore();
@@ -23,7 +32,7 @@ const onLogout = async () => {
     });
 
     if (acceptStatus) {
-        logout(userApi);
+        logout(userApi, messageService);
     }
 };
 </script>
@@ -36,22 +45,28 @@ const onLogout = async () => {
             </AppLink>
         </div>
         <nav class="nav">
-            <AppLink to="/main" class="app-link">Main</AppLink>
-            <AppLink to="/training" class="app-link">Training</AppLink>
-            <AppLink to="/settings" class="app-link">Settings</AppLink>
+            <AppLink :to="RouteNames.MAIN" class="app-link">
+                <HomeIcon class="app-link-icon" /> Main
+            </AppLink>
+            <AppLink :to="RouteNames.TRAINING" class="app-link">
+                <Keyboard class="app-link-icon" /> Training
+            </AppLink>
+            <AppLink :to="RouteNames.SETTINGS" class="app-link">
+                <Settings class="app-link-icon" /> Settings
+            </AppLink>
         </nav>
         <div class="user-actions">
             <HFlex v-if="isAuthenticated" gap="16px" align="center">
-                <AppLink to="/profile" class="app-link">
+                <AppLink :to="RouteNames.PROFILE" class="app-link">
                     <User class="app-link-icon" />
                     {{ username }}
                 </AppLink>
                 <AppLink type="button" class="app-link" @click="onLogout">
-                    Logout
+                    <LogOutIcon class="app-link-icon" />
                 </AppLink>
             </HFlex>
             <AppLink v-else :to="RouteNames.AUTH" class="app-link">
-                Login/Register
+                <LogInIcon class="app-link-icon" /> Login/Register
             </AppLink>
         </div>
     </header>
@@ -61,7 +76,9 @@ const onLogout = async () => {
 @use '@/shared/styles/variables' as *;
 
 .app-header {
-    width: 100%;
+    width: 60%;
+    margin-inline: auto;
+    border-radius: $header-border-radius;
     height: $header-height;
     padding-inline: $header-padding;
     font-size: $header-font-size;

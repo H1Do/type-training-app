@@ -47,8 +47,8 @@ const handleInput = (event: Event) => {
 .input {
     background-color: var(--background-color);
     color: var(--primary-color);
-    border: 1px solid var(--primary-color);
-    border-radius: 6px;
+    border: $border-width solid var(--primary-color);
+    border-radius: $border-radius;
     padding: 6px 12px;
     font-size: 16px;
     transition: background-color $transition-duration,
@@ -66,7 +66,7 @@ const handleInput = (event: Event) => {
     &:focus {
         background-color: var(--primary-color);
         color: var(--background-color);
-        border: 1px solid var(--primary-color);
+        border-color: var(--primary-color);
     }
 
     &:disabled {

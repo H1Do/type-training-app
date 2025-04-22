@@ -26,6 +26,13 @@ userRouter.post('/logout', async (req, res, next) => {
         next(error);
     }
 });
+userRouter.post('/change-password', async (req, res, next) => {
+    try {
+        await userController.changePassword(req as AuthRequest, res, next);
+    } catch (error) {
+        next(error);
+    }
+});
 userRouter.get('/', authMiddleware, async (req, res, next) => {
     try {
         await userController.getUser(req as AuthRequest, res, next);

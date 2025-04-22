@@ -35,18 +35,20 @@ $transition-duration-fast: 0.1s;
 $transition-duration-slow: 0.3s;
 
 // sizes
-$header-height: 32px;
-$footer-height: 24px;
-
-$header-padding: 12px;
-$footer-padding: 12px;
-
 $font-size: 16px;
-$header-font-size: 1.2rem;
-$footer-font-size: 0.6rem;
 
 $border-width: 2px;
 $border-radius: 6px;
+
+$header-font-size: 0.9rem;
+$header-height: 32px;
+$header-padding: 12px;
+$header-border-radius: 0 0 12px 12px;
+
+$footer-font-size: 0.6rem;
+$footer-padding: 12px;
+$footer-height: 24px;
+$footer-border-radius: 4px 4px 0 0;
 
 // modals
 $z-index-modal: 1000;

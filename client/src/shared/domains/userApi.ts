@@ -33,6 +33,16 @@ export class UserApi {
         await this.httpClient.post('api/user/logout');
     };
 
+    changePassword = async (
+        oldPassword: string,
+        newPassword: string,
+    ): Promise<void> => {
+        await this.httpClient.post('api/user/change-password', {
+            oldPassword,
+            newPassword,
+        });
+    };
+
     getUser = async (): Promise<User> => {
         const { data } = await this.httpClient.get<User>('api/user');
         return data;

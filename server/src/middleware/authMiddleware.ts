@@ -1,7 +1,7 @@
 import { ApiError } from '@/errors/ApiError';
 import { AuthRequest } from '@/types/requestTypes';
 import { NextFunction, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { TokenExpiredError, VerifyErrors } from 'jsonwebtoken';
 
 export function authMiddleware(
     req: AuthRequest,
@@ -23,9 +23,12 @@ export function authMiddleware(
     jwt.verify(
         token,
         process.env.JWT_SECRET,
-        (err: jwt.VerifyErrors | null, user: any) => {
+        (err: VerifyErrors | null, user: any) => {
+            if (err instanceof TokenExpiredError) {
+                return next(ApiError.unauthorized('Token expired'));
+            }
             if (err) {
-                next(ApiError.unauthorized('Not authorized'));
+                return next(ApiError.unauthorized('Not authorized'));
             }
             req.user = user;
             next();

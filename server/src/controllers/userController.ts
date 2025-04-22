@@ -6,7 +6,7 @@ import { NextFunction, Response } from 'express';
 import { AuthRequest } from '@/types/requestTypes';
 import { UserDto } from '@/types/userTypes';
 
-const JWT_EXPIRES_IN = '1h';
+const JWT_EXPIRES_IN = '7d';
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
 
 const generateToken = (id: string) => {
@@ -82,6 +82,37 @@ class UserController {
         return res
             .status(200)
             .json({ message: 'User logged out successfully' });
+    }
+
+    async changePassword(req: AuthRequest, res: Response, next: NextFunction) {
+        const { oldPassword, newPassword } = req.body;
+
+        if (!oldPassword || !newPassword) {
+            return next(ApiError.badRequest('All fields are required'));
+        }
+
+        const userId = req.user?.id;
+        if (!userId) {
+            return next(ApiError.unauthorized('Not authorized'));
+        }
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return next(ApiError.notFound('User not found'));
+        }
+
+        let comparePassword = await bcrypt.compare(oldPassword, user.password);
+        if (!comparePassword) {
+            return next(ApiError.badRequest('Invalid old password'));
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+        await user.save();
+
+        return res
+            .status(200)
+            .json({ message: 'Password changed successfully' });
     }
 
     async getUser(req: AuthRequest, res: Response, next: NextFunction) {

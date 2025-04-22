@@ -5,6 +5,9 @@ export enum RouteNames {
     MAIN = '/',
     AUTH = '/auth',
     PROFILE = '/profile',
+    TRAINING = '/training',
+    SETTINGS = '/settings',
+    NOT_FOUND = '/:pathMatch(.*)*',
 }
 
 const routes = [
@@ -25,6 +28,24 @@ const routes = [
         meta: {
             requiredAuthStatus: true,
         },
+    },
+    {
+        path: RouteNames.TRAINING,
+        component: () => import('@/pages/TrainingPage.vue'),
+        meta: {
+            requiredAuthStatus: true,
+        },
+    },
+    {
+        path: RouteNames.SETTINGS,
+        component: () => import('@/pages/SettingsPage.vue'),
+        meta: {
+            requiredAuthStatus: true,
+        },
+    },
+    {
+        path: RouteNames.NOT_FOUND,
+        component: () => import('@/pages/NotFoundPage.vue'),
     },
 ];
 

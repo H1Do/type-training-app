@@ -30,7 +30,7 @@ app.provide('messageService', messageService);
 
 // Check auth
 const userStore = useUserStore();
-await userStore.checkAuth(userApi);
+await userStore.checkAuth(userApi, messageService);
 
 app.use(router);
 app.mount('#app');
