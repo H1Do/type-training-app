@@ -93,7 +93,7 @@ class UserController {
 
         const userId = req.user?.id;
         if (!userId) {
-            return next(ApiError.unauthorized('Not authorized'));
+            return next(ApiError.unauthorized(''));
         }
 
         const user = await User.findById(userId);

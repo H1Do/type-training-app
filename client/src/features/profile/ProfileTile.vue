@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { useUserApi } from '@/shared/domains/userApi';
-import { useConfirmDialog, useModalService } from '@/shared/hooks/modal';
+import {
+    useConfirmDialog,
+    useModal,
+    useModalService,
+} from '@/shared/hooks/modal';
 import { useUserStore } from '@/shared/models/user';
 import { useMessageService } from '@/shared/services/MessageService';
 import AppButton from '@/shared/ui/AppButton.vue';
@@ -11,6 +15,7 @@ import AppTableRow from '@/shared/ui/table/AppTableRow.vue';
 import VFlex from '@/shared/ui/VFlex.vue';
 import { User2Icon } from 'lucide-vue-next';
 import { storeToRefs } from 'pinia';
+import ChangePasswordForm from './ui/ChangePasswordForm.vue';
 
 const userStore = useUserStore();
 const modalService = useModalService();
@@ -18,7 +23,7 @@ const userApi = useUserApi();
 const messageService = useMessageService();
 
 const { email, username, createdAt } = storeToRefs(userStore);
-const { changePassword, logout } = userStore;
+const { logout } = userStore;
 
 const date = new Date(createdAt.value);
 
@@ -31,6 +36,10 @@ const onLogout = async () => {
     if (acceptStatus) {
         logout(userApi, messageService);
     }
+};
+
+const onChangePassword = async () => {
+    await useModal(modalService, ChangePasswordForm);
 };
 </script>
 
@@ -54,9 +63,9 @@ const onLogout = async () => {
             </AppTableRow>
         </AppTable>
         <HFlex justify="between" gap="8px" class="buttons">
-            <AppButton class="changePassword" @click="changePassword"
-                >Change password</AppButton
-            >
+            <AppButton class="changePassword" @click="onChangePassword">
+                Change password
+            </AppButton>
             <AppButton class="logout" @click="onLogout">Logout</AppButton>
         </HFlex>
     </VFlex>

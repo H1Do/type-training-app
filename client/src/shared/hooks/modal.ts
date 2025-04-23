@@ -13,7 +13,7 @@ export function useModalService() {
 
 export function useModal<T = unknown>(
     service: ModalService,
-    component: unknown,
+    component: Component,
     props?: Record<string, unknown>,
 ): Promise<T> {
     return service.open(component, props) as Promise<T>;

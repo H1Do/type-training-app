@@ -159,6 +159,7 @@ export const useUserStore = defineStore('user', {
                         type: 'error',
                         text: message,
                     });
+                    throw error;
                 }
             }
         },

@@ -8,6 +8,7 @@ withDefaults(
         name?: string;
         id?: string;
         required?: boolean;
+        error?: boolean;
     }>(),
     {
         type: 'text',
@@ -38,6 +39,7 @@ const handleInput = (event: Event) => {
         :value="modelValue"
         @input="handleInput"
         class="input"
+        :class="{ error }"
     />
 </template>
 
@@ -55,6 +57,25 @@ const handleInput = (event: Event) => {
         color $transition-duration, border-color $transition-duration;
     outline: none;
     width: 100%;
+
+    &.error {
+        border-color: $error;
+
+        &::placeholder {
+            color: $error;
+        }
+
+        &:hover,
+        &:focus {
+            background-color: $error;
+            color: $white;
+            border-color: $error;
+
+            &::placeholder {
+                color: $white;
+            }
+        }
+    }
 
     &::placeholder {
         color: var(--secondary-color);

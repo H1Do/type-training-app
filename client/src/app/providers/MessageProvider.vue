@@ -52,7 +52,7 @@ const messageService = inject<MessageService>('messageService');
         position: absolute;
         bottom: 20px + $footer-height;
         right: 20px;
-        z-index: $z-index-modal;
+        z-index: $z-index-message;
     }
 
     &:not(:last-child) {

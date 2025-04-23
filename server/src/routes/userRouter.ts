@@ -26,7 +26,7 @@ userRouter.post('/logout', async (req, res, next) => {
         next(error);
     }
 });
-userRouter.post('/change-password', async (req, res, next) => {
+userRouter.post('/change-password', authMiddleware, async (req, res, next) => {
     try {
         await userController.changePassword(req as AuthRequest, res, next);
     } catch (error) {

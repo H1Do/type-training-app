@@ -3,6 +3,7 @@ withDefaults(
     defineProps<{
         type?: 'button' | 'submit' | 'reset';
         disabled?: boolean;
+        error?: boolean;
     }>(),
     {
         type: 'button',
@@ -12,7 +13,7 @@ withDefaults(
 </script>
 
 <template>
-    <button :disabled="disabled" :type="type" class="button">
+    <button :disabled="disabled" :type="type" class="button" :class="{ error }">
         <slot />
     </button>
 </template>
@@ -30,6 +31,22 @@ withDefaults(
     cursor: pointer;
     transition: background-color $transition-duration,
         color $transition-duration;
+
+    &.error {
+        color: $error;
+        border-color: $error;
+
+        &:hover {
+            background-color: $error;
+            color: $white;
+            border-color: $error;
+        }
+
+        &:active {
+            background-color: $error;
+            color: $white;
+        }
+    }
 
     &:hover {
         background-color: var(--primary-color);
