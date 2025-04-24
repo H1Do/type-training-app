@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { inject } from 'vue';
-import { ModalService } from '@/shared/services/ModalService';
+import { useModalService } from '@/shared/utils/hooks/modal';
 
-const modalService = inject<ModalService>('modalService');
-if (!modalService) throw new Error('modalService not provided');
+const modalService = useModalService();
 
 const { modals, close, cancel } = modalService;
 

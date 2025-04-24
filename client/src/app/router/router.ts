@@ -1,4 +1,4 @@
-import { useUserStore } from '@/shared/models/user';
+import { useUserStore } from '@/entities/user';
 import { createRouter, createWebHistory } from 'vue-router';
 
 export enum RouteNames {

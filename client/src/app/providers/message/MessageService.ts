@@ -27,24 +27,26 @@ export class MessageService {
         const index = this.messages.findIndex((message) => message.id === id);
         if (index !== -1) this.messages.splice(index, 1);
     }
+
+    success(text: string, timeout?: number) {
+        this.push({ type: 'success', text, timeout });
+    }
+
+    error(text: string, timeout?: number) {
+        this.push({ type: 'error', text, timeout });
+    }
+
+    info(text: string, timeout?: number) {
+        this.push({ type: 'info', text, timeout });
+    }
+
+    warning(text: string, timeout?: number) {
+        this.push({ type: 'warning', text, timeout });
+    }
 }
 
 export function useMessageService() {
     const service = inject<MessageService>('messageService');
     if (!service) throw new Error('messageService not provided');
     return service;
-}
-
-export function useMessage() {
-    const service = useMessageService();
-    return {
-        success: (text: string, timeout?: number) =>
-            service.push({ type: 'success', text, timeout }),
-        error: (text: string, timeout?: number) =>
-            service.push({ type: 'error', text, timeout }),
-        info: (text: string, timeout?: number) =>
-            service.push({ type: 'info', text, timeout }),
-        warning: (text: string, timeout?: number) =>
-            service.push({ type: 'warning', text, timeout }),
-    };
 }

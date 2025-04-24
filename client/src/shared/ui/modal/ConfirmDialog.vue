@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { defineProps, defineEmits } from 'vue';
+import VFlex from '../VFlex.vue';
+import AppButton from '../AppButton.vue';
 import AppModal from './AppModal.vue';
-import AppButton from './AppButton.vue';
-import VFlex from './VFlex.vue';
 
 export interface ConfirmDialogProps {
     title?: string;

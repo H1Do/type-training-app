@@ -1,24 +1,20 @@
 <script setup lang="ts">
-import { useUserStore } from '@/shared/models/user';
-import AppButton from '@/shared/ui/AppButton.vue';
-import AppInput from '@/shared/ui/AppInput.vue';
-import AppText from '@/shared/ui/AppText.vue';
-import VFlex from '@/shared/ui/VFlex.vue';
 import { computed } from 'vue';
+import { AppButton, AppInput, AppText, VFlex } from '@/shared/ui';
+import { useUserStore } from '@/entities/user';
+import type { LoginForm } from '../model/authorization';
 
-export type LoginModelValueType = {
-    email: string;
-    password: string;
-};
-
-const props = defineProps<{
-    modelValue: LoginModelValueType;
-}>();
+const props = defineProps({
+    modelValue: {
+        type: Object as () => LoginForm,
+        required: true,
+    },
+});
 
 const emit = defineEmits<{
-    (e: 'update:modelValue', value: LoginModelValueType): void;
+    (e: 'update:modelValue', value: LoginForm): void;
     (e: 'update:error', value: string): void;
-    (e: 'submit', value: LoginModelValueType): void;
+    (e: 'submit', value: LoginForm): void;
 }>();
 
 const userStore = useUserStore();
@@ -28,13 +24,13 @@ const canSubmit = computed(() => {
     return !!email.trim() && !!password.trim();
 });
 
-const updateField = (field: keyof LoginModelValueType, event: Event) => {
+const updateField = (field: keyof typeof props.modelValue, event: Event) => {
     const target = event.target as HTMLInputElement;
     emit('update:modelValue', {
         ...props.modelValue,
         [field]: target.value,
     });
-    userStore.setError('');
+    emit('update:error', '');
 };
 
 const submitForm = (event: Event) => {

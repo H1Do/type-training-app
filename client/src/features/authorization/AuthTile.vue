@@ -1,60 +1,20 @@
 <script setup lang="ts">
-import { inject, ref, type Ref } from 'vue';
-import LoginForm from './ui/LoginForm.vue';
-import RegistrationForm, {
-    type RegistrationModelValueType,
-} from './ui/RegistrationForm.vue';
-import AppLink from '@/shared/ui/AppLink.vue';
-import VFlex from '@/shared/ui/VFlex.vue';
-import { useUserStore } from '@/shared/models/user';
-import { UserApi } from '@/shared/domains/userApi';
+import { useAuthorizationStore } from './model/authorization';
+import { useUserStore } from '@/entities/user';
 import { useRouter } from 'vue-router';
-import { RouteNames } from '@/app/router/router';
-import { useMessageService } from '@/shared/services/MessageService';
+import { AppLink, VFlex } from '@/shared/ui';
+import { RouteNames } from '@/app/router';
+import LoginForm from './ui/LoginForm.vue';
+import RegistrationForm from './ui/RegistrationForm.vue';
 
-const user = useUserStore();
+const authStore = useAuthorizationStore();
+const userStore = useUserStore();
 const router = useRouter();
-const userApi = inject<UserApi>('userApi');
-const messageService = useMessageService();
-
-type AuthType = 'login' | 'registration';
-
-const type: Ref<AuthType> = ref('login');
-
-const loginForm = ref({
-    email: '',
-    password: '',
-});
-
-const registrationForm = ref<RegistrationModelValueType>({
-    email: '',
-    login: '',
-    password: '',
-    confirmPassword: '',
-});
 
 const onSubmit = async () => {
-    if (!userApi) {
-        throw new Error('UserApi is not provided');
-    }
-    if (type.value === 'login') {
-        const { email, password } = loginForm.value;
-        await user.login(email, password, userApi, messageService);
-        if (user.isAuthenticated) {
-            router.push(RouteNames.MAIN);
-        }
-    } else {
-        const { email, login, password } = registrationForm.value;
-        await user.registration(
-            login,
-            password,
-            email,
-            userApi,
-            messageService,
-        );
-        if (user.isAuthenticated) {
-            router.push(RouteNames.MAIN);
-        }
+    await authStore.submit();
+    if (userStore.isAuthenticated) {
+        router.push(RouteNames.MAIN);
     }
 };
 </script>
@@ -63,24 +23,22 @@ const onSubmit = async () => {
     <VFlex align="center" gap="4px" class="tile">
         <Transition name="fade" mode="out-in">
             <LoginForm
-                v-if="type === 'login'"
-                v-model:modelValue="loginForm"
+                v-if="authStore.type === 'login'"
+                v-model:modelValue="authStore.loginForm"
                 @submit="onSubmit"
                 key="login"
             />
             <RegistrationForm
                 v-else
-                v-model:modelValue="registrationForm"
+                v-model:modelValue="authStore.registrationForm"
                 @submit="onSubmit"
                 key="registration"
             />
         </Transition>
 
-        <AppLink
-            type="button"
-            @click="type = type === 'login' ? 'registration' : 'login'"
-        >
-            Switch to {{ type === 'login' ? 'Registration' : 'Login' }}
+        <AppLink type="button" @click="authStore.toggleType">
+            Switch to
+            {{ authStore.type === 'login' ? 'Registration' : 'Login' }}
         </AppLink>
     </VFlex>
 </template>

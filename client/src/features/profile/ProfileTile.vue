@@ -1,12 +1,4 @@
 <script setup lang="ts">
-import { useUserApi } from '@/shared/domains/userApi';
-import {
-    useConfirmDialog,
-    useModal,
-    useModalService,
-} from '@/shared/hooks/modal';
-import { useUserStore } from '@/shared/models/user';
-import { useMessageService } from '@/shared/services/MessageService';
 import AppButton from '@/shared/ui/AppButton.vue';
 import HFlex from '@/shared/ui/HFlex.vue';
 import AppTable from '@/shared/ui/table/AppTable.vue';
@@ -15,12 +7,12 @@ import AppTableRow from '@/shared/ui/table/AppTableRow.vue';
 import VFlex from '@/shared/ui/VFlex.vue';
 import { User2Icon } from 'lucide-vue-next';
 import { storeToRefs } from 'pinia';
+import { useConfirmDialog, useModal, useModalService } from '@/shared/utils';
+import { useUserStore } from '@/entities/user';
 import ChangePasswordForm from './ui/ChangePasswordForm.vue';
 
 const userStore = useUserStore();
 const modalService = useModalService();
-const userApi = useUserApi();
-const messageService = useMessageService();
 
 const { email, username, createdAt } = storeToRefs(userStore);
 const { logout } = userStore;
@@ -34,12 +26,12 @@ const onLogout = async () => {
     });
 
     if (acceptStatus) {
-        logout(userApi, messageService);
+        logout();
     }
 };
 
 const onChangePassword = async () => {
-    await useModal(modalService, ChangePasswordForm);
+    useModal(modalService, ChangePasswordForm);
 };
 </script>
 

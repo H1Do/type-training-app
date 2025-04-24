@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { inject } from 'vue';
-import type { MessageService } from '@/shared/services/MessageService';
+import { useMessageService } from './MessageService';
 
-const messageService = inject<MessageService>('messageService');
+const messageService = useMessageService();
 </script>
 
 <template>

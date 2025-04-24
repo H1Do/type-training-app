@@ -1,6 +1,5 @@
+import type { User } from '@/entities/user';
 import { HttpClient } from './httpClient';
-import type { User } from '../models/user';
-import { inject } from 'vue';
 
 export class UserApi {
     constructor(private httpClient: HttpClient) {}
@@ -48,9 +47,3 @@ export class UserApi {
         return data;
     };
 }
-
-export const useUserApi = () => {
-    const userApi = inject<UserApi>('userApi');
-    if (!userApi) throw new Error('userApi not provided');
-    return userApi;
-};

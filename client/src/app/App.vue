@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { Theme, useThemeStore } from '@/shared/models/theme';
+import { Theme, useThemeStore } from '@/shared/model/theme';
 import AppFooter from '@/widgets/AppFooter.vue';
 import AppHeader from '@/widgets/AppHeader.vue';
 import PageWrapper from '@/widgets/PageWrapper.vue';
-import ModalProvider from './providers/ModalProvider.vue';
 import { watch } from 'vue';
-import MessageProvider from './providers/MessageProvider.vue';
+import { MessageProvider, ModalProvider } from './providers';
 
 const theme = useThemeStore();
 

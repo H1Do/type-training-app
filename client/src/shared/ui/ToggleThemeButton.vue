@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useThemeStore } from '@/shared/models/theme';
+import { useThemeStore } from '@/shared/model/theme';
 import AppButton from './AppButton.vue';
 
 const themeStore = useThemeStore();

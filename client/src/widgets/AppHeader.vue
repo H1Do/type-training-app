@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { RouteNames } from '@/app/router/router';
-import { useUserApi } from '@/shared/domains/userApi';
-import { useConfirmDialog, useModalService } from '@/shared/hooks/modal';
-import { useUserStore } from '@/shared/models/user';
-import { useMessageService } from '@/shared/services/MessageService';
+import { useUserStore } from '@/entities/user';
 import AppLink from '@/shared/ui/AppLink.vue';
 import HFlex from '@/shared/ui/HFlex.vue';
+import { useConfirmDialog } from '@/shared/utils';
 import {
     HomeIcon,
     Keyboard,
@@ -16,23 +14,19 @@ import {
 } from 'lucide-vue-next';
 import { storeToRefs } from 'pinia';
 
-const modalService = useModalService();
-const messageService = useMessageService();
-const userApi = useUserApi();
-
 const userStore = useUserStore();
 
 const { logout } = userStore;
 const { isAuthenticated, username } = storeToRefs(userStore);
 
 const onLogout = async () => {
-    const acceptStatus = await useConfirmDialog(modalService, {
+    const acceptStatus = await useConfirmDialog({
         title: 'Logout',
         message: 'Are you sure want to logout?',
     });
 
     if (acceptStatus) {
-        logout(userApi, messageService);
+        logout();
     }
 };
 </script>

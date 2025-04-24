@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { useUserStore } from '@/shared/models/user';
-import CButton from '@/shared/ui/AppButton.vue';
-import AppInput from '@/shared/ui/AppInput.vue';
-import AppText from '@/shared/ui/AppText.vue';
-import VFlex from '@/shared/ui/VFlex.vue';
 import { computed } from 'vue';
+import { AppButton, AppInput, AppText, VFlex } from '@/shared/ui';
+import { useUserStore } from '@/entities/user';
+import type { RegistrationForm } from '../model/authorization';
 
-export type RegistrationModelValueType = {
-    email: string;
-    login: string;
-    password: string;
-    confirmPassword: string;
-};
+const props = defineProps({
+    modelValue: {
+        type: Object as () => RegistrationForm,
+        required: true,
+    },
+});
 
-const props = defineProps<{
-    modelValue: RegistrationModelValueType;
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: RegistrationForm): void;
+    (e: 'update:error', value: string): void;
+    (e: 'submit', value: RegistrationForm): void;
 }>();
+
+const userStore = useUserStore();
 
 const canSubmit = computed(() => {
     const { email, login, password, confirmPassword } = props.modelValue;
@@ -27,15 +29,7 @@ const canSubmit = computed(() => {
     );
 });
 
-const emit = defineEmits<{
-    (e: 'update:modelValue', value: RegistrationModelValueType): void;
-    (e: 'update:error', value: string): void;
-    (e: 'submit', value: RegistrationModelValueType): void;
-}>();
-
-const userStore = useUserStore();
-
-const updateField = (field: keyof RegistrationModelValueType, event: Event) => {
+const updateField = (field: keyof typeof props.modelValue, event: Event) => {
     const target = event.target as HTMLInputElement;
     emit('update:modelValue', {
         ...props.modelValue,
@@ -94,7 +88,7 @@ const submitForm = (event: Event) => {
                 placeholder="Confirm Password"
             />
             <VFlex align="stretch" gap="4px">
-                <CButton type="submit">Register</CButton>
+                <AppButton type="submit">Register</AppButton>
                 <AppText
                     v-if="userStore.error"
                     textStyle="error"
