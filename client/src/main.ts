@@ -19,17 +19,18 @@ pinia.use(({ store }) => {
     store.userApi = userApi;
     store.modalService = modalService;
     store.messageService = messageService;
+    store.router = router;
 });
 
 app.use(pinia);
-app.use(router);
+
+const userStore = useUserStore();
+await userStore.checkAuth();
 
 app.provide('userApi', userApi);
 app.provide('modalService', modalService);
 app.provide('messageService', messageService);
 
-// Check auth
-const userStore = useUserStore();
-await userStore.checkAuth();
+app.use(router);
 
 app.mount('#app');

@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { UserState } from './types';
 import { AxiosError } from 'axios';
+import { RouteNames } from '@/app/router';
 
 export const useUserStore = defineStore('user', {
     state: (): UserState => ({
@@ -99,6 +100,7 @@ export const useUserStore = defineStore('user', {
                     type: 'info',
                     text: 'Logout successful',
                 });
+                this.router.push(RouteNames.MAIN);
             } catch (error: unknown) {
                 if (error instanceof AxiosError) {
                     const message =

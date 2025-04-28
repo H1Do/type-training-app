@@ -20,7 +20,7 @@ body {
     }
     &.dark-theme {
         --primary-color: #{$white};
-        --secondary-color: #{$light-gray};
+        --secondary-color: #{$gray};
         --background-color: #{$black};
 
         --header-background-color: var(--primary-color);

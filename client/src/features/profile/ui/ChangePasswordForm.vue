@@ -38,7 +38,9 @@ const handleCancel = () => emit('resolve', false);
                 @input="form.error = ''"
             />
 
-            <AppButton type="submit" :error="!!form.error"
+            <AppButton
+                type="submit"
+                :buttonStyle="!!form.error ? 'error' : 'primary'"
                 >Change password</AppButton
             >
             <AppText

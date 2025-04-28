@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { SettingsTile } from '@/features/settings';
+</script>
 
 <template>
-    <div>Settings</div>
+    <SettingsTile />
 </template>
 
 <style scoped lang="scss"></style>

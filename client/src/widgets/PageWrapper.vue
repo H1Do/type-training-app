@@ -11,6 +11,7 @@
 
 .page-wrapper {
     display: flex;
+    color: var(--primary-color);
     justify-content: center;
     align-items: center;
     height: calc(100vh - #{$header-height} - #{$footer-height});

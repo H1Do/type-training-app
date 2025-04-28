@@ -32,6 +32,10 @@ watch(
 </template>
 
 <style lang="scss">
+body {
+    background-color: var(--background-color);
+}
+
 .app {
     position: relative;
     width: 100%;

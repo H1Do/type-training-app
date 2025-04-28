@@ -2,18 +2,27 @@
 withDefaults(
     defineProps<{
         type?: 'button' | 'submit' | 'reset';
+        buttonStyle?: 'primary' | 'highlighted' | 'error' | 'clear';
         disabled?: boolean;
-        error?: boolean;
+        title?: string;
     }>(),
     {
         type: 'button',
+        buttonStyle: 'primary',
         disabled: false,
+        title: '',
     },
 );
 </script>
 
 <template>
-    <button :disabled="disabled" :type="type" class="button" :class="{ error }">
+    <button
+        :disabled="disabled"
+        :type="type"
+        :title="title"
+        class="button"
+        :class="`button--${buttonStyle}`"
+    >
         <slot />
     </button>
 </template>
@@ -31,22 +40,6 @@ withDefaults(
     cursor: pointer;
     transition: background-color $transition-duration,
         color $transition-duration;
-
-    &.error {
-        color: $error;
-        border-color: $error;
-
-        &:hover {
-            background-color: $error;
-            color: $white;
-            border-color: $error;
-        }
-
-        &:active {
-            background-color: $error;
-            color: $white;
-        }
-    }
 
     &:hover {
         background-color: var(--primary-color);
@@ -67,6 +60,48 @@ withDefaults(
             background-color: var(--background-color);
             color: var(--primary-color);
             border-color: var(--primary-color);
+        }
+    }
+
+    &--highlighted {
+        border: $border-width-big solid var(--primary-color);
+        text-decoration: underline;
+    }
+
+    &--error {
+        color: $error;
+        border-color: $error;
+
+        &:hover {
+            background-color: $error;
+            color: $white;
+            border-color: $error;
+        }
+
+        &:active {
+            background-color: $error;
+            color: $white;
+        }
+    }
+
+    &--clear {
+        color: var(--primary-color);
+        background: transparent;
+        border: transparent;
+        line-height: 1;
+        padding: 0;
+        transition: color $transition-duration;
+
+        &:hover {
+            background: transparent;
+            border: transparent;
+            color: var(--secondary-color);
+        }
+
+        &:active {
+            background: transparent;
+            border: transparent;
+            color: var(--secondary-color);
         }
     }
 }

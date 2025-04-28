@@ -3,7 +3,7 @@ import { RouteNames } from '@/app/router/router';
 import { useUserStore } from '@/entities/user';
 import AppLink from '@/shared/ui/AppLink.vue';
 import HFlex from '@/shared/ui/HFlex.vue';
-import { useConfirmDialog } from '@/shared/utils';
+import { useConfirmDialog, useModalService } from '@/shared/utils';
 import {
     HomeIcon,
     Keyboard,
@@ -15,12 +15,13 @@ import {
 import { storeToRefs } from 'pinia';
 
 const userStore = useUserStore();
+const modalService = useModalService();
 
 const { logout } = userStore;
 const { isAuthenticated, username } = storeToRefs(userStore);
 
 const onLogout = async () => {
-    const acceptStatus = await useConfirmDialog({
+    const acceptStatus = await useConfirmDialog(modalService, {
         title: 'Logout',
         message: 'Are you sure want to logout?',
     });

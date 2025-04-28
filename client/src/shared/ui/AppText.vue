@@ -2,11 +2,13 @@
 withDefaults(
     defineProps<{
         size?: string;
+        weight?: number;
         align?: 'left' | 'center' | 'right';
         textStyle?: 'normal' | 'error' | 'warning';
     }>(),
     {
         size: '16px',
+        weight: 400,
         textStyle: 'normal',
     },
 );
@@ -15,7 +17,7 @@ withDefaults(
 <template>
     <span
         :class="[`text-${textStyle}`, `align-${align}`]"
-        :style="{ fontSize: size }"
+        :style="{ fontSize: size, fontWeight: weight }"
     >
         <slot />
     </span>
@@ -23,10 +25,6 @@ withDefaults(
 
 <style scoped lang="scss">
 @use '@/shared/styles/variables' as *;
-
-.text-normal {
-    color: var(--primary-color);
-}
 
 .text-error {
     color: $error;
