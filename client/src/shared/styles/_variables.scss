@@ -58,3 +58,7 @@ $box-shadow-modal: 0 10px 30px rgba(0, 0, 0, 0.3);
 
 // messages
 $z-index-message: 10000;
+
+// keyboard
+$keyboard-button-size: 32px;
+$keyboard-space-size: $keyboard-button-size * 6;

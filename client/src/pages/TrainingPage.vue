@@ -1,7 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { TrainingTile } from '@/features/training';
+</script>
 
 <template>
-    <div>Training</div>
+    <div>
+        <TrainingTile />
+    </div>
 </template>
 
 <style scoped lang="scss"></style>
