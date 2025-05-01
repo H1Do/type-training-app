@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import { Theme, useThemeStore } from '@/shared/model/theme';
+import { useSettingsStore } from '@/features/settings/model/settings';
 import AppButton from './AppButton.vue';
 import AppIcon from './AppIcon.vue';
+import { Theme } from '../types';
 
-const themeStore = useThemeStore();
+const settingsStore = useSettingsStore();
 </script>
 
 <template>
     <AppButton
-        @click="themeStore.toggleTheme"
+        @click="settingsStore.toggleTheme"
         buttonStyle="clear"
         title="Toggle theme"
     >
         <AppIcon
             name="SunIcon"
-            v-if="themeStore.theme === Theme.LIGHT"
+            v-if="settingsStore.theme === Theme.LIGHT"
             :size="32"
         />
         <AppIcon name="MoonIcon" v-else :size="32" />

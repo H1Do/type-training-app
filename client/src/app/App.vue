@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { Theme, useThemeStore } from '@/shared/model/theme';
 import AppFooter from '@/widgets/AppFooter.vue';
 import AppHeader from '@/widgets/AppHeader.vue';
 import PageWrapper from '@/widgets/PageWrapper.vue';
 import { watch } from 'vue';
 import { MessageProvider, ModalProvider } from './providers';
+import { Theme } from '@/shared/types';
+import { useSettingsStore } from '@/features/settings/model/settings';
 
-const theme = useThemeStore();
+const settingsStore = useSettingsStore();
 
 watch(
-    () => theme.theme,
+    () => settingsStore.theme,
     (newTheme) => {
         document.body.classList.remove(Theme.LIGHT, Theme.DARK);
         document.body.classList.add(newTheme);

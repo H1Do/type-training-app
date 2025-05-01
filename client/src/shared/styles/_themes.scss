@@ -17,6 +17,27 @@ body {
         --decline-color-hover: #{$dark-red};
         --cancel-color: #{$gray};
         --cancel-color-hover: #{$dark-gray};
+
+        --extreme-color: #{$black};
+        --extreme-background-color: #{$extreme};
+        --hard-color: #{$black};
+        --hard-background-color: #{$hard};
+        --medium-color: #{$black};
+        --medium-background-color: #{$medium};
+        --easy-color: #{$black};
+        --easy-background-color: #{$easy};
+
+        --finger-left-pinky: #{$finger-left-pinky};
+        --finger-left-ring: #{$finger-left-ring};
+        --finger-left-middle: #{$finger-left-middle};
+        --finger-left-index: #{$finger-left-index};
+        --finger-right-index: #{$finger-right-index};
+        --finger-right-middle: #{$finger-right-middle};
+        --finger-right-ring: #{$finger-right-ring};
+        --finger-right-pinky: #{$finger-right-pinky};
+        --finger-thumb: #{$finger-thumb};
+
+        --keyboard-button-border-color: #{$black};
     }
     &.dark-theme {
         --primary-color: #{$white};
@@ -34,5 +55,26 @@ body {
         --decline-color-hover: #{$dark-red};
         --cancel-color: #{$gray};
         --cancel-color-hover: #{$dark-gray};
+
+        --extreme-color: #{$extreme};
+        --extreme-background-color: #{$black};
+        --hard-color: #{$hard};
+        --hard-background-color: #{$black};
+        --medium-color: #{$medium};
+        --medium-background-color: #{$black};
+        --easy-color: #{$easy};
+        --easy-background-color: #{$black};
+
+        --finger-left-pinky: #{$finger-left-pinky-dark};
+        --finger-left-ring: #{$finger-left-ring-dark};
+        --finger-left-middle: #{$finger-left-middle-dark};
+        --finger-left-index: #{$finger-left-index-dark};
+        --finger-right-index: #{$finger-right-index-dark};
+        --finger-right-middle: #{$finger-right-middle-dark};
+        --finger-right-ring: #{$finger-right-ring-dark};
+        --finger-right-pinky: #{$finger-right-pinky-dark};
+        --finger-thumb: #{$finger-thumb-dark};
+
+        --keyboard-button-border-color: #{$white};
     }
 }

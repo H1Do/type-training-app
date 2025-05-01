@@ -29,6 +29,11 @@ $success: $green;
 $info: $blue;
 $warning: $orange;
 
+$easy: #38a169;
+$medium: #f6e05e;
+$hard: #ed8936;
+$extreme: #e53e3e;
+
 // transition
 $transition-duration: 0.2s;
 $transition-duration-fast: 0.1s;
@@ -51,6 +56,8 @@ $footer-padding: 12px;
 $footer-height: 24px;
 $footer-border-radius: 4px 4px 0 0;
 
+$settings-buttons-width: 90px;
+
 // modals
 $z-index-modal: 1000;
 $container-background-color-modal: rgba(0, 0, 0, 0.5);
@@ -62,3 +69,31 @@ $z-index-message: 10000;
 // keyboard
 $keyboard-button-size: 32px;
 $keyboard-space-size: $keyboard-button-size * 6;
+$keyboard-backspace-size: $keyboard-button-size * 2;
+$keyboard-blur-size: 3px;
+
+$keyboard-row-offset-0: 0;
+$keyboard-row-offset-1: 32px;
+$keyboard-row-offset-2: 0;
+$keyboard-row-offset-3: 0;
+$keyboard-row-offset-4: 0;
+
+$finger-left-pinky: #d0e6ff;
+$finger-left-ring: #c1ffd7;
+$finger-left-middle: #fff4c1;
+$finger-left-index: #ffe0e0;
+$finger-right-index: #ffe0ff;
+$finger-right-middle: #e0d5ff;
+$finger-right-ring: #d1f0ff;
+$finger-right-pinky: #fce0c1;
+$finger-thumb: #f0f0f0;
+
+$finger-left-pinky-dark: #5c82a3;
+$finger-left-ring-dark: #4b8d70;
+$finger-left-middle-dark: #8f843f;
+$finger-left-index-dark: #a15c5c;
+$finger-right-index-dark: #a35c92;
+$finger-right-middle-dark: #7a5fae;
+$finger-right-ring-dark: #548aa5;
+$finger-right-pinky-dark: #a37744;
+$finger-thumb-dark: #888888;

@@ -2,17 +2,19 @@
 import { computed, onMounted, onUnmounted, watch } from 'vue';
 import KeyboardButton from './KeyboardButton.vue';
 import { useSettingsStore } from '@/features/settings/model/settings';
-import {
-    KEYBOARD_LAYOUTS,
-    type KeyboardKey,
-} from '@/shared/config/keyboardLayouts';
+import { KEYBOARD_LAYOUTS } from '@/shared/config/keyboardLayouts';
 import { useKeyboardStore } from '../model/keyboardStore';
 import { useTrainingStore } from '../model/trainingStore';
+import { Difficulty, type KeyboardKey, type KeyCode } from '@/shared/types';
+import AppText from '@/shared/ui/AppText.vue';
 
-const settings = useSettingsStore();
-const layout = computed(() => KEYBOARD_LAYOUTS[settings.layout]);
+const settingsStore = useSettingsStore();
 const keyboardStore = useKeyboardStore();
 const trainingStore = useTrainingStore();
+
+const layout = computed(() => KEYBOARD_LAYOUTS[settingsStore.layout]);
+console.log(KEYBOARD_LAYOUTS);
+const isBlurred = computed(() => settingsStore.difficulty === Difficulty.BLIND);
 
 onMounted(() => {
     window.addEventListener('keydown', onKeyDown);
@@ -60,10 +62,10 @@ watch(
 function onKeyDown(e: KeyboardEvent) {
     if (e.code === 'Backspace') {
         trainingStore.backspace();
+        keyboardStore.onKeyDown(e.code as KeyCode);
         return;
     }
-    console.log(e.code);
-    keyboardStore.handleKeyDown(e.code);
+    keyboardStore.onKeyDown(e.code as KeyCode);
 
     const symbol = findSymbolByCode(e.code);
     if (symbol) {
@@ -72,33 +74,90 @@ function onKeyDown(e: KeyboardEvent) {
 }
 
 function onKeyUp(e: KeyboardEvent) {
-    keyboardStore.handleKeyUp(e.code);
+    keyboardStore.onKeyUp(e.code as KeyCode);
 }
 </script>
 
 <template>
-    <div class="keyboard-plate">
+    <div class="keyboard-plate__wrapper">
         <div
-            v-for="(row, rowIndex) in layout"
-            :key="rowIndex"
-            class="keyboard-row"
+            class="keyboard-plate"
+            :class="{ 'keyboard-plate--blurred': isBlurred }"
         >
-            <KeyboardButton v-for="key in row" :key="key.code" :keyData="key" />
+            <div
+                v-for="(row, rowIndex) in layout"
+                :key="rowIndex"
+                class="keyboard-row"
+                :class="`keyboard-row--${rowIndex}`"
+            >
+                <KeyboardButton
+                    v-for="key in row"
+                    :key="key.code"
+                    :keyData="key"
+                />
+            </div>
         </div>
+        <AppText
+            v-if="isBlurred"
+            class="keyboard-plate__hint"
+            :weight="600"
+            align="center"
+        >
+            Keyboard is blurred <br />
+            because of the difficulty
+        </AppText>
     </div>
 </template>
 
 <style scoped lang="scss">
+@use '@/shared/styles/variables' as *;
+
 .keyboard-plate {
     display: flex;
     flex-direction: column;
     gap: 6px;
     padding: 10px;
+    user-select: none;
+
+    &--blurred {
+        filter: blur($keyboard-blur-size);
+    }
+
+    &__wrapper {
+        position: relative;
+    }
+
+    &__hint {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -75%);
+    }
 }
 
 .keyboard-row {
     display: flex;
     gap: 4px;
     justify-content: center;
+
+    &--0 {
+        margin-left: $keyboard-row-offset-0;
+    }
+
+    &--1 {
+        margin-left: $keyboard-row-offset-1;
+    }
+
+    &--2 {
+        margin-left: $keyboard-row-offset-2;
+    }
+
+    &--3 {
+        margin-left: $keyboard-row-offset-3;
+    }
+
+    &--4 {
+        margin-left: $keyboard-row-offset-4;
+    }
 }
 </style>

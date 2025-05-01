@@ -4,7 +4,7 @@ import TrainingLine from './ui/TrainingLine.vue';
 import { useTrainingStore } from './model/trainingStore';
 
 const training = useTrainingStore();
-training.generateSequence(['а', 'о', 'л', 'д']);
+training.generateSequence(['а', 'о', 'л', 'д', ' ']);
 </script>
 
 <template>

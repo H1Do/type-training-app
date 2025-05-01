@@ -1,10 +1,21 @@
+import type { KeyCode } from '@/shared/types';
 import { defineStore } from 'pinia';
 
+export interface KeyboardStoreState {
+    hintedKeyCode: KeyCode | '';
+    pressedKeyCode: KeyCode | '';
+    isShiftPressed: boolean;
+    lastCorrectKeyCode: KeyCode | '';
+    wasErrorRecently: boolean;
+}
+
 export const useKeyboardStore = defineStore('keyboard', {
-    state: () => ({
-        hintedKeyCode: '' as string,
-        pressedKeyCode: '' as string,
+    state: (): KeyboardStoreState => ({
+        hintedKeyCode: '',
+        pressedKeyCode: '',
         isShiftPressed: false,
+        lastCorrectKeyCode: '',
+        wasErrorRecently: false,
     }),
 
     getters: {
@@ -13,37 +24,50 @@ export const useKeyboardStore = defineStore('keyboard', {
         },
 
         isError(state): boolean {
-            return (
-                state.pressedKeyCode !== '' &&
-                state.pressedKeyCode !== state.hintedKeyCode
-            );
+            return state.wasErrorRecently;
         },
     },
 
     actions: {
-        setHintedKey(code: string) {
+        setHintedKey(code: KeyCode) {
             this.hintedKeyCode = code;
-            this.pressedKeyCode = '';
         },
 
-        pressKey(code: string) {
-            this.pressedKeyCode = code;
-        },
-
-        handleKeyDown(code: string) {
+        onKeyDown(code: KeyCode) {
             if (code === 'ShiftLeft' || code === 'ShiftRight') {
                 this.isShiftPressed = true;
+                return;
             }
-            this.pressKey(code);
+
+            this.pressedKeyCode = code;
+
+            if (code === 'Backspace') {
+                return;
+            }
+
+            if (code === this.hintedKeyCode) {
+                this.lastCorrectKeyCode = code;
+                this.wasErrorRecently = false;
+            } else {
+                this.wasErrorRecently = true;
+                setTimeout(() => {
+                    this.wasErrorRecently = false;
+                }, 200);
+            }
         },
 
-        handleKeyUp(code: string) {
+        onKeyUp(code: KeyCode) {
             if (code === 'ShiftLeft' || code === 'ShiftRight') {
                 this.isShiftPressed = false;
+                return;
             }
 
-            if (code === this.pressedKeyCode) {
+            if (this.pressedKeyCode === code) {
                 this.pressedKeyCode = '';
+            }
+
+            if (this.lastCorrectKeyCode === code) {
+                this.lastCorrectKeyCode = '';
             }
         },
 
@@ -51,6 +75,8 @@ export const useKeyboardStore = defineStore('keyboard', {
             this.hintedKeyCode = '';
             this.pressedKeyCode = '';
             this.isShiftPressed = false;
+            this.lastCorrectKeyCode = '';
+            this.wasErrorRecently = false;
         },
     },
 });
