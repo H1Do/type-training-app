@@ -1,28 +1,22 @@
-import type { KeyCode } from '@/shared/types';
+import type { KeyCode, KeyboardKey } from '@/shared/types';
 import { defineStore } from 'pinia';
 
-export interface KeyboardStoreState {
-    hintedKeyCode: KeyCode | '';
-    pressedKeyCode: KeyCode | '';
-    isShiftPressed: boolean;
-    lastCorrectKeyCode: KeyCode | '';
-    wasErrorRecently: boolean;
-}
-
 export const useKeyboardStore = defineStore('keyboard', {
-    state: (): KeyboardStoreState => ({
-        hintedKeyCode: '',
-        pressedKeyCode: '',
+    state: () => ({
+        hintedKeyCode: '' as KeyCode | '',
+        pressedKeyCode: '' as KeyCode | '',
         isShiftPressed: false,
-        lastCorrectKeyCode: '',
+        lastCorrectKeyCode: '' as KeyCode | '',
         wasErrorRecently: false,
+
+        codeToKeyMap: new Map<string, KeyboardKey>(),
+        symbolToKeyMap: new Map<string, KeyboardKey>(),
     }),
 
     getters: {
         isCorrect(state): boolean {
             return state.pressedKeyCode === state.hintedKeyCode;
         },
-
         isError(state): boolean {
             return state.wasErrorRecently;
         },
@@ -41,9 +35,7 @@ export const useKeyboardStore = defineStore('keyboard', {
 
             this.pressedKeyCode = code;
 
-            if (code === 'Backspace') {
-                return;
-            }
+            if (code === 'Backspace') return;
 
             if (code === this.hintedKeyCode) {
                 this.lastCorrectKeyCode = code;
@@ -77,6 +69,29 @@ export const useKeyboardStore = defineStore('keyboard', {
             this.isShiftPressed = false;
             this.lastCorrectKeyCode = '';
             this.wasErrorRecently = false;
+        },
+
+        buildKeyMaps(layout: KeyboardKey[][]) {
+            this.codeToKeyMap.clear();
+            this.symbolToKeyMap.clear();
+
+            for (const row of layout) {
+                for (const key of row) {
+                    this.codeToKeyMap.set(key.code, key);
+                    this.symbolToKeyMap.set(key.lower, key);
+                    this.symbolToKeyMap.set(key.upper, key);
+                }
+            }
+        },
+
+        getSymbolByCode(code: string): string | null {
+            const key = this.codeToKeyMap.get(code);
+            if (!key) return null;
+            return this.isShiftPressed ? key.upper : key.lower;
+        },
+
+        getKeyBySymbol(symbol: string): KeyboardKey | null {
+            return this.symbolToKeyMap.get(symbol) ?? null;
         },
     },
 });

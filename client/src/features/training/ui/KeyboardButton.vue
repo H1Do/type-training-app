@@ -17,34 +17,34 @@ const isError = computed(
         keyData.code === keyboardStore.pressedKeyCode && keyboardStore.isError,
 );
 
-const showZone = computed(
+const zoneHintsMode = computed(
     () => settingsStore.difficulty === Difficulty.ZONE_HINTS,
 );
-const showHint = computed(
-    () => settingsStore.difficulty === Difficulty.KEY_HINTS || showZone,
+const keyHintsMode = computed(
+    () => settingsStore.difficulty === Difficulty.KEY_HINTS,
 );
-const showKey = computed(() => settingsStore.difficulty !== Difficulty.BLIND);
+const blindMode = computed(() => settingsStore.difficulty === Difficulty.BLIND);
 
 const displayedSymbol = computed(() =>
     keyboardStore.isShiftPressed ? keyData.upper : keyData.lower,
 );
-
-console.log(keyData.finger);
 </script>
 
 <template>
     <div
         class="keyboard-button"
         :class="{
-            'keyboard-button--active': isActive,
-            'keyboard-button--hinted': showHint && isHinted,
-            'keyboard-button--error': isError,
+            'keyboard-button--active': isActive && !blindMode,
+            'keyboard-button--hinted':
+                isHinted && (zoneHintsMode || keyHintsMode),
+            'keyboard-button--error':
+                isError && (zoneHintsMode || keyHintsMode),
             'keyboard-button--space': keyData.code === 'Space',
             'keyboard-button--backspace': keyData.code === 'Backspace',
-            [`keyboard-button--finger-${keyData.finger}`]: showZone,
+            [`keyboard-button--finger-${keyData.finger}`]: zoneHintsMode,
         }"
     >
-        <span v-if="showKey" class="keyboard-button__symbol">
+        <span class="keyboard-button__symbol">
             {{ displayedSymbol }}
         </span>
     </div>
@@ -115,15 +115,15 @@ console.log(keyData.finger);
     }
 
     &--hinted {
-        background-color: $light-blue;
+        background-color: $hinted-button;
     }
 
     &--error {
-        background-color: $light-red;
+        background-color: $incorrect-button;
     }
 
     &--active {
-        transform: scale(0.95);
+        transform: scale($pressed-button-scale);
     }
 }
 </style>

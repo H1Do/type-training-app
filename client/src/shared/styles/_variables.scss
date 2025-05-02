@@ -34,6 +34,9 @@ $medium: #f6e05e;
 $hard: #ed8936;
 $extreme: #e53e3e;
 
+$incorrect-button: $light-red;
+$hinted-button: $green;
+
 // transition
 $transition-duration: 0.2s;
 $transition-duration-fast: 0.1s;
@@ -71,6 +74,8 @@ $keyboard-button-size: 32px;
 $keyboard-space-size: $keyboard-button-size * 6;
 $keyboard-backspace-size: $keyboard-button-size * 2;
 $keyboard-blur-size: 3px;
+
+$pressed-button-scale: 0.85;
 
 $keyboard-row-offset-0: 0;
 $keyboard-row-offset-1: 32px;

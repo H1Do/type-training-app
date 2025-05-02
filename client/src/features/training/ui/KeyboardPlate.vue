@@ -5,7 +5,7 @@ import { useSettingsStore } from '@/features/settings/model/settings';
 import { KEYBOARD_LAYOUTS } from '@/shared/config/keyboardLayouts';
 import { useKeyboardStore } from '../model/keyboardStore';
 import { useTrainingStore } from '../model/trainingStore';
-import { Difficulty, type KeyboardKey, type KeyCode } from '@/shared/types';
+import { Difficulty, type KeyCode } from '@/shared/types';
 import AppText from '@/shared/ui/AppText.vue';
 
 const settingsStore = useSettingsStore();
@@ -26,32 +26,19 @@ onUnmounted(() => {
     window.removeEventListener('keyup', onKeyUp);
 });
 
-function findSymbolByCode(code: string): string | null {
-    for (const row of layout.value) {
-        for (const key of row) {
-            if (key.code === code) {
-                return keyboardStore.isShiftPressed ? key.upper : key.lower;
-            }
-        }
-    }
-    return null;
-}
-
-function findKeyBySymbol(symbol: string): KeyboardKey | null {
-    for (const row of layout.value) {
-        for (const key of row) {
-            if (key.lower === symbol || key.upper === symbol) {
-                return key;
-            }
-        }
-    }
-    return null;
-}
+watch(
+    layout,
+    (newLayout) => {
+        keyboardStore.buildKeyMaps(newLayout);
+    },
+    { immediate: true },
+);
 
 watch(
     () => trainingStore.currentSymbol,
-    (symbol) => {
-        const key = findKeyBySymbol(symbol);
+    (symbol: string | null) => {
+        if (!symbol) return;
+        const key = keyboardStore.getKeyBySymbol(symbol);
         if (key) {
             keyboardStore.setHintedKey(key.code);
         }
@@ -67,7 +54,7 @@ function onKeyDown(e: KeyboardEvent) {
     }
     keyboardStore.onKeyDown(e.code as KeyCode);
 
-    const symbol = findSymbolByCode(e.code);
+    const symbol = keyboardStore.getSymbolByCode(e.code);
     if (symbol) {
         trainingStore.processKey(symbol);
     }
