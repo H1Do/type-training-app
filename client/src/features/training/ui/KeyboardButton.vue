@@ -57,6 +57,7 @@ const displayedSymbol = computed(() =>
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: 'Fira Code', monospace;
     width: $keyboard-button-size;
     aspect-ratio: 1;
     border: $border-width solid var(--keyboard-button-border-color);

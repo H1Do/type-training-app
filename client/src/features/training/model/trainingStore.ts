@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
 import type { TrainingApi } from '@/shared/api/trainingApi';
-import type {
+import {
     TrainingMode,
-    TrainingSession,
-    TrainingStats,
+    type TrainingSession,
+    type TrainingStats,
 } from '@/shared/types/training';
 import TrainingSummaryModal from '../ui/TrainingSummaryModal.vue';
+import { useSettingsStore } from '@/features/settings';
 
 interface TrainingSessionState extends TrainingSession {
     startedAt: number;
@@ -28,7 +29,9 @@ export const useTrainingStore = defineStore('training', {
         events: [] as InputEventRecord[],
         lastInputTimestamp: 0,
         stats: null as TrainingStats | null,
-        mode: null as TrainingMode | null,
+        mode:
+            (localStorage.getItem('training-mode') as TrainingMode) ??
+            TrainingMode.Letters,
     }),
 
     getters: {
@@ -53,17 +56,26 @@ export const useTrainingStore = defineStore('training', {
     },
 
     actions: {
-        async prepare(mode: TrainingMode) {
-            this.sequence = await this.trainingApi.prepareSequence(mode);
+        setMode(mode: TrainingMode) {
+            this.mode = mode;
+            localStorage.setItem('training-mode', mode);
+        },
+
+        async prepare() {
+            const settingsStore = useSettingsStore();
+
+            this.sequence = await this.trainingApi.prepareSequence(
+                this.mode,
+                settingsStore.layout,
+            );
             this.input = [];
             this.events = [];
             this.lastInputTimestamp = 0;
             this.session = null;
-            this.mode = mode;
         },
 
         async start() {
-            if (!this.mode || this.sequence.length === 0) return;
+            if (this.sequence.length === 0) return;
 
             const session = await this.trainingApi.startSession(
                 this.mode,
@@ -105,7 +117,7 @@ export const useTrainingStore = defineStore('training', {
             const now = performance.now();
 
             if (!this.session) {
-                await this.start();
+                this.start();
             }
 
             const expected = this.sequence[this.input.length] || '';
@@ -158,7 +170,7 @@ export const useTrainingStore = defineStore('training', {
             this.input = [];
             this.events = [];
             this.lastInputTimestamp = 0;
-            this.mode = null;
+            this.setMode(TrainingMode.Letters);
         },
 
         setApi(api: TrainingApi) {

@@ -1,3 +1,4 @@
+import type { Layout } from '../types';
 import type {
     TrainingFinishResponse,
     TrainingMode,
@@ -10,11 +11,14 @@ import type { HttpClient } from './httpClient';
 export class TrainingApi {
     constructor(private httpClient: HttpClient) {}
 
-    async prepareSequence(mode: TrainingMode): Promise<string[]> {
+    async prepareSequence(
+        mode: TrainingMode,
+        layout: Layout,
+    ): Promise<string[]> {
         const res = await this.httpClient.get<string[]>(
             '/api/training/prepare',
             {
-                params: { mode },
+                params: { mode, layout },
             },
         );
         return res.data;

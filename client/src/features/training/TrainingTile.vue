@@ -1,41 +1,74 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted, watch } from 'vue';
 import KeyboardPlate from './ui/KeyboardPlate.vue';
 import TrainingDisplay from './ui/TrainingDisplay.vue';
-import { AppButton, VFlex } from '@/shared/ui';
+import { AppButton, AppText, VFlex } from '@/shared/ui';
 import TrainingStats from './ui/TrainingStats.vue';
 import { useTrainingStore } from './model/trainingStore';
-import { TrainingMode } from '@/shared/types/training';
+import TrainingModeSelector from './ui/TrainingModeSelector.vue';
 
 const trainingStore = useTrainingStore();
 
-const prepareTraining = async (mode: TrainingMode) => {
-    await trainingStore.prepare(mode);
+const prepareTraining = async () => {
+    await trainingStore.prepare();
+};
+
+const handleKeydown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+        prepareTraining();
+    }
 };
 
 onMounted(() => {
-    prepareTraining(TrainingMode.Letters);
+    window.addEventListener('keydown', handleKeydown);
+    prepareTraining();
 });
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeydown);
+});
+
+watch(
+    () => trainingStore.mode,
+    () => {
+        prepareTraining();
+    },
+);
 </script>
 
 <template>
-    <div class="training-tile">
-        <VFlex gap="16px" align="center">
-            <TrainingDisplay />
-            <TrainingStats />
-            <KeyboardPlate />
-            <AppButton @click="prepareTraining(TrainingMode.Letters)">
-                Restart
+    <VFlex gap="16px" align="center">
+        <TrainingModeSelector class="mode-selector" />
+        <TrainingDisplay />
+        <TrainingStats />
+        <KeyboardPlate />
+        <AppText class="restart-message">
+            Press
+            <AppButton
+                @click="prepareTraining"
+                buttonStyle="clear"
+                class="clear-button"
+            >
+                ESC
             </AppButton>
-        </VFlex>
-    </div>
+            to restart training
+        </AppText>
+    </VFlex>
 </template>
 
 <style scoped lang="scss">
-.training-tile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+.mode-selector {
+    align-self: start;
+    padding-inline: 16px;
+}
+
+.clear-button {
+    font-weight: 500;
+    text-decoration: underline;
+    color: var(--secondary-color);
+}
+
+.restart-message {
+    color: var(--secondary-color);
 }
 </style>

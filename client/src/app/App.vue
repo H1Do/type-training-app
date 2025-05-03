@@ -3,7 +3,7 @@ import AppFooter from '@/widgets/AppFooter.vue';
 import AppHeader from '@/widgets/AppHeader.vue';
 import PageWrapper from '@/widgets/PageWrapper.vue';
 import { watch } from 'vue';
-import { MessageProvider, ModalProvider } from './providers';
+import { ErrorBoundary, MessageProvider, ModalProvider } from './providers';
 import { Theme } from '@/shared/types';
 import { useSettingsStore } from '@/features/settings/model/settings';
 
@@ -23,7 +23,9 @@ watch(
     <div class="app">
         <AppHeader />
         <PageWrapper>
-            <RouterView />
+            <ErrorBoundary>
+                <RouterView />
+            </ErrorBoundary>
         </PageWrapper>
         <AppFooter />
 

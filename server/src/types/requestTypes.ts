@@ -4,6 +4,7 @@ import {
     StartSessionRequest,
     TrainingMode,
 } from './trainingSessionTypes';
+import { Layout } from './keyboardTypes';
 
 export interface RequestWithUser<
     TBody = unknown,
@@ -34,5 +35,5 @@ export type TrainingFinishRequest = RequestWithUser<
 export type TrainingPrepareRequest = RequestWithUser<
     undefined,
     {},
-    { mode: TrainingMode }
+    { mode: TrainingMode; layout: Layout }
 >;

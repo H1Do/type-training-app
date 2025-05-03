@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { TrainingMode, type TrainingStats } from '@/shared/types/training';
+import { type TrainingStats } from '@/shared/types/training';
 import { AppButton, AppModal } from '@/shared/ui';
 import { useTrainingStore } from '../model/trainingStore';
 
@@ -13,7 +13,7 @@ const emit = defineEmits<{
 
 const onCancel = () => {
     emit('resolve', false);
-    trainingStore.prepare(TrainingMode.Letters);
+    trainingStore.prepare();
 };
 </script>
 
@@ -33,7 +33,6 @@ const onCancel = () => {
 <style scoped>
 .modal {
     padding: 1rem;
-    font-family: 'Fira Code', monospace;
 
     &__title {
         font-size: 1.5rem;
