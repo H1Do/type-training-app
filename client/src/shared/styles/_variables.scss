@@ -102,3 +102,19 @@ $finger-right-middle-dark: #7a5fae;
 $finger-right-ring-dark: #548aa5;
 $finger-right-pinky-dark: #a37744;
 $finger-thumb-dark: #888888;
+
+// training display
+$training-display-width: 520px;
+$training-display-height: 120px;
+
+$training-display-font-size: 1.25rem;
+$training-display-whitespace-size: 12px;
+$training-display-font-gap: 0rem;
+
+$correct-symbol-color: $green;
+$incorrect-symbol-color: $red;
+$untyped-symbol-color: $gray;
+$caret-color: $black;
+
+$training-display-border-color: $light-gray;
+$training-display-border-radius: 12px;

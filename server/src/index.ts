@@ -5,6 +5,8 @@ import { router } from './routes';
 import { errorMiddleware } from './middleware/errorMiddleware';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import { scheduleCleanupUnfinishedSessions } from './tasks/cleanUnfinishedSessions';
+
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -35,3 +37,4 @@ const startServer = async () => {
 };
 
 startServer();
+scheduleCleanupUnfinishedSessions();

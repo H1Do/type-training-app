@@ -3,7 +3,7 @@
 body {
     &.light-theme {
         --primary-color: #{$black};
-        --secondary-color: #{$gray};
+        --secondary-color: #{$dark-gray};
         --background-color: #{$white};
 
         --header-background-color: var(--primary-color);
@@ -38,10 +38,12 @@ body {
         --finger-thumb: #{$finger-thumb};
 
         --keyboard-button-border-color: #{$black};
+
+        --caret-color: #{$black};
     }
     &.dark-theme {
         --primary-color: #{$white};
-        --secondary-color: #{$gray};
+        --secondary-color: #{$light-gray};
         --background-color: #{$black};
 
         --header-background-color: var(--primary-color);
@@ -76,5 +78,7 @@ body {
         --finger-thumb: #{$finger-thumb-dark};
 
         --keyboard-button-border-color: #{$white};
+
+        --caret-color: #{$white};
     }
 }

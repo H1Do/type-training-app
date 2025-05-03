@@ -4,3 +4,4 @@ export {
     useModal,
     useModalService,
 } from './modal';
+export { useTrainingTimer } from './training';

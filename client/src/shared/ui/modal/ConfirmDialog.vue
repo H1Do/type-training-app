@@ -17,12 +17,12 @@ const emit = defineEmits<{
     (e: 'resolve', value: boolean): void;
 }>();
 
-const handleCancel = () => emit('resolve', false);
-const handleConfirm = () => emit('resolve', true);
+const onCancel = () => emit('resolve', false);
+const onConfirm = () => emit('resolve', true);
 </script>
 
 <template>
-    <AppModal @close="handleCancel">
+    <AppModal @close="onCancel">
         <VFlex
             class="confirm-dialog"
             gap="16px"
@@ -37,10 +37,10 @@ const handleConfirm = () => emit('resolve', true);
             </div>
 
             <div class="confirm-dialog__buttons">
-                <AppButton class="cancel" @click="handleCancel">{{
+                <AppButton class="cancel" @click="onCancel">{{
                     cancelText || 'No'
                 }}</AppButton>
-                <AppButton class="accept" @click="handleConfirm">
+                <AppButton class="accept" @click="onConfirm">
                     {{ confirmText || 'Yes' }}
                 </AppButton>
             </div>

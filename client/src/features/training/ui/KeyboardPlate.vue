@@ -13,7 +13,6 @@ const keyboardStore = useKeyboardStore();
 const trainingStore = useTrainingStore();
 
 const layout = computed(() => KEYBOARD_LAYOUTS[settingsStore.layout]);
-console.log(KEYBOARD_LAYOUTS);
 const isBlurred = computed(() => settingsStore.difficulty === Difficulty.BLIND);
 
 onMounted(() => {
