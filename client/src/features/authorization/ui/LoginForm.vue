@@ -3,6 +3,9 @@ import { computed } from 'vue';
 import { AppButton, AppInput, AppText, VFlex } from '@/shared/ui';
 import { useUserStore } from '@/entities/user';
 import type { LoginForm } from '../model/authorization';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps({
     modelValue: {
@@ -52,7 +55,7 @@ const submitForm = (event: Event) => {
                 id="email"
                 :value="modelValue.email"
                 @input="updateField('email', $event)"
-                placeholder="Email"
+                :placeholder="t('auth.email')"
             />
             <AppInput
                 type="password"
@@ -60,10 +63,10 @@ const submitForm = (event: Event) => {
                 id="password"
                 :value="modelValue.password"
                 @input="updateField('password', $event)"
-                placeholder="Password"
+                :placeholder="t('auth.password')"
             />
             <VFlex align="stretch" gap="4px">
-                <AppButton type="submit">Login</AppButton>
+                <AppButton type="submit">{{ t('auth.login') }}</AppButton>
                 <AppText
                     v-if="userStore.error"
                     textStyle="error"

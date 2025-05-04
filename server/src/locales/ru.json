@@ -1,0 +1,19 @@
+{
+    "errors.all_fields_required": "Все поля обязательны",
+    "errors.email_used": "Email уже используется",
+    "errors.invalid_credentials": "Неверный email или пароль",
+    "errors.invalid_old_password": "Неверный старый пароль",
+    "errors.unauthorized": "Не авторизован",
+    "errors.user_not_found": "Пользователь не найден",
+
+    "errors.mode_required": "Режим тренировки обязателен",
+    "errors.invalid_session_data": "Необходимы режим и последовательность",
+    "errors.session_not_found": "Сессия не найдена",
+
+    "messages.registration_success": "Пользователь успешно зарегистрирован",
+    "messages.login_success": "Вы успешно вошли в систему",
+    "messages.logout_success": "Вы успешно вышли из системы",
+    "messages.password_change_success": "Пароль успешно изменён",
+
+    "messages.session_finished": "Тренировка завершена"
+}

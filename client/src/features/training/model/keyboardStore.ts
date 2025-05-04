@@ -4,6 +4,7 @@ import { defineStore } from 'pinia';
 export const useKeyboardStore = defineStore('keyboard', {
     state: () => ({
         hintedKeyCode: '' as KeyCode | '',
+        isShiftRequired: false,
         pressedKeyCode: '' as KeyCode | '',
         isShiftPressed: false,
         lastCorrectKeyCode: '' as KeyCode | '',
@@ -25,6 +26,10 @@ export const useKeyboardStore = defineStore('keyboard', {
     actions: {
         setHintedKey(code: KeyCode) {
             this.hintedKeyCode = code;
+        },
+
+        setIsShiftRequired(isShiftRequired: boolean) {
+            this.isShiftRequired = isShiftRequired;
         },
 
         onKeyDown(code: KeyCode) {

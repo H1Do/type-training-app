@@ -20,7 +20,11 @@ class TrainingController {
             const { mode, layout } = req.query;
 
             if (!mode) {
-                return next(ApiError.badRequest('Mode is required'));
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.mode_required') ?? 'Mode is required',
+                    ),
+                );
             }
 
             const sequence = generateSequence(mode, layout, 100);
@@ -41,11 +45,19 @@ class TrainingController {
 
             if (!mode || !Array.isArray(sequence)) {
                 return next(
-                    ApiError.badRequest('Mode and sequence are required'),
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_session_data') ??
+                            'Mode and sequence are required',
+                    ),
                 );
             }
 
-            if (!userId) return next(ApiError.unauthorized('Unauthorized'));
+            if (!userId)
+                return next(
+                    ApiError.unauthorized(
+                        req.t?.('errors.unauthorized') ?? 'Unauthorized',
+                    ),
+                );
 
             const session = await TrainingSession.create({
                 userId,
@@ -75,10 +87,21 @@ class TrainingController {
             const { input, events, finishedAt, startedAt } = req.body;
             const userId = req.user?.id;
 
-            if (!userId) return next(ApiError.unauthorized('Unauthorized'));
+            if (!userId)
+                return next(
+                    ApiError.unauthorized(
+                        req.t?.('errors.unauthorized') ?? 'Unauthorized',
+                    ),
+                );
 
             const session = await TrainingSession.findOne({ _id: id, userId });
-            if (!session) return next(ApiError.notFound('Session not found'));
+            if (!session)
+                return next(
+                    ApiError.notFound(
+                        req.t?.('errors.session_not_found') ??
+                            'Session not found',
+                    ),
+                );
 
             session.input = input;
             session.events = events;
@@ -102,7 +125,11 @@ class TrainingController {
                 duration,
             };
 
-            return res.status(200).json({ message: 'Session finished', stats });
+            return res.status(200).json({
+                message:
+                    req.t?.('messages.session_finished') ?? 'Session finished',
+                stats,
+            });
         } catch (e) {
             next(e);
         }
@@ -115,9 +142,7 @@ function generateSequence(
     length: number,
 ): string[] {
     const lang = LayoutLangMap[layout];
-
     const pool = lang === Lang.RU ? RU_POOLS[mode] : EN_POOLS[mode];
-
     const sequence: string[] = [];
 
     if (Array.isArray(pool)) {

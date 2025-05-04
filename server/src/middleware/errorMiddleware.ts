@@ -13,10 +13,9 @@ export const errorMiddleware: ErrorRequestHandler = (
             status: 'error',
             message: err.message,
         });
-        console.log(err.message);
         return;
     }
-    console.log(err);
+
     res.status(500).json({
         status: 'error',
         message: 'Internal Server Error',

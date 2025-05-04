@@ -10,7 +10,9 @@ import { storeToRefs } from 'pinia';
 import { useConfirmDialog, useModal, useModalService } from '@/shared/utils';
 import { useUserStore } from '@/entities/user';
 import ChangePasswordForm from './ui/ChangePasswordForm.vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const userStore = useUserStore();
 const modalService = useModalService();
 
@@ -37,18 +39,18 @@ const onChangePassword = async () => {
 
 <template>
     <VFlex gap="16px">
-        <h2 class="title"><User2Icon /> Profile data</h2>
+        <h2 class="title"><User2Icon />{{ t('profile.profileData') }}</h2>
         <AppTable>
             <AppTableRow>
-                <AppTableCell>Username:</AppTableCell>
+                <AppTableCell>{{ t('profile.username') }}:</AppTableCell>
                 <AppTableCell class="data">{{ username }}</AppTableCell>
             </AppTableRow>
             <AppTableRow>
-                <AppTableCell>Email:</AppTableCell>
+                <AppTableCell>{{ t('profile.email') }}:</AppTableCell>
                 <AppTableCell class="data">{{ email }}</AppTableCell>
             </AppTableRow>
             <AppTableRow>
-                <AppTableCell>Registered at:</AppTableCell>
+                <AppTableCell>{{ t('profile.registeredAt') }}:</AppTableCell>
                 <AppTableCell class="data">{{
                     date.toLocaleString('ru-RU')
                 }}</AppTableCell>
@@ -56,9 +58,11 @@ const onChangePassword = async () => {
         </AppTable>
         <HFlex justify="between" gap="8px" class="buttons">
             <AppButton class="changePassword" @click="onChangePassword">
-                Change password
+                {{ t('profile.changePassword') }}
             </AppButton>
-            <AppButton class="logout" @click="onLogout">Logout</AppButton>
+            <AppButton class="logout" @click="onLogout">{{
+                t('profile.logout')
+            }}</AppButton>
         </HFlex>
     </VFlex>
 </template>

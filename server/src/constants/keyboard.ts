@@ -1,8 +1,8 @@
 import { TrainingMode } from '@/types/trainingSessionTypes';
 
 export const EN_POOLS: Record<TrainingMode, string | string[]> = {
-    letters: 'asdfjkl;',
-    symbols: '!@#$%^&*()_+{}[]',
+    letters: 'abcdefghijklmnopqrstuvwxyz',
+    symbols: '`~!@#$%^&*()-_=+[]\\{}|;:\'",.<>/?',
     numbers: '0123456789',
     'popular-words': [
         'the',
@@ -176,8 +176,8 @@ export const EN_POOLS: Record<TrainingMode, string | string[]> = {
 };
 
 export const RU_POOLS: Record<TrainingMode, string | string[]> = {
-    letters: 'фываолджэячсмитьбю',
-    symbols: '!@#$%^&*()_+{}[]«»№;:?,.',
+    letters: 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя',
+    symbols: '"№;%:?*()_+\\/.,',
     numbers: '0123456789',
     'popular-words': [
         'и',

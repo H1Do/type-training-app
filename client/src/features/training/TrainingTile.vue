@@ -6,6 +6,9 @@ import { AppButton, AppText, VFlex } from '@/shared/ui';
 import TrainingStats from './ui/TrainingStats.vue';
 import { useTrainingStore } from './model/trainingStore';
 import TrainingModeSelector from './ui/TrainingModeSelector.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const trainingStore = useTrainingStore();
 
@@ -43,7 +46,7 @@ watch(
         <TrainingStats />
         <KeyboardPlate />
         <AppText class="restart-message">
-            Press
+            {{ t('training.press') }}
             <AppButton
                 @click="prepareTraining"
                 buttonStyle="clear"
@@ -51,7 +54,7 @@ watch(
             >
                 ESC
             </AppButton>
-            to restart training
+            {{ t('training.toRestart') }}
         </AppText>
     </VFlex>
 </template>

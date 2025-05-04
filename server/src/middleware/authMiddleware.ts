@@ -11,7 +11,7 @@ export function authMiddleware(
     const token = req.cookies.token;
 
     if (!token) {
-        next(ApiError.unauthorized('Not authorized'));
+        next(ApiError.unauthorized(req.t('errors.unauthorized')));
     }
 
     if (!process.env.JWT_SECRET) {
@@ -28,7 +28,9 @@ export function authMiddleware(
                 return next(ApiError.unauthorized('Token expired'));
             }
             if (err) {
-                return next(ApiError.unauthorized('Not authorized'));
+                return next(
+                    ApiError.unauthorized(req.t('errors.unauthorized')),
+                );
             }
             req.user = user;
             next();

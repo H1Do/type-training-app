@@ -3,7 +3,9 @@ import { h } from 'vue';
 import { TrainingMode } from '@/shared/types/training';
 import { AppIcon, AppSelector, type Option } from '@/shared/ui';
 import { useTrainingStore } from '../model/trainingStore';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const trainingStore = useTrainingStore();
 
 const iconLabel = (icon: string, label: string) =>
@@ -16,22 +18,30 @@ const options: Option<TrainingMode>[] = [
     {
         value: TrainingMode.Letters,
         label: 'Letters',
-        content: { render: () => iconLabel('Type', 'Letters') },
+        content: {
+            render: () => iconLabel('Type', t('training.modes.letters')),
+        },
     },
     {
         value: TrainingMode.Symbols,
         label: 'Symbols',
-        content: { render: () => iconLabel('Braces', 'Symbols') },
+        content: {
+            render: () => iconLabel('Braces', t('training.modes.symbols')),
+        },
     },
     {
         value: TrainingMode.Numbers,
         label: 'Numbers',
-        content: { render: () => iconLabel('Hash', 'Numbers') },
+        content: {
+            render: () => iconLabel('Hash', t('training.modes.numbers')),
+        },
     },
     {
         value: TrainingMode.PopularWords,
         label: 'Popular Words',
-        content: { render: () => iconLabel('Flame', 'Popular Words') },
+        content: {
+            render: () => iconLabel('Flame', t('training.modes.popularWords')),
+        },
     },
 ];
 

@@ -1,0 +1,19 @@
+{
+    "errors.all_fields_required": "All fields are required",
+    "errors.email_used": "Email already used",
+    "errors.invalid_credentials": "Invalid email or password",
+    "errors.invalid_old_password": "Invalid old password",
+    "errors.unauthorized": "Not authorized",
+    "errors.user_not_found": "User not found",
+
+    "errors.mode_required": "Training mode is required",
+    "errors.invalid_session_data": "Mode and sequence are required",
+    "errors.session_not_found": "Training session not found",
+
+    "messages.registration_success": "User registered successfully",
+    "messages.login_success": "User logged in successfully",
+    "messages.logout_success": "User logged out successfully",
+    "messages.password_change_success": "Password changed successfully",
+
+    "messages.session_finished": "Session finished"
+}

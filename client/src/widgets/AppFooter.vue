@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import AppLink from '@/shared/ui/AppLink.vue';
 import { Mail, Send } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 </script>
 
 <template>
     <footer class="app-footer">
         <div>&copy; 2025 Type Training App.</div>
-        <div>Made with ❤️ by Hido (Latypov Niaz)</div>
+        <div>{{ t('footer.credits') }}</div>
         <AppLink class="link" type="external" to="mailto:hidouchiha@gmail.com">
             <Mail class="link-icon" /> hidouchiha@gmail.com
         </AppLink>

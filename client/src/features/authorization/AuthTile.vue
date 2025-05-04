@@ -6,7 +6,9 @@ import { AppLink, VFlex } from '@/shared/ui';
 import { RouteNames } from '@/app/router';
 import LoginForm from './ui/LoginForm.vue';
 import RegistrationForm from './ui/RegistrationForm.vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const authStore = useAuthorizationStore();
 const userStore = useUserStore();
 const router = useRouter();
@@ -37,8 +39,12 @@ const onSubmit = async () => {
         </Transition>
 
         <AppLink type="button" @click="authStore.toggleType">
-            Switch to
-            {{ authStore.type === 'login' ? 'Registration' : 'Login' }}
+            {{ t('auth.switch') }}
+            {{
+                authStore.type === 'login'
+                    ? t('auth.login')
+                    : t('auth.registration')
+            }}
         </AppLink>
     </VFlex>
 </template>

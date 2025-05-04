@@ -22,12 +22,21 @@ class UserController {
     async registration(req: AuthRequest, res: Response, next: NextFunction) {
         const { username, password, email } = req.body;
         if (!username || !password || !email) {
-            return next(ApiError.badRequest('All fields are required'));
+            return next(
+                ApiError.badRequest(
+                    req.t?.('errors.all_fields_required') ??
+                        'All fields are required',
+                ),
+            );
         }
 
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return next(ApiError.badRequest('User already exists'));
+            return next(
+                ApiError.badRequest(
+                    req.t?.('errors.email_used') ?? 'Email already used',
+                ),
+            );
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -45,24 +54,43 @@ class UserController {
 
         return res
             .status(201)
-            .json({ message: 'User registered successfully' });
+            .json({
+                message:
+                    req.t?.('messages.registration_success') ??
+                    'User registered successfully',
+            });
     }
 
     async login(req: AuthRequest, res: Response, next: NextFunction) {
         const { email, password } = req.body;
 
         if (!email || !password) {
-            return next(ApiError.badRequest('All fields are required'));
+            return next(
+                ApiError.badRequest(
+                    req.t?.('errors.all_fields_required') ??
+                        'All fields are required',
+                ),
+            );
         }
 
         const user = await User.findOne({ email });
         if (!user) {
-            return next(ApiError.badRequest('Invalid email or password'));
+            return next(
+                ApiError.badRequest(
+                    req.t?.('errors.invalid_credentials') ??
+                        'Invalid email or password',
+                ),
+            );
         }
 
         let comparePassword = await bcrypt.compare(password, user.password);
         if (!comparePassword) {
-            return next(ApiError.badRequest('Invalid email or password'));
+            return next(
+                ApiError.badRequest(
+                    req.t?.('errors.invalid_credentials') ??
+                        'Invalid email or password',
+                ),
+            );
         }
 
         const token = generateToken(String(user._id));
@@ -74,36 +102,64 @@ class UserController {
             path: '/',
         });
 
-        return res.status(200).json({ message: 'User logged in successfully' });
+        return res
+            .status(200)
+            .json({
+                message:
+                    req.t?.('messages.login_success') ??
+                    'User logged in successfully',
+            });
     }
 
     async logout(req: AuthRequest, res: Response, next: NextFunction) {
         res.clearCookie('token');
         return res
             .status(200)
-            .json({ message: 'User logged out successfully' });
+            .json({
+                message:
+                    req.t?.('messages.logout_success') ??
+                    'User logged out successfully',
+            });
     }
 
     async changePassword(req: AuthRequest, res: Response, next: NextFunction) {
         const { oldPassword, newPassword } = req.body;
 
         if (!oldPassword || !newPassword) {
-            return next(ApiError.badRequest('All fields are required'));
+            return next(
+                ApiError.badRequest(
+                    req.t?.('errors.all_fields_required') ??
+                        'All fields are required',
+                ),
+            );
         }
 
         const userId = req.user?.id;
         if (!userId) {
-            return next(ApiError.unauthorized(''));
+            return next(
+                ApiError.unauthorized(
+                    req.t?.('errors.unauthorized') ?? 'Not authorized',
+                ),
+            );
         }
 
         const user = await User.findById(userId);
         if (!user) {
-            return next(ApiError.notFound('User not found'));
+            return next(
+                ApiError.notFound(
+                    req.t?.('errors.user_not_found') ?? 'User not found',
+                ),
+            );
         }
 
         let comparePassword = await bcrypt.compare(oldPassword, user.password);
         if (!comparePassword) {
-            return next(ApiError.badRequest('Invalid old password'));
+            return next(
+                ApiError.badRequest(
+                    req.t?.('errors.invalid_old_password') ??
+                        'Invalid old password',
+                ),
+            );
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -112,19 +168,31 @@ class UserController {
 
         return res
             .status(200)
-            .json({ message: 'Password changed successfully' });
+            .json({
+                message:
+                    req.t?.('messages.password_change_success') ??
+                    'Password changed successfully',
+            });
     }
 
     async getUser(req: AuthRequest, res: Response, next: NextFunction) {
         const userId = req.user?.id;
         if (!userId) {
-            return next(ApiError.unauthorized('Not authorized'));
+            return next(
+                ApiError.unauthorized(
+                    req.t?.('errors.unauthorized') ?? 'Not authorized',
+                ),
+            );
         }
 
         const user = await User.findById(userId);
 
         if (!user) {
-            return next(ApiError.notFound('User not found'));
+            return next(
+                ApiError.notFound(
+                    req.t?.('errors.user_not_found') ?? 'User not found',
+                ),
+            );
         }
 
         const userDto: UserDto = {

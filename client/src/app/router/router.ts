@@ -32,16 +32,10 @@ const routes = [
     {
         path: RouteNames.TRAINING,
         component: () => import('@/pages/TrainingPage.vue'),
-        meta: {
-            requiredAuthStatus: true,
-        },
     },
     {
         path: RouteNames.SETTINGS,
         component: () => import('@/pages/SettingsPage.vue'),
-        meta: {
-            requiredAuthStatus: true,
-        },
     },
     {
         path: RouteNames.NOT_FOUND,

@@ -2,13 +2,14 @@
 import { computed } from 'vue';
 import { useTrainingStore } from '../model/trainingStore';
 import { useTrainingTimer } from '@/shared/utils';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const training = useTrainingStore();
 const now = useTrainingTimer(200);
 
-const showNotice = computed(() => {
-    return training.session && training.session.startedAt === 0;
-});
+const showNotice = computed(() => !training.events.length);
 
 const isActive = computed(() => training.session && !training.isFinished);
 
@@ -45,18 +46,24 @@ const accuracy = computed(() => {
 });
 
 const stats = computed(() => [
-    { label: 'Time', value: `${duration.value.toFixed(1)}s` },
-    { label: 'Accuracy', value: `${accuracy.value}%` },
-    { label: 'CPM', value: cpm.value },
-    { label: 'Avg Reaction', value: `${reaction.value}ms` },
-    { label: 'Undo', value: training.undoCount },
+    {
+        label: t('training.time'),
+        value: `${duration.value.toFixed(1)}${t('training.s')}`,
+    },
+    { label: t('training.accuracy'), value: `${accuracy.value}%` },
+    { label: t('training.cpm'), value: cpm.value },
+    {
+        label: t('training.reaction'),
+        value: `${reaction.value}${t('training.ms')}`,
+    },
+    { label: t('training.undo'), value: training.undoCount },
 ]);
 </script>
 
 <template>
     <div class="training-stats">
         <div v-if="showNotice" class="training-stats__overlay">
-            Начните печатать, чтобы начать тренировку
+            {{ t('training.startNotice') }}
         </div>
         <div class="stat" v-for="stat in stats" :key="stat.label">
             <span class="stat__label">{{ stat.label }}</span>

@@ -5,18 +5,21 @@ import AppIcon from '@/shared/ui/AppIcon.vue';
 import AppText from '@/shared/ui/AppText.vue';
 import VFlex from '@/shared/ui/VFlex.vue';
 import { useSettingsStore } from '../model/settings';
+import { useI18n } from 'vue-i18n';
 
 defineProps<{
     difficulty: Difficulty;
 }>();
 
+const { t } = useI18n();
+
 const settingsStore = useSettingsStore();
 
 const difficultyNameMap: Record<Difficulty, string> = {
-    [Difficulty.ZONE_HINTS]: 'Zones',
-    [Difficulty.KEY_HINTS]: 'Hints',
-    [Difficulty.FULL_KEYBOARD]: 'Full',
-    [Difficulty.BLIND]: 'Blind',
+    [Difficulty.ZONE_HINTS]: t('settings.difficulties.zones'),
+    [Difficulty.KEY_HINTS]: t('settings.difficulties.hints'),
+    [Difficulty.FULL_KEYBOARD]: t('settings.difficulties.full'),
+    [Difficulty.BLIND]: t('settings.difficulties.blind'),
 };
 
 const difficultyIconMap: Record<Difficulty, string> = {

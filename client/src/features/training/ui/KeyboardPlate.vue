@@ -7,6 +7,7 @@ import { useKeyboardStore } from '../model/keyboardStore';
 import { useTrainingStore } from '../model/trainingStore';
 import { Difficulty, type KeyCode } from '@/shared/types';
 import AppText from '@/shared/ui/AppText.vue';
+import ShiftButton from './ShiftButton.vue';
 
 const settingsStore = useSettingsStore();
 const keyboardStore = useKeyboardStore();
@@ -40,6 +41,9 @@ watch(
         const key = keyboardStore.getKeyBySymbol(symbol);
         if (key) {
             keyboardStore.setHintedKey(key.code);
+            keyboardStore.setIsShiftRequired(
+                key.upper === symbol && key.code !== 'Space',
+            );
         }
     },
     { immediate: true },
@@ -76,6 +80,7 @@ function onKeyUp(e: KeyboardEvent) {
                 class="keyboard-row"
                 :class="`keyboard-row--${rowIndex}`"
             >
+                <ShiftButton v-if="rowIndex === 3" />
                 <KeyboardButton
                     v-for="key in row"
                     :key="key.code"

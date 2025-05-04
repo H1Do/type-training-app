@@ -13,7 +13,9 @@ import {
     User,
 } from 'lucide-vue-next';
 import { storeToRefs } from 'pinia';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const userStore = useUserStore();
 const modalService = useModalService();
 
@@ -22,8 +24,8 @@ const { isAuthenticated, username } = storeToRefs(userStore);
 
 const onLogout = async () => {
     const acceptStatus = await useConfirmDialog(modalService, {
-        title: 'Logout',
-        message: 'Are you sure want to logout?',
+        title: t('header.logout'),
+        message: t('header.logoutConfirm'),
     });
 
     if (acceptStatus) {
@@ -41,13 +43,13 @@ const onLogout = async () => {
         </div>
         <nav class="nav">
             <AppLink :to="RouteNames.MAIN" class="app-link">
-                <HomeIcon class="app-link-icon" /> Main
+                <HomeIcon class="app-link-icon" /> {{ t('header.main') }}
             </AppLink>
             <AppLink :to="RouteNames.TRAINING" class="app-link">
-                <Keyboard class="app-link-icon" /> Training
+                <Keyboard class="app-link-icon" /> {{ t('header.training') }}
             </AppLink>
             <AppLink :to="RouteNames.SETTINGS" class="app-link">
-                <Settings class="app-link-icon" /> Settings
+                <Settings class="app-link-icon" /> {{ t('header.settings') }}
             </AppLink>
         </nav>
         <div class="user-actions">
@@ -61,7 +63,8 @@ const onLogout = async () => {
                 </AppLink>
             </HFlex>
             <AppLink v-else :to="RouteNames.AUTH" class="app-link">
-                <LogInIcon class="app-link-icon" /> Login/Register
+                <LogInIcon class="app-link-icon" />
+                {{ t('header.login/register') }}
             </AppLink>
         </div>
     </header>

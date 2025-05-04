@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { AppButton, AppInput, AppModal, AppText } from '@/shared/ui';
 import { useChangePasswordForm } from '../model/profile';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const form = useChangePasswordForm();
 
 const emit = defineEmits<{
@@ -24,24 +26,27 @@ const handleCancel = () => emit('resolve', false);
         <form @submit.prevent="onSubmit" class="form">
             <AppInput
                 v-model="form.oldPassword"
-                placeholder="Old password"
+                type="password"
+                :placeholder="t('profile.oldPassword')"
                 @input="form.error = ''"
             />
             <AppInput
                 v-model="form.newPassword"
-                placeholder="New password"
+                type="password"
+                :placeholder="t('profile.newPassword')"
                 @input="form.error = ''"
             />
             <AppInput
                 v-model="form.confirmPassword"
-                placeholder="Confirm new password"
+                type="password"
+                :placeholder="t('profile.confirmPassword')"
                 @input="form.error = ''"
             />
 
             <AppButton
                 type="submit"
                 :buttonStyle="!!form.error ? 'error' : 'primary'"
-                >Change password</AppButton
+                >{{ t('profile.changePassword') }}</AppButton
             >
             <AppText
                 v-if="form.error"

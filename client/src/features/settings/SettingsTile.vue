@@ -4,27 +4,32 @@ import KeyboardLayoutButton from './ui/KeyboardLayoutButton.vue';
 import LocalizationButton from './ui/LocalizationButton.vue';
 import { Difficulty, Layout } from '@/shared/types';
 import DifficultyButton from './ui/DifficultyButton.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 </script>
 
 <template>
     <VFlex align="center" gap="8px">
         <HFlex gap="8px" align="stretch">
             <VFlex gap="8px" align="center" justify="between">
-                <AppText :weight="600">Theme</AppText>
+                <AppText :weight="600">{{ t('settings.theme') }}</AppText>
                 <ToggleThemeButton />
             </VFlex>
             <VFlex gap="8px" align="center" justify="between">
-                <AppText :weight="600">Localization</AppText>
+                <AppText :weight="600">{{
+                    t('settings.localization')
+                }}</AppText>
                 <LocalizationButton />
             </VFlex>
         </HFlex>
-        <AppText :weight="600">Layout</AppText>
+        <AppText :weight="600">{{ t('settings.layout') }}</AppText>
         <HFlex gap="8px" align="center">
             <KeyboardLayoutButton :layout="Layout.QWERTY" />
             <KeyboardLayoutButton :layout="Layout.YCUKEN" />
         </HFlex>
 
-        <AppText :weight="600">Difficulty</AppText>
+        <AppText :weight="600">{{ t('settings.difficulty') }}</AppText>
         <HFlex gap="8px" align="center">
             <DifficultyButton :difficulty="Difficulty.ZONE_HINTS" />
             <DifficultyButton :difficulty="Difficulty.KEY_HINTS" />

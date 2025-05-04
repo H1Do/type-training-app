@@ -10,5 +10,7 @@ declare module 'pinia' {
         modalService: ModalService;
         messageService: MessageService;
         router: Router;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        t: any;
     }
 }

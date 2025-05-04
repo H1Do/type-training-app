@@ -30,12 +30,12 @@ export const useChangePasswordForm = defineStore('changePasswordForm', {
                 !this.newPassword ||
                 !this.confirmPassword
             ) {
-                this.error = 'All fields are required';
+                this.error = this.t('profile.allFieldsRequired');
                 return false;
             }
 
             if (this.newPassword !== this.confirmPassword) {
-                this.error = 'Passwords do not match';
+                this.error = this.t('profile.passwordsDoNotMatch');
                 return false;
             }
 

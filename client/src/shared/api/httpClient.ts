@@ -1,4 +1,10 @@
-import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios';
+import axios, {
+    AxiosHeaders,
+    type AxiosRequestConfig,
+    type AxiosResponse,
+} from 'axios';
+import { useSettingsStore } from '@/features/settings';
+import { Localization } from '../types';
 
 export class HttpClient {
     private readonly $host;
@@ -7,6 +13,19 @@ export class HttpClient {
         this.$host = axios.create({
             baseURL: import.meta.env.VITE_API_URL,
             withCredentials: true,
+        });
+
+        this.$host.interceptors.request.use((config) => {
+            const settingsStore = useSettingsStore();
+            const locale = settingsStore.localization || Localization.EN;
+
+            if (!config.headers) {
+                config.headers = new AxiosHeaders();
+            }
+
+            config.headers.set('Accept-Language', locale);
+
+            return config;
         });
     }
 

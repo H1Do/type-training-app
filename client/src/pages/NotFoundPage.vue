@@ -2,8 +2,10 @@
 import { RouteNames } from '@/app/router/router';
 import AppButton from '@/shared/ui/AppButton.vue';
 import VFlex from '@/shared/ui/VFlex.vue';
+import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 
+const { t } = useI18n();
 const router = useRouter();
 
 const onClick = () => {
@@ -14,9 +16,9 @@ const onClick = () => {
 <template>
     <VFlex align="center" class="not-found">
         <h1 class="not-found__title">404</h1>
-        <div>There is nothing here...</div>
+        <div>{{ t('notFound.thereIsNothingHere') }}</div>
         <AppButton class="not-found__button" @click="onClick">
-            Go to main page
+            {{ t('notFound.goToMain') }}
         </AppButton>
     </VFlex>
 </template>
