@@ -1,4 +1,4 @@
-import { TrainingSessionDoc } from '@/types/trainingSessionTypes';
+import { TrainingSessionDoc } from '@/types/trainingTypes';
 import mongoose from 'mongoose';
 
 const trainingSessionSchema = new mongoose.Schema<TrainingSessionDoc>({

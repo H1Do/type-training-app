@@ -15,5 +15,8 @@
     "messages.logout_success": "User logged out successfully",
     "messages.password_change_success": "Password changed successfully",
 
-    "messages.session_finished": "Session finished"
+    "messages.session_finished": "Session finished",
+
+    "errors.layout_required": "Layout is required",
+    "errors.items_required": "Symbols/words are required for custom mode"
 }

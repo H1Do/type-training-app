@@ -1,3 +1,15 @@
+export enum TrainingMode {
+    Letters = 'letters',
+    Symbols = 'symbols',
+    '100PopularWords' = '100-popular-words',
+    '1000PopularWords' = '1000-popular-words',
+    Programming = 'programming',
+    Custom = 'custom',
+    Numbers = 'numbers',
+}
+
+export type TrainingPools = Record<TrainingMode, string | string[]>;
+
 export interface StartSessionRequest {
     mode: TrainingMode;
     sequence: string[];
@@ -25,12 +37,4 @@ export interface TrainingSessionDoc {
     events: FinishSessionRequest['events'];
     startedAt: number;
     finishedAt?: number;
-}
-
-export enum TrainingMode {
-    Letters = 'letters',
-    Symbols = 'symbols',
-    PopularWords = 'popular-words',
-    Custom = 'custom',
-    Numbers = 'numbers',
 }

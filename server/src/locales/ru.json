@@ -15,5 +15,8 @@
     "messages.logout_success": "Вы успешно вышли из системы",
     "messages.password_change_success": "Пароль успешно изменён",
 
-    "messages.session_finished": "Тренировка завершена"
+    "messages.session_finished": "Тренировка завершена",
+
+    "errors.layout_required": "Раскладка обязательна",
+    "errors.items_required": "Необходимы символы/слова для пользовательского режима"
 }

@@ -3,7 +3,7 @@ import {
     FinishSessionRequest,
     StartSessionRequest,
     TrainingMode,
-} from './trainingSessionTypes';
+} from './trainingTypes';
 import { Layout } from './keyboardTypes';
 
 export interface RequestWithUser<
@@ -32,8 +32,16 @@ export type TrainingFinishRequest = RequestWithUser<
     { id: string }
 >;
 
+export type TrainingQuery = {
+    mode: TrainingMode;
+    layout: Layout;
+    items?: string;
+    length?: number;
+    isWords?: boolean;
+};
+
 export type TrainingPrepareRequest = RequestWithUser<
     undefined,
     {},
-    { mode: TrainingMode; layout: Layout }
+    TrainingQuery
 >;

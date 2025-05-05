@@ -1,25 +1,25 @@
-import { Router } from 'express';
+import { Request, Router } from 'express';
 import { trainingController } from '../controllers/trainingController';
 import { authMiddleware } from '@/middleware/authMiddleware';
 import type {
     TrainingStartRequest,
     TrainingFinishRequest,
     TrainingPrepareRequest,
+    TrainingQuery,
 } from '@/types/requestTypes';
 
 export const trainingRouter = Router();
 
-trainingRouter.get('/prepare', async (req, res, next) => {
-    try {
-        await trainingController.prepare(
-            req as TrainingPrepareRequest,
-            res,
-            next,
-        );
-    } catch (e) {
-        next(e);
-    }
-});
+trainingRouter.get(
+    '/prepare',
+    async (req: Request<{}, any, any, TrainingQuery>, res, next) => {
+        try {
+            await trainingController.prepare(req, res, next);
+        } catch (e) {
+            next(e);
+        }
+    },
+);
 
 trainingRouter.post('/session', authMiddleware, async (req, res, next) => {
     try {
