@@ -1,50 +1,49 @@
 <script setup lang="ts">
 withDefaults(
     defineProps<{
-        modelValue?: string | number;
-        type?: 'text' | 'email' | 'password' | 'number';
+        modelValue?: string;
         disabled?: boolean;
         placeholder?: string;
         name?: string;
         id?: string;
         required?: boolean;
         error?: boolean;
-        min?: number;
-        max?: number;
+        rows?: number;
+        cols?: number;
     }>(),
     {
-        type: 'text',
         disabled: false,
         placeholder: '',
         name: '',
         id: '',
         required: false,
+        rows: 6,
+        cols: 50,
     },
 );
 
 const emit = defineEmits(['update:modelValue']);
 
 const onInput = (event: Event) => {
-    const target = event.target as HTMLInputElement;
+    const target = event.target as HTMLTextAreaElement;
     emit('update:modelValue', target.value);
 };
 </script>
 
 <template>
-    <input
-        :type="type"
+    <textarea
         :disabled="disabled"
         :placeholder="placeholder"
         :name="name"
         :id="id"
         :required="required"
+        :rows="rows"
+        :cols="cols"
         :value="modelValue"
         @input="onInput"
         class="input"
         :class="{ error }"
-        :min="min"
-        :max="max"
-    />
+    ></textarea>
 </template>
 
 <style scoped lang="scss">
@@ -61,15 +60,7 @@ const onInput = (event: Event) => {
         color $transition-duration, border-color $transition-duration;
     outline: none;
     width: 100%;
-
-    &[type='number'] {
-        -moz-appearance: textfield;
-    }
-    &[type='number']::-webkit-outer-spin-button,
-    &[type='number']::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
+    resize: vertical;
 
     &.error {
         border-color: $error;
@@ -101,6 +92,10 @@ const onInput = (event: Event) => {
         background-color: var(--primary-color);
         color: var(--background-color);
         border-color: var(--primary-color);
+
+        &::placeholder {
+            color: var(--background-color);
+        }
     }
 
     &:disabled {

@@ -14,11 +14,14 @@ export class TrainingApi {
     async prepareSequence(
         mode: TrainingMode,
         layout: Layout,
+        items: string | undefined,
+        length: number | undefined,
+        isWords: boolean | undefined,
     ): Promise<string[]> {
         const res = await this.httpClient.get<string[]>(
             '/api/training/prepare',
             {
-                params: { mode, layout },
+                params: { mode, layout, items, length, isWords },
             },
         );
         return res.data;

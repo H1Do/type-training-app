@@ -37,10 +37,33 @@ const options: Option<TrainingMode>[] = [
         },
     },
     {
-        value: TrainingMode.PopularWords,
+        value: TrainingMode['100PopularWords'],
         label: 'Popular Words',
         content: {
-            render: () => iconLabel('Flame', t('training.modes.popularWords')),
+            render: () =>
+                iconLabel('Flame', t('training.modes.100PopularWords')),
+        },
+    },
+    {
+        value: TrainingMode['1000PopularWords'],
+        label: 'Popular Words',
+        content: {
+            render: () =>
+                iconLabel('Database', t('training.modes.1000PopularWords')),
+        },
+    },
+    {
+        value: TrainingMode.Programming,
+        label: 'Programming',
+        content: {
+            render: () => iconLabel('CodeXml', t('training.modes.programming')),
+        },
+    },
+    {
+        value: TrainingMode.Custom,
+        label: 'Custom',
+        content: {
+            render: () => iconLabel('Pen', t('training.modes.custom')),
         },
     },
 ];

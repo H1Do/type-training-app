@@ -6,32 +6,38 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
-const training = useTrainingStore();
+const trainingStore = useTrainingStore();
 const now = useTrainingTimer(200);
 
-const showNotice = computed(() => !training.events.length);
+const showNotice = computed(() => !trainingStore.events.length);
 
-const isActive = computed(() => training.session && !training.isFinished);
+const isActive = computed(
+    () => trainingStore.session && !trainingStore.isFinished,
+);
 
 const effectiveNow = computed(() =>
-    isActive.value ? now.value : training.session?.finishedAt ?? Date.now(),
+    isActive.value
+        ? now.value
+        : trainingStore.session?.finishedAt ?? Date.now(),
 );
 
 const duration = computed(() => {
-    if (!training.session?.startedAt) return 0;
-    const raw = (effectiveNow.value - training.session.startedAt) / 1000;
+    if (!trainingStore.session?.startedAt) return 0;
+    const raw = (effectiveNow.value - trainingStore.session.startedAt) / 1000;
     return Math.max(0.1, raw);
 });
 
 const cpm = computed(() => {
-    const charCount = training.input.length;
+    if (!trainingStore.session?.startedAt) return 0;
+    const charCount = trainingStore.input.length;
     return duration.value === 0
         ? 0
         : Math.round((charCount / duration.value) * 60);
 });
 
 const reaction = computed(() => {
-    const times = training.events
+    if (!trainingStore.session?.startedAt) return 0;
+    const times = trainingStore.events
         .filter((e) => e.type === 'input' && e.time)
         .map((e) => e.time);
     if (!times.length) return 0;
@@ -39,7 +45,8 @@ const reaction = computed(() => {
 });
 
 const accuracy = computed(() => {
-    const inputs = training.events.filter((e) => e.type === 'input');
+    if (!trainingStore.session?.startedAt) return 100;
+    const inputs = trainingStore.events.filter((e) => e.type === 'input');
     const correct = inputs.filter((e) => e.actual === e.expected).length;
     if (!inputs.length) return 100;
     return Math.round((correct / inputs.length) * 100);
@@ -56,15 +63,24 @@ const stats = computed(() => [
         label: t('training.reaction'),
         value: `${reaction.value}${t('training.ms')}`,
     },
-    { label: t('training.undo'), value: training.undoCount },
+    { label: t('training.undo'), value: trainingStore.undoCount },
 ]);
 </script>
 
 <template>
     <div class="training-stats">
-        <div v-if="showNotice" class="training-stats__overlay">
+        <div
+            v-if="
+                trainingStore.isCustomMode && !trainingStore.isCustomSettingsSet
+            "
+            class="training-stats__overlay"
+        >
+            {{ t('training.settingsNotice') }}
+        </div>
+        <div v-else-if="showNotice" class="training-stats__overlay">
             {{ t('training.startNotice') }}
         </div>
+
         <div class="stat" v-for="stat in stats" :key="stat.label">
             <span class="stat__label">{{ stat.label }}</span>
             <span class="stat__value">{{ stat.value }}</span>
@@ -101,7 +117,6 @@ const stats = computed(() => [
     align-items: center;
     justify-content: center;
     pointer-events: none;
-    z-index: 1;
 }
 
 .stat {

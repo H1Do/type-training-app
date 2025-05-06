@@ -1,10 +1,6 @@
 import { defineStore } from 'pinia';
 import type { TrainingApi } from '@/shared/api/trainingApi';
-import {
-    TrainingMode,
-    type TrainingSession,
-    type TrainingStats,
-} from '@/shared/types/training';
+import { TrainingMode, type TrainingSession } from '@/shared/types/training';
 import TrainingSummaryModal from '../ui/TrainingSummaryModal.vue';
 import { useSettingsStore } from '@/features/settings';
 
@@ -28,10 +24,12 @@ export const useTrainingStore = defineStore('training', {
         input: [] as string[],
         events: [] as InputEventRecord[],
         lastInputTimestamp: 0,
-        stats: null as TrainingStats | null,
         mode:
             (localStorage.getItem('training-mode') as TrainingMode) ??
             TrainingMode.Letters,
+        customText: undefined as string | undefined,
+        customLength: undefined as number | undefined,
+        customIsWords: undefined as boolean | undefined,
     }),
 
     getters: {
@@ -53,21 +51,52 @@ export const useTrainingStore = defineStore('training', {
                 state.session.startedAt
             );
         },
+
+        isCustomMode: (state) => state.mode === TrainingMode.Custom,
+
+        isCustomSettingsSet: (state) => {
+            return !!state.customText?.length && !!state.customLength;
+        },
     },
 
     actions: {
         setMode(mode: TrainingMode) {
             this.mode = mode;
             localStorage.setItem('training-mode', mode);
+            this.customText = undefined;
+            this.customLength = undefined;
+            this.customIsWords = undefined;
+        },
+
+        setCustomText(text: string) {
+            this.customText = text;
+        },
+
+        setCustomLength(length: number) {
+            this.customLength = length;
+        },
+
+        setCustomIsWords(isWords: boolean) {
+            this.customIsWords = isWords;
         },
 
         async prepare() {
             const settingsStore = useSettingsStore();
+            const trainingStore = useTrainingStore();
+
+            if (trainingStore.isCustomMode && !this.isCustomSettingsSet) {
+                this.reset();
+                return;
+            }
 
             this.sequence = await this.trainingApi.prepareSequence(
                 this.mode,
                 settingsStore.layout,
+                this.customText,
+                this.customLength,
+                this.customIsWords || undefined,
             );
+
             this.input = [];
             this.events = [];
             this.lastInputTimestamp = 0;
@@ -104,7 +133,6 @@ export const useTrainingStore = defineStore('training', {
             this.session.finishedAt = result.finishedAt;
 
             const response = await this.trainingApi.finishSession(result);
-            this.stats = response.stats;
 
             await this.modalService.open(TrainingSummaryModal, {
                 stats: response.stats,
@@ -170,7 +198,6 @@ export const useTrainingStore = defineStore('training', {
             this.input = [];
             this.events = [];
             this.lastInputTimestamp = 0;
-            this.setMode(TrainingMode.Letters);
         },
 
         setApi(api: TrainingApi) {

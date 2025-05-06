@@ -6,16 +6,40 @@ export const en = {
         undo: 'Undo',
         time: 'Time',
         startNotice: 'Start typing to begin training',
+        settingsNotice: 'Custom mode must be configured',
         press: 'Press',
         toRestart: 'to restart training',
         s: 's',
         ms: 'ms',
+        settings: 'Settings',
+        save: 'Save',
+        customSettings: 'Custom settings',
+        words: 'Words',
 
         modes: {
             letters: 'Letters',
             symbols: 'Symbols',
             numbers: 'Numbers',
-            popularWords: 'Popular Words',
+            '100PopularWords': '100 Popular Words',
+            '1000PopularWords': '1000 Popular Words',
+            programming: 'Programming',
+            custom: 'Custom',
+        },
+
+        labels: {
+            mode: 'Mode',
+            length: 'Number of characters/words',
+        },
+
+        errors: {
+            lengthRange: 'Count must be between 10 and 1000 characters',
+            layoutQwerty: 'Text must contain only QWERTY characters',
+            layoutYcuken: 'Text must contain only ЙЦУКЕН characters',
+            symbolSpacing: 'Each symbol must be separated by a space',
+        },
+
+        placeholder: {
+            customInput: 'Enter symbols/words separated by space',
         },
     },
 

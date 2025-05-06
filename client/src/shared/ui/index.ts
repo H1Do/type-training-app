@@ -2,6 +2,7 @@ export { default as AppButton } from './AppButton.vue';
 export { default as AppLink } from './AppLink.vue';
 export { default as AppInput } from './AppInput.vue';
 export { default as AppText } from './AppText.vue';
+export { default as AppTextarea } from './AppTextArea.vue';
 export { default as AppIcon } from './AppIcon.vue';
 export { default as AppSelector, type Option } from './AppSelector.vue';
 export { default as VFlex } from './VFlex.vue';

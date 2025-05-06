@@ -16,7 +16,7 @@ const onCancel = (reason: unknown) => {
 
 <template>
     <teleport to="body">
-        <div>
+        <div @keydown.stop @keyup.stop @keypress.stop>
             <TransitionGroup name="fade" tag="div">
                 <div v-for="(modal, index) in modals" :key="index">
                     <component

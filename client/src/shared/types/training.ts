@@ -32,7 +32,9 @@ export interface TrainingFinishResponse {
 export enum TrainingMode {
     Letters = 'letters',
     Symbols = 'symbols',
-    PopularWords = 'popular-words',
+    '100PopularWords' = '100-popular-words',
+    '1000PopularWords' = '1000-popular-words',
+    Programming = 'programming',
     Custom = 'custom',
     Numbers = 'numbers',
 }

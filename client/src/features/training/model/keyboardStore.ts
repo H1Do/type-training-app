@@ -74,6 +74,7 @@ export const useKeyboardStore = defineStore('keyboard', {
             this.isShiftPressed = false;
             this.lastCorrectKeyCode = '';
             this.wasErrorRecently = false;
+            this.isShiftRequired = false;
         },
 
         buildKeyMaps(layout: KeyboardKey[][]) {
