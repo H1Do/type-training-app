@@ -27,7 +27,7 @@ $dark-orange: #ff8c00;
 $error: $red;
 $success: $green;
 $info: $blue;
-$warning: $orange;
+$warning: $dark-orange;
 
 $easy: #38a169;
 $medium: #f6e05e;
@@ -82,6 +82,12 @@ $keyboard-row-offset-1: 32px;
 $keyboard-row-offset-2: 0;
 $keyboard-row-offset-3: -64px;
 $keyboard-row-offset-4: 0;
+
+$static-keyboard-row-offset-0: 0;
+$static-keyboard-row-offset-1: 32px;
+$static-keyboard-row-offset-2: 0;
+$static-keyboard-row-offset-3: 0;
+$static-keyboard-row-offset-4: 0;
 
 $finger-left-pinky: #d0e6ff;
 $finger-left-ring: #c1ffd7;

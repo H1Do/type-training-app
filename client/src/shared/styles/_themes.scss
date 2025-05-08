@@ -54,6 +54,9 @@ body {
         --message-error-bg: rgba(#{$error}, 0.1);
         --message-info-bg: rgba(#{$info}, 0.1);
         --message-warning-bg: rgba(#{$warning}, 0.1);
+
+        --scroll-thumb: rgba(100, 100, 100, 0.3);
+        --scroll-thumb-hover: rgba(100, 100, 100, 0.5);
     }
 
     &.dark-theme {
@@ -109,5 +112,8 @@ body {
         --message-error-bg: rgba(#{$error}, 0.15);
         --message-info-bg: rgba(#{$info}, 0.15);
         --message-warning-bg: rgba(#{$warning}, 0.15);
+
+        --scroll-thumb: rgba(180, 180, 180, 0.2);
+        --scroll-thumb-hover: rgba(180, 180, 180, 0.35);
     }
 }

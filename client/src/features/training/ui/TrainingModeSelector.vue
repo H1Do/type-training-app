@@ -1,18 +1,12 @@
 <script setup lang="ts">
-import { h } from 'vue';
 import { TrainingMode } from '@/shared/types/training';
-import { AppIcon, AppSelector, type Option } from '@/shared/ui';
+import { AppSelector, type Option } from '@/shared/ui';
 import { useTrainingStore } from '../model/trainingStore';
 import { useI18n } from 'vue-i18n';
+import { iconLabel } from '@/shared/utils/input';
 
 const { t } = useI18n();
 const trainingStore = useTrainingStore();
-
-const iconLabel = (icon: string, label: string) =>
-    h('span', { style: 'display: flex; align-items: center; gap: 6px' }, [
-        h(AppIcon, { name: icon, size: 18 }),
-        h('span', label),
-    ]);
 
 const options: Option<TrainingMode>[] = [
     {

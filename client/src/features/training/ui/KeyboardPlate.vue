@@ -63,8 +63,10 @@ function onKeyDown(e: KeyboardEvent) {
     keyboardStore.onKeyDown(e.code as KeyCode);
 
     const symbol = keyboardStore.getSymbolByCode(e.code);
+    const finger = keyboardStore.getFingerByCode(e.code);
+
     if (symbol) {
-        trainingStore.processKey(symbol);
+        trainingStore.processKey(symbol, finger);
     }
 }
 

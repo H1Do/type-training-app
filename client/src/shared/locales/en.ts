@@ -9,6 +9,7 @@ export const en = {
         settingsNotice: 'Custom mode must be configured',
         press: 'Press',
         toRestart: 'to restart training',
+        restart: 'Restart',
         s: 's',
         ms: 'ms',
         configuration: 'Configuration',
@@ -30,6 +31,7 @@ export const en = {
         labels: {
             mode: 'Mode',
             length: 'Number of characters/words',
+            layout: 'Layout',
         },
 
         errors: {
@@ -116,6 +118,30 @@ export const en = {
                 hard: 'No hints',
                 expert: 'Keyboard is fully hidden',
             },
+        },
+    },
+
+    stats: {
+        title: 'Your Stats',
+        notCounted: {
+            base: 'Result will not be included in the statistics',
+            custom: 'because custom mode was selected',
+            lowAccuracy: 'due to low accuracy (less than 80%)',
+            tooManyCorrections: 'due to too many corrections (more than 10)',
+        },
+        leaderboardDisqualified: {
+            base: 'Result will not count towards the leaderboard',
+            lowAccuracy: 'due to low accuracy (less than 90%)',
+        },
+        metrics: {
+            accuracy: 'Accuracy',
+            cpm: 'CPM',
+            reaction: 'Average reaction',
+            time: 'Duration',
+            errors: 'Errors (total)',
+            corrections: 'Corrections (total)',
+            key: 'Key',
+            keyCount: 'Pressed (total)',
         },
     },
 };

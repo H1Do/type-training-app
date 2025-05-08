@@ -30,10 +30,11 @@ export class TrainingApi {
     async startSession(
         mode: TrainingMode,
         sequence: string[],
+        layout: Layout,
     ): Promise<TrainingSession> {
         const res = await this.httpClient.post<TrainingSession>(
             '/api/training/session',
-            { mode, sequence },
+            { mode, sequence, layout },
         );
         return res.data;
     }

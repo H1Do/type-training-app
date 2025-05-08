@@ -1,4 +1,4 @@
-import type { KeyCode, KeyboardKey } from '@/shared/types';
+import type { Finger, KeyCode, KeyboardKey } from '@/shared/types';
 import { defineStore } from 'pinia';
 
 export const useKeyboardStore = defineStore('keyboard', {
@@ -98,6 +98,12 @@ export const useKeyboardStore = defineStore('keyboard', {
 
         getKeyBySymbol(symbol: string): KeyboardKey | null {
             return this.symbolToKeyMap.get(symbol) ?? null;
+        },
+
+        getFingerByCode(code: string): Finger | null {
+            const key = this.codeToKeyMap.get(code);
+            if (!key) return null;
+            return key.finger;
         },
     },
 });

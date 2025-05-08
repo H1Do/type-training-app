@@ -1,10 +1,10 @@
-import { TrainingMode, TrainingPools } from '@/types/trainingTypes';
+import { TrainingPools } from '@/types/trainingTypes';
 
 export const EN_POOLS: TrainingPools = {
     letters: 'abcdefghijklmnopqrstuvwxyz',
     symbols: '`~!@#$%^&*()-_=+[]\\{}|;:\'",.<>/?',
     numbers: '0123456789',
-    '100-popular-words': [
+    '100PopularWords': [
         'the',
         'of',
         'and',
@@ -106,7 +106,7 @@ export const EN_POOLS: TrainingPools = {
         'may',
         'part',
     ],
-    '1000-popular-words': [
+    '1000PopularWords': [
         'ability',
         'able',
         'about',
@@ -1363,7 +1363,7 @@ export const RU_POOLS: TrainingPools = {
     letters: 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя',
     symbols: '"№;%:?*()_+\\/.,',
     numbers: '0123456789',
-    '100-popular-words': [
+    '100PopularWords': [
         'и',
         'в',
         'не',
@@ -1455,7 +1455,7 @@ export const RU_POOLS: TrainingPools = {
         'можно',
         'нельзя',
     ],
-    '1000-popular-words': [
+    '1000PopularWords': [
         'я',
         'не',
         'что',

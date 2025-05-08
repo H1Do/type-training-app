@@ -13,6 +13,8 @@ import {
     SYMBOLS_TRAINING_LENGTH,
     WORDS_TRAINING_LENGTH,
 } from '@/constants/training';
+import { TrainingStats } from '@/models/TrainingStats';
+import { calculateDetailedStats } from '@/utils/training/calculateStats';
 
 class TrainingController {
     async prepare(
@@ -72,8 +74,17 @@ class TrainingController {
         next: NextFunction,
     ) {
         try {
-            const { mode, sequence } = req.body;
+            const { mode, sequence, layout } = req.body;
             const userId = req.user?.id;
+
+            if (!layout) {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.layout_required') ??
+                            'Layout is required',
+                    ),
+                );
+            }
 
             if (!mode || !Array.isArray(sequence)) {
                 return next(
@@ -94,6 +105,7 @@ class TrainingController {
             const session = await TrainingSession.create({
                 userId,
                 mode,
+                layout,
                 sequence,
                 input: [],
                 events: [],
@@ -141,26 +153,32 @@ class TrainingController {
             session.finishedAt = finishedAt;
             await session.save();
 
-            const inputs = events.filter((e) => e.type === 'input');
-            const correct = inputs.filter(
-                (e) => e.actual === e.expected,
-            ).length;
-            const total = inputs.length;
-            const duration = finishedAt - startedAt;
+            const stats = calculateDetailedStats(events, startedAt, finishedAt);
 
-            const stats = {
-                accuracy: total ? Math.round((correct / total) * 100) : 100,
-                averageReaction: total
-                    ? Math.round(inputs.reduce((a, b) => a + b.time, 0) / total)
-                    : 0,
-                cpm: duration ? Math.round(total / (duration / 1000 / 60)) : 0,
-                duration,
-            };
+            const { layout, mode } = session;
+            const isRated =
+                mode !== TrainingMode.Custom &&
+                stats.accuracy >= 80 &&
+                stats.corrections <= 10;
+            const isLeaderboardEligible = isRated && stats.accuracy >= 90;
+
+            const statsDoc = await TrainingStats.create({
+                sessionId: session._id,
+                userId,
+                layout,
+                mode,
+                ...stats,
+                isRated,
+                isLeaderboardEligible,
+            });
+
+            session.statsId = statsDoc._id;
+            await session.save();
 
             return res.status(200).json({
                 message:
                     req.t?.('messages.session_finished') ?? 'Session finished',
-                stats,
+                stats: statsDoc,
             });
         } catch (e) {
             next(e);

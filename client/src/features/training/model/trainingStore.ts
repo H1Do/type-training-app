@@ -3,18 +3,20 @@ import type { TrainingApi } from '@/shared/api/trainingApi';
 import { TrainingMode, type TrainingSession } from '@/shared/types/training';
 import TrainingSummaryModal from '../ui/TrainingSummaryModal.vue';
 import { useSettingsStore } from '@/features/settings';
+import type { Finger } from '@/shared/types';
 
 interface TrainingSessionState extends TrainingSession {
     startedAt: number;
     finishedAt: number | null;
 }
 
-interface InputEventRecord {
+export interface InputEventRecord {
     type: 'input' | 'backspace';
     actual?: string;
     expected?: string;
     time: number;
     timestamp: number;
+    finger: Finger | null;
 }
 
 export const useTrainingStore = defineStore('training', {
@@ -106,9 +108,12 @@ export const useTrainingStore = defineStore('training', {
         async start() {
             if (this.sequence.length === 0) return;
 
+            const settingsStore = useSettingsStore();
+
             const session = await this.trainingApi.startSession(
                 this.mode,
                 this.sequence,
+                settingsStore.layout,
             );
 
             this.session = {
@@ -139,7 +144,7 @@ export const useTrainingStore = defineStore('training', {
             });
         },
 
-        async processKey(inputChar: string) {
+        async processKey(inputChar: string, finger: Finger | null) {
             if (this.isFinished) return;
 
             const now = performance.now();
@@ -160,6 +165,7 @@ export const useTrainingStore = defineStore('training', {
                 expected,
                 time,
                 timestamp: now,
+                finger,
             });
 
             this.lastInputTimestamp = now;
@@ -187,6 +193,7 @@ export const useTrainingStore = defineStore('training', {
                 type: 'backspace',
                 time,
                 timestamp: now,
+                finger: null,
             });
 
             this.lastInputTimestamp = now;

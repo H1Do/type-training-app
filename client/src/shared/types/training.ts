@@ -1,3 +1,5 @@
+import type { Layout } from './layout';
+
 export interface TrainingSession {
     id: string;
     sequence: string[];
@@ -17,11 +19,27 @@ export interface TrainingResult {
     }[];
 }
 
+export interface PerCharStat {
+    char: string;
+    accuracy: number;
+    count: number;
+    errorsCount: number;
+    totalTime: number;
+    averageTime: number;
+}
+
 export interface TrainingStats {
     accuracy: number;
     averageReaction: number;
     cpm: number;
     duration: number;
+    perChar: PerCharStat[];
+    corrections: number;
+    errorsCount: number;
+    isRated: boolean;
+    isLeaderboardEligible: boolean;
+    mode: TrainingMode;
+    layout: Layout;
 }
 
 export interface TrainingFinishResponse {
@@ -32,8 +50,8 @@ export interface TrainingFinishResponse {
 export enum TrainingMode {
     Letters = 'letters',
     Symbols = 'symbols',
-    '100PopularWords' = '100-popular-words',
-    '1000PopularWords' = '1000-popular-words',
+    '100PopularWords' = '100PopularWords',
+    '1000PopularWords' = '1000PopularWords',
     Programming = 'programming',
     Custom = 'custom',
     Numbers = 'numbers',

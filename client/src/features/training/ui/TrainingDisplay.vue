@@ -128,16 +128,9 @@ const getCharClass = (globalIndex: number): Record<string, boolean> => {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 1px;
-    height: 100%;
+    width: 100%;
+    height: 3px;
     background-color: var(--caret-color);
-    animation: blink 1s step-start infinite;
     pointer-events: none;
-}
-
-@keyframes blink {
-    50% {
-        opacity: 0;
-    }
 }
 </style>

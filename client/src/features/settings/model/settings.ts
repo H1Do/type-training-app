@@ -29,7 +29,7 @@ function loadSettings(): SettingsState {
                 localization: parsed.localization ?? Localization.EN,
                 layout: parsed.layout ?? Layout.QWERTY,
                 theme: parsed.theme ?? Theme.LIGHT,
-                difficulty: parsed.difficulty ?? Difficulty.ZONE_HINTS,
+                difficulty: parsed.difficulty ?? Difficulty.Easy,
             };
         }
     } catch (e) {
@@ -39,7 +39,7 @@ function loadSettings(): SettingsState {
         localization: Localization.EN,
         layout: Layout.QWERTY,
         theme: Theme.LIGHT,
-        difficulty: Difficulty.ZONE_HINTS,
+        difficulty: Difficulty.Easy,
     };
 }
 

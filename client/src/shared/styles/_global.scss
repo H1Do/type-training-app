@@ -1,4 +1,5 @@
 @use './variables' as *;
+@use './scroll' as *;
 
 :root {
     --transition-duration: $transition-duration;
