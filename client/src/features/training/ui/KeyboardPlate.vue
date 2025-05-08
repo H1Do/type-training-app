@@ -8,13 +8,18 @@ import { useTrainingStore } from '../model/trainingStore';
 import { Difficulty, type KeyCode } from '@/shared/types';
 import AppText from '@/shared/ui/AppText.vue';
 import ShiftButton from './ShiftButton.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const settingsStore = useSettingsStore();
 const keyboardStore = useKeyboardStore();
 const trainingStore = useTrainingStore();
 
 const layout = computed(() => KEYBOARD_LAYOUTS[settingsStore.layout]);
-const isBlurred = computed(() => settingsStore.difficulty === Difficulty.BLIND);
+const isBlurred = computed(
+    () => settingsStore.difficulty === Difficulty.Expert,
+);
 
 onMounted(() => {
     window.addEventListener('keydown', onKeyDown);
@@ -94,8 +99,7 @@ function onKeyUp(e: KeyboardEvent) {
             :weight="600"
             align="center"
         >
-            Keyboard is blurred <br />
-            because of the difficulty
+            {{ t('training.keyboardBlurredHint') }}
         </AppText>
     </div>
 </template>
@@ -120,6 +124,7 @@ function onKeyUp(e: KeyboardEvent) {
 
     &__hint {
         position: absolute;
+        max-width: 240px;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -75%);

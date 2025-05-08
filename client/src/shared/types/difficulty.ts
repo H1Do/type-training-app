@@ -1,6 +1,6 @@
 export enum Difficulty {
-    ZONE_HINTS,
-    KEY_HINTS,
-    FULL_KEYBOARD,
-    BLIND,
+    Easy = 'Easy',
+    Medium = 'Medium',
+    Hard = 'Hard',
+    Expert = 'Expert',
 }

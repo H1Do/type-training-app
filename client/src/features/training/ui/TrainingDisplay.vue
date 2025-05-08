@@ -64,7 +64,7 @@ const getCharClass = (globalIndex: number): Record<string, boolean> => {
                     getCharClass(offset + rowIndex * CHARS_PER_LINE + index)
                 "
             >
-                <span v-if="char === ' '" class="whitespace">␣</span>
+                <span v-if="char === ' '" class="whitespace"> </span>
                 <span v-else>{{ char }}</span>
                 <span
                     v-if="

@@ -2468,8 +2468,6 @@ export const RU_POOLS: TrainingPools = {
         '.',
         '(',
         ')',
-        '{',
-        '}',
     ],
     custom: '',
 };

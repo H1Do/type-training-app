@@ -36,7 +36,6 @@ withDefaults(
     border: $border-width solid var(--primary-color);
     border-radius: $border-radius;
     padding: 6px 12px;
-    font-size: 16px;
     cursor: pointer;
     transition: background-color $transition-duration,
         color $transition-duration;
@@ -53,7 +52,7 @@ withDefaults(
     }
 
     &:disabled {
-        opacity: 0.7;
+        opacity: 0.5;
         cursor: not-allowed;
 
         &:hover {

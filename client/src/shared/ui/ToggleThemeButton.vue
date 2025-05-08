@@ -3,23 +3,24 @@ import { useSettingsStore } from '@/features/settings/model/settings';
 import AppButton from './AppButton.vue';
 import AppIcon from './AppIcon.vue';
 import { Theme } from '../types';
+import AppHint from './AppHint.vue';
+import { useI18n } from 'vue-i18n';
 
 const settingsStore = useSettingsStore();
+const { t } = useI18n();
 </script>
 
 <template>
-    <AppButton
-        @click="settingsStore.toggleTheme"
-        buttonStyle="clear"
-        title="Toggle theme"
-    >
-        <AppIcon
-            name="SunIcon"
-            v-if="settingsStore.theme === Theme.LIGHT"
-            :size="32"
-        />
-        <AppIcon name="MoonIcon" v-else :size="32" />
-    </AppButton>
+    <AppHint :hint="t('settings.toggleTheme')">
+        <AppButton @click="settingsStore.toggleTheme" buttonStyle="clear">
+            <AppIcon
+                name="SunIcon"
+                v-if="settingsStore.theme === Theme.LIGHT"
+                :size="32"
+            />
+            <AppIcon name="MoonIcon" v-else :size="32" />
+        </AppButton>
+    </AppHint>
 </template>
 
 <style scoped lang="scss"></style>

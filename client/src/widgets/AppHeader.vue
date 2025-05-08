@@ -1,17 +1,11 @@
 <script setup lang="ts">
 import { RouteNames } from '@/app/router/router';
 import { useUserStore } from '@/entities/user';
+import { AppButton, AppIcon } from '@/shared/ui';
 import AppLink from '@/shared/ui/AppLink.vue';
 import HFlex from '@/shared/ui/HFlex.vue';
 import { useConfirmDialog, useModalService } from '@/shared/utils';
-import {
-    HomeIcon,
-    Keyboard,
-    LogInIcon,
-    LogOutIcon,
-    Settings,
-    User,
-} from 'lucide-vue-next';
+import { LogInIcon } from 'lucide-vue-next';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 
@@ -26,6 +20,8 @@ const onLogout = async () => {
     const acceptStatus = await useConfirmDialog(modalService, {
         title: t('header.logout'),
         message: t('header.logoutConfirm'),
+        cancelText: t('header.cancel'),
+        confirmText: t('header.logout'),
     });
 
     if (acceptStatus) {
@@ -43,28 +39,45 @@ const onLogout = async () => {
         </div>
         <nav class="nav">
             <AppLink :to="RouteNames.MAIN" class="app-link">
-                <HomeIcon class="app-link-icon" /> {{ t('header.main') }}
+                <AppIcon name="HomeIcon" class="app-link-icon" />
+                <span>{{ t('header.main') }}</span>
+            </AppLink>
+            <AppLink :to="RouteNames.STATS" class="app-link">
+                <AppIcon name="ChartNoAxesColumn" class="app-link-icon" />
+                <span>{{ t('header.stats') }}</span>
+            </AppLink>
+            <AppLink :to="RouteNames.LESSONS" class="app-link">
+                <AppIcon name="Book" class="app-link-icon" />
+                <span>{{ t('header.lessons') }}</span>
             </AppLink>
             <AppLink :to="RouteNames.TRAINING" class="app-link">
-                <Keyboard class="app-link-icon" /> {{ t('header.training') }}
+                <AppIcon name="Keyboard" class="app-link-icon" />
+                <span>{{ t('header.training') }}</span>
             </AppLink>
             <AppLink :to="RouteNames.SETTINGS" class="app-link">
-                <Settings class="app-link-icon" /> {{ t('header.settings') }}
+                <AppIcon name="Settings" class="app-link-icon" />
+                <span>{{ t('header.settings') }}</span>
             </AppLink>
         </nav>
         <div class="user-actions">
             <HFlex v-if="isAuthenticated" gap="16px" align="center">
                 <AppLink :to="RouteNames.PROFILE" class="app-link">
-                    <User class="app-link-icon" />
-                    {{ username }}
+                    <AppIcon name="User" class="app-link-icon" />
+                    <span>{{ username }}</span>
                 </AppLink>
-                <AppLink type="button" class="app-link" @click="onLogout">
-                    <LogOutIcon class="app-link-icon" />
-                </AppLink>
+                <AppButton
+                    buttonStyle="clear"
+                    type="button"
+                    class="app-link"
+                    @click="onLogout"
+                >
+                    <AppIcon name="LogOutIcon" class="app-link-icon" />
+                    <span>{{ t('header.logout') }}</span>
+                </AppButton>
             </HFlex>
             <AppLink v-else :to="RouteNames.AUTH" class="app-link">
                 <LogInIcon class="app-link-icon" />
-                {{ t('header.login/register') }}
+                <span>{{ t('header.login/register') }}</span>
             </AppLink>
         </div>
     </header>
@@ -99,10 +112,30 @@ const onLogout = async () => {
     gap: 4px;
     color: var(--header-text-color);
     text-decoration: none;
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+        color: var(--header-text-color);
+    }
+
+    span {
+        opacity: 0;
+        max-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        transition: opacity 0.3s ease, max-width 0.3s ease;
+    }
+
+    &:hover span {
+        opacity: 1;
+        max-width: 200px;
+    }
 }
 
 .app-link-icon {
     height: 20px;
     width: 20px;
+    flex-shrink: 0;
 }
 </style>

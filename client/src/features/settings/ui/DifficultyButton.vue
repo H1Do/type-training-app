@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { Difficulty } from '@/shared/types';
-import { AppButton } from '@/shared/ui';
+import { AppButton, AppHint } from '@/shared/ui';
 import AppIcon from '@/shared/ui/AppIcon.vue';
 import AppText from '@/shared/ui/AppText.vue';
 import VFlex from '@/shared/ui/VFlex.vue';
 import { useSettingsStore } from '../model/settings';
 import { useI18n } from 'vue-i18n';
+import { computed } from 'vue';
 
 defineProps<{
     difficulty: Difficulty;
@@ -15,42 +16,55 @@ const { t } = useI18n();
 
 const settingsStore = useSettingsStore();
 
-const difficultyNameMap: Record<Difficulty, string> = {
-    [Difficulty.ZONE_HINTS]: t('settings.difficulties.zones'),
-    [Difficulty.KEY_HINTS]: t('settings.difficulties.hints'),
-    [Difficulty.FULL_KEYBOARD]: t('settings.difficulties.full'),
-    [Difficulty.BLIND]: t('settings.difficulties.blind'),
-};
+const difficultyNameMap = computed(() => ({
+    [Difficulty.Easy]: t('settings.difficulties.easy'),
+    [Difficulty.Medium]: t('settings.difficulties.medium'),
+    [Difficulty.Hard]: t('settings.difficulties.hard'),
+    [Difficulty.Expert]: t('settings.difficulties.expert'),
+}));
 
 const difficultyIconMap: Record<Difficulty, string> = {
-    [Difficulty.ZONE_HINTS]: 'Hand',
-    [Difficulty.KEY_HINTS]: 'Lightbulb',
-    [Difficulty.FULL_KEYBOARD]: 'Keyboard',
-    [Difficulty.BLIND]: 'EyeOff',
+    [Difficulty.Easy]: 'Hand',
+    [Difficulty.Medium]: 'Lightbulb',
+    [Difficulty.Hard]: 'Keyboard',
+    [Difficulty.Expert]: 'EyeOff',
 };
 
 const difficultyColorClassMap: Record<Difficulty, string> = {
-    [Difficulty.ZONE_HINTS]: 'difficulty--easy',
-    [Difficulty.KEY_HINTS]: 'difficulty--medium',
-    [Difficulty.FULL_KEYBOARD]: 'difficulty--hard',
-    [Difficulty.BLIND]: 'difficulty--extreme',
+    [Difficulty.Easy]: 'difficulty--easy',
+    [Difficulty.Medium]: 'difficulty--medium',
+    [Difficulty.Hard]: 'difficulty--hard',
+    [Difficulty.Expert]: 'difficulty--extreme',
 };
+
+const difficultyHintMap = computed(() => ({
+    [Difficulty.Easy]: t('settings.difficulties.hints.easy'),
+    [Difficulty.Medium]: t('settings.difficulties.hints.medium'),
+    [Difficulty.Hard]: t('settings.difficulties.hints.hard'),
+    [Difficulty.Expert]: t('settings.difficulties.hints.expert'),
+}));
 </script>
 
 <template>
-    <AppButton
-        @click="settingsStore.setDifficulty(difficulty)"
-        :buttonStyle="
-            settingsStore.difficulty === difficulty ? 'highlighted' : 'primary'
-        "
-        class="difficulty"
-        :class="difficultyColorClassMap[difficulty]"
-    >
-        <VFlex align="center" gap="4px">
-            <AppIcon :name="difficultyIconMap[difficulty]" :size="36" />
-            <AppText :weight="600">{{ difficultyNameMap[difficulty] }}</AppText>
-        </VFlex>
-    </AppButton>
+    <AppHint :hint="difficultyHintMap[difficulty]">
+        <AppButton
+            @click="settingsStore.setDifficulty(difficulty)"
+            :buttonStyle="
+                settingsStore.difficulty === difficulty
+                    ? 'highlighted'
+                    : 'primary'
+            "
+            class="difficulty"
+            :class="difficultyColorClassMap[difficulty]"
+        >
+            <VFlex align="center" gap="4px">
+                <AppIcon :name="difficultyIconMap[difficulty]" :size="36" />
+                <AppText :weight="600">{{
+                    difficultyNameMap[difficulty]
+                }}</AppText>
+            </VFlex>
+        </AppButton>
+    </AppHint>
 </template>
 
 <style scoped lang="scss">

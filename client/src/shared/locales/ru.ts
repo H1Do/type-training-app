@@ -6,15 +6,17 @@ export const ru = {
         undo: 'Отмены',
         time: 'Время',
         startNotice: 'Начните печатать, чтобы начать тренировку',
-        settingsNotice: 'Пользовательский режим должен быть настроен',
+        settingsNotice:
+            'Конфигурация пользовательского режима должна быть задана',
         press: 'Нажмите',
         toRestart: 'для перезапуска тренировки',
         s: 'с',
         ms: 'мс',
-        settings: 'Настройки',
+        configuration: 'Конфигурация',
         save: 'Сохранить',
-        customSettings: 'Настройки пользовательского режима',
+        customConfiguration: 'Конфигурация пользовательского режима',
         words: 'Слова',
+        keyboardBlurredHint: 'Клавиатура скрыта из-за выбранной сложности',
 
         modes: {
             letters: 'Буквы',
@@ -47,9 +49,12 @@ export const ru = {
         main: 'Главная',
         training: 'Тренировка',
         settings: 'Настройки',
+        stats: 'Статистика',
+        lessons: 'Уроки',
         'login/register': 'Вход/Регистрация',
         logoutConfirm: 'Вы уверены, что хотите выйти?',
         logout: 'Выйти',
+        cancel: 'Отмена',
     },
 
     footer: {
@@ -98,12 +103,20 @@ export const ru = {
         layout: 'Раскладка',
         localization: 'Язык',
         difficulty: 'Сложность',
+        toggleTheme: 'Переключить тему',
 
         difficulties: {
-            zones: 'Зоны',
-            hints: 'Подсказки',
-            full: 'Полный',
-            blind: 'Слепой',
+            easy: 'Легко',
+            medium: 'Средне',
+            hard: 'Сложно',
+            expert: 'Эксперт',
+
+            hints: {
+                easy: 'Подсветка зон для пальцев и подсказки',
+                medium: 'Только подсказки',
+                hard: 'Без подсказок',
+                expert: 'Клавиатура полностью скрыта',
+            },
         },
     },
 };

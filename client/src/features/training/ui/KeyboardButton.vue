@@ -17,13 +17,13 @@ const isError = computed(
         keyData.code === keyboardStore.pressedKeyCode && keyboardStore.isError,
 );
 
-const zoneHintsMode = computed(
-    () => settingsStore.difficulty === Difficulty.ZONE_HINTS,
+const easyMode = computed(() => settingsStore.difficulty === Difficulty.Easy);
+const mediumMode = computed(
+    () => settingsStore.difficulty === Difficulty.Medium,
 );
-const keyHintsMode = computed(
-    () => settingsStore.difficulty === Difficulty.KEY_HINTS,
+const expertMode = computed(
+    () => settingsStore.difficulty === Difficulty.Expert,
 );
-const blindMode = computed(() => settingsStore.difficulty === Difficulty.BLIND);
 
 const displayedSymbol = computed(() =>
     keyboardStore.isShiftPressed ? keyData.upper : keyData.lower,
@@ -34,14 +34,12 @@ const displayedSymbol = computed(() =>
     <div
         class="keyboard-button"
         :class="{
-            'keyboard-button--active': isActive && !blindMode,
-            'keyboard-button--hinted':
-                isHinted && (zoneHintsMode || keyHintsMode),
-            'keyboard-button--error':
-                isError && (zoneHintsMode || keyHintsMode),
+            'keyboard-button--active': isActive && !expertMode,
+            'keyboard-button--hinted': isHinted && (easyMode || mediumMode),
+            'keyboard-button--error': isError && (easyMode || mediumMode),
             'keyboard-button--space': keyData.code === 'Space',
             'keyboard-button--backspace': keyData.code === 'Backspace',
-            [`keyboard-button--finger-${keyData.finger}`]: zoneHintsMode,
+            [`keyboard-button--finger-${keyData.finger}`]: easyMode,
         }"
     >
         <span class="keyboard-button__symbol">

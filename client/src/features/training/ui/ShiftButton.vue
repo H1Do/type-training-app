@@ -32,22 +32,22 @@ onUnmounted(() => {
     window.removeEventListener('keyup', onKeyUp);
 });
 
-const zoneHintsMode = computed(
-    () => settingsStore.difficulty === Difficulty.ZONE_HINTS,
+const easyMode = computed(() => settingsStore.difficulty === Difficulty.Easy);
+const mediumMode = computed(
+    () => settingsStore.difficulty === Difficulty.Medium,
 );
-const keyHintsMode = computed(
-    () => settingsStore.difficulty === Difficulty.KEY_HINTS,
+const expertMode = computed(
+    () => settingsStore.difficulty === Difficulty.Expert,
 );
-const blindMode = computed(() => settingsStore.difficulty === Difficulty.BLIND);
 </script>
 
 <template>
     <div
         class="shift-button"
         :class="{
-            'shift-button--active': isActive && !blindMode,
-            'shift-button--hinted': isHinted && (zoneHintsMode || keyHintsMode),
-            'shift-button--zone': zoneHintsMode,
+            'shift-button--active': isActive && !expertMode,
+            'shift-button--hinted': isHinted && (easyMode || mediumMode),
+            'shift-button--zone': easyMode,
         }"
     >
         <span class="keyboard-button__symbol"> Shift </span>

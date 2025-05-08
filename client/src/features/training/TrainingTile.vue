@@ -10,8 +10,8 @@ import { useI18n } from 'vue-i18n';
 import { TrainingMode } from '@/shared/types/training';
 import { useModal, useModalService } from '@/shared/utils';
 import CustomSettingsModal, {
-    type SettingsResult,
-} from './ui/CustomSettingsModal.vue';
+    type ConfigurationResult,
+} from './ui/CustomConfigurationModal.vue';
 import { useSettingsStore } from '../settings';
 import { useKeyboardStore } from './model/keyboardStore';
 
@@ -33,14 +33,14 @@ const onKeyDown = (e: KeyboardEvent) => {
 };
 
 const onOpenSettings = async () => {
-    const result = await useModal<SettingsResult | boolean>(
+    const result = await useModal<ConfigurationResult | boolean>(
         modalService,
         CustomSettingsModal,
     );
 
     if (!result) return;
 
-    const { isWords, layout, length, text } = result as SettingsResult;
+    const { isWords, layout, length, text } = result as ConfigurationResult;
 
     settingsStore.setLayout(layout);
     trainingStore.setCustomIsWords(isWords);
@@ -77,7 +77,7 @@ watch(
                 class="settings-button"
             >
                 <AppIcon name="Settings" :size="20" />
-                {{ t('training.settings') }}
+                {{ t('training.configuration') }}
             </AppButton>
         </HFlex>
         <TrainingDisplay />

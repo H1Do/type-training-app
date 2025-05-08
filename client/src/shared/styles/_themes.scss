@@ -40,7 +40,22 @@ body {
         --keyboard-button-border-color: #{$black};
 
         --caret-color: #{$black};
+
+        --hint-color: #{$dark-gray};
+        --hint-background-color: #{$white};
+        --hint-border-color: #{$dark-gray};
+
+        --message-success-color: #{$success};
+        --message-error-color: #{$error};
+        --message-info-color: #{$info};
+        --message-warning-color: #{$warning};
+
+        --message-success-bg: rgba(#{$success}, 0.1);
+        --message-error-bg: rgba(#{$error}, 0.1);
+        --message-info-bg: rgba(#{$info}, 0.1);
+        --message-warning-bg: rgba(#{$warning}, 0.1);
     }
+
     &.dark-theme {
         --primary-color: #{$white};
         --secondary-color: #{$light-gray};
@@ -80,5 +95,19 @@ body {
         --keyboard-button-border-color: #{$white};
 
         --caret-color: #{$white};
+
+        --hint-color: #{$light-gray};
+        --hint-background-color: #{$black};
+        --hint-border-color: #{$light-gray};
+
+        --message-success-color: #{lighten($success, 20%)};
+        --message-error-color: #{lighten($error, 20%)};
+        --message-info-color: #{lighten($info, 20%)};
+        --message-warning-color: #{lighten($warning, 20%)};
+
+        --message-success-bg: rgba(#{$success}, 0.15);
+        --message-error-bg: rgba(#{$error}, 0.15);
+        --message-info-bg: rgba(#{$info}, 0.15);
+        --message-warning-bg: rgba(#{$warning}, 0.15);
     }
 }

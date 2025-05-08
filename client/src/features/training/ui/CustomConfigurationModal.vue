@@ -16,7 +16,7 @@ import { isQwertyOnly, isYcukenOnly } from '@/shared/utils';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
-export interface SettingsResult {
+export interface ConfigurationResult {
     length: number;
     layout: Layout;
     text: string;
@@ -27,7 +27,7 @@ type CustomMode = 'words' | 'symbols';
 
 const { t } = useI18n();
 const emit = defineEmits<{
-    (e: 'resolve', value: boolean | SettingsResult): void;
+    (e: 'resolve', value: boolean | ConfigurationResult): void;
 }>();
 
 const text = ref<string>('');
@@ -110,7 +110,7 @@ const onConfirm = () =>
     <AppModal @close="onCancel">
         <VFlex gap="8px" align="center">
             <AppText :weight="600">
-                {{ t('training.customSettings') }}
+                {{ t('training.customConfiguration') }}
             </AppText>
             <HFlex gap="16px" justify="center" align="center" class="settings">
                 <VFlex align="center">

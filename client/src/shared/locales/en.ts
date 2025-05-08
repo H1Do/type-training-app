@@ -11,10 +11,11 @@ export const en = {
         toRestart: 'to restart training',
         s: 's',
         ms: 'ms',
-        settings: 'Settings',
+        configuration: 'Configuration',
         save: 'Save',
-        customSettings: 'Custom settings',
+        customConfiguration: 'Custom configuration',
         words: 'Words',
+        keyboardBlurredHint: 'Keyboard is blurred due to selected difficulty',
 
         modes: {
             letters: 'Letters',
@@ -47,9 +48,12 @@ export const en = {
         main: 'Main',
         training: 'Training',
         settings: 'Settings',
+        stats: 'Stats',
+        lessons: 'Lessons',
         'login/register': 'Login/Register',
         logoutConfirm: 'Are you sure you want to logout?',
         logout: 'Logout',
+        cancel: 'Cancel',
     },
 
     footer: {
@@ -98,12 +102,20 @@ export const en = {
         layout: 'Layout',
         localization: 'Localization',
         difficulty: 'Difficulty',
+        toggleTheme: 'Toggle theme',
 
         difficulties: {
-            zones: 'Zones',
-            hints: 'Hints',
-            full: 'Full',
-            blind: 'Blind',
+            easy: 'Easy',
+            medium: 'Medium',
+            hard: 'Hard',
+            expert: 'Expert',
+
+            hints: {
+                easy: 'Highlight finger zones and hints',
+                medium: 'Only hints',
+                hard: 'No hints',
+                expert: 'Keyboard is fully hidden',
+            },
         },
     },
 };

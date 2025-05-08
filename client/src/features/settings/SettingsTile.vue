@@ -31,10 +31,10 @@ const { t } = useI18n();
 
         <AppText :weight="600">{{ t('settings.difficulty') }}</AppText>
         <HFlex gap="8px" align="center">
-            <DifficultyButton :difficulty="Difficulty.ZONE_HINTS" />
-            <DifficultyButton :difficulty="Difficulty.KEY_HINTS" />
-            <DifficultyButton :difficulty="Difficulty.FULL_KEYBOARD" />
-            <DifficultyButton :difficulty="Difficulty.BLIND" />
+            <DifficultyButton :difficulty="Difficulty.Easy" />
+            <DifficultyButton :difficulty="Difficulty.Medium" />
+            <DifficultyButton :difficulty="Difficulty.Hard" />
+            <DifficultyButton :difficulty="Difficulty.Expert" />
         </HFlex>
     </VFlex>
 </template>

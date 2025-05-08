@@ -41,6 +41,7 @@ onBeforeUnmount(() => {
 
 .app-modal {
     background-color: var(--background-color);
+    color: var(--primary-color);
     padding: 16px;
     border-radius: 12px;
     box-shadow: $box-shadow-modal;
