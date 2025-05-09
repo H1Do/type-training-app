@@ -42,8 +42,8 @@ const onSubmit = async () => {
             {{ t('auth.switch') }}
             {{
                 authStore.type === 'login'
-                    ? t('auth.login')
-                    : t('auth.registration')
+                    ? t('auth.registration')
+                    : t('auth.login')
             }}
         </AppLink>
     </VFlex>

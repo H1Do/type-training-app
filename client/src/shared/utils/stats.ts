@@ -1,6 +1,5 @@
 import { METRIC_COLOR_PRESETS } from '../config/metricColors';
-import type { Theme } from '../types';
-import type { PerItemStat, PerItemStatMetric } from '../types/training';
+import type { PerItemStat, PerItemStatMetric, Theme } from '../types';
 
 export const getColorByMetric = (
     stat: PerItemStat | undefined,
@@ -9,7 +8,6 @@ export const getColorByMetric = (
     theme: Theme,
 ): string | undefined => {
     if (!stat) return;
-    console.log(theme);
 
     const COLORS = METRIC_COLOR_PRESETS[theme];
 

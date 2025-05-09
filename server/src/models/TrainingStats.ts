@@ -1,7 +1,7 @@
-import { FingerStat, PerChar, TrainingStatsDoc } from '@/types/statsTypes';
+import { FingerStat, PerCharStat, TrainingStatsDoc } from '@/types/statsTypes';
 import mongoose, { Schema } from 'mongoose';
 
-const PerCharSchema = new Schema<PerChar>({
+const PerCharStatSchema = new Schema<PerCharStat>({
     char: { type: String, required: true },
     count: { type: Number, required: true },
     errorsCount: { type: Number, required: true },
@@ -36,7 +36,7 @@ const TrainingStatsSchema = new Schema<TrainingStatsDoc>({
     averageReaction: { type: Number, required: true },
     cpm: { type: Number, required: true },
     totalTime: { type: Number, required: true },
-    perCharStats: { type: [PerCharSchema], default: [] },
+    perCharStats: { type: [PerCharStatSchema], default: [] },
     fingerStats: { type: [FingerSchema], default: [] },
     isRated: { type: Boolean, required: true },
     isLeaderboardEligible: { type: Boolean, required: true },

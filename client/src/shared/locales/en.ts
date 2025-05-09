@@ -157,5 +157,15 @@ export const en = {
             'right-ring': 'Right ring',
             'right-pinky': 'Right pinky',
         },
+        period: {
+            day: 'Day',
+            week: 'Week',
+            month: 'Month',
+            all: 'All time',
+        },
+        fetchStatsFailed: 'Failed to fetch stats',
+        leaderboard: {
+            title: 'Leaderboard',
+        },
     },
 };

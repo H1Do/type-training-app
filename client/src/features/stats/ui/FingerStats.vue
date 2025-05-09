@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
-import type {
-    FingerStat,
-    PerItemStat,
-    PerItemStatMetric,
-} from '@/shared/types/training';
-import { Theme, type Finger } from '@/shared/types';
+import {
+    Theme,
+    type Finger,
+    type FingerStat,
+    type PerItemStat,
+    type PerItemStatMetric,
+} from '@/shared/types';
 import { AppHint, HFlex } from '@/shared/ui';
 import { computed } from 'vue';
 import { useSettingsStore } from '@/features/settings';
@@ -44,7 +45,7 @@ const fingerToStats = computed(() => {
     >;
 
     for (const finger of fingers) {
-        result[finger] = props.fingerStats.find((s) => s.finger === finger);
+        result[finger] = props.fingerStats?.find((s) => s.finger === finger);
     }
 
     return result;

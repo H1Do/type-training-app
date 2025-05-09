@@ -159,5 +159,15 @@ export const ru = {
             'right-ring': 'Правый безымянный',
             'right-pinky': 'Правый мизинец',
         },
+        period: {
+            day: 'День',
+            week: 'Неделя',
+            month: 'Месяц',
+            all: 'Все время',
+        },
+        fetchStatsFailed: 'Не удалось загрузить статистику',
+        leaderboard: {
+            title: 'Таблица лидеров',
+        },
     },
 };

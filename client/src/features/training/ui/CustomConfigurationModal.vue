@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useSettingsStore } from '@/features/settings';
 import { Layout } from '@/shared/types';
 import {
     AppButton,
@@ -13,6 +14,7 @@ import {
     type Option,
 } from '@/shared/ui';
 import { isQwertyOnly, isYcukenOnly } from '@/shared/utils';
+import { LayoutSelector } from '@/widgets';
 import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 
@@ -25,25 +27,22 @@ export interface ConfigurationResult {
 
 type CustomMode = 'words' | 'symbols';
 
-const { t } = useI18n();
 const emit = defineEmits<{
     (e: 'resolve', value: boolean | ConfigurationResult): void;
 }>();
 
+const { t } = useI18n();
+const settingsStore = useSettingsStore();
+
 const text = ref<string>('');
 const selectedMode = ref<CustomMode>('words');
 const selectedLength = ref(50);
-const selectedLayout = ref<Layout>(Layout.QWERTY);
+const selectedLayout = ref<Layout>(settingsStore.layout);
 const error = ref<string>('');
 
 const modeOptions: Option<CustomMode>[] = [
     { value: 'words', label: t('training.words') },
     { value: 'symbols', label: t('training.modes.symbols') },
-];
-
-const layoutOptions: Option<Layout>[] = [
-    { value: Layout.QWERTY, label: 'QWERTY' },
-    { value: Layout.YCUKEN, label: 'ЙЦУКЕН' },
 ];
 
 const isCorrect = computed(() => {
@@ -135,10 +134,7 @@ const onConfirm = () =>
                 </VFlex>
                 <VFlex align="center">
                     <AppText size="12px">{{ t('settings.layout') }}</AppText>
-                    <AppSelector
-                        v-model="selectedLayout"
-                        :options="layoutOptions"
-                    />
+                    <LayoutSelector v-model="selectedLayout" />
                 </VFlex>
             </HFlex>
             <AppTextarea

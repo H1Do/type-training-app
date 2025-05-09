@@ -2,7 +2,7 @@ import { Types } from 'mongoose';
 import { Layout } from './keyboardTypes';
 import { TrainingMode } from './trainingTypes';
 
-export interface PerChar {
+export interface PerCharStat {
     char: string;
     count: number;
     errorsCount: number;
@@ -34,9 +34,11 @@ export interface TrainingStatsDoc {
     averageReaction: number;
     cpm: number;
     totalTime: number;
-    perCharStats: PerChar[];
+    perCharStats: PerCharStat[];
     fingerStats: FingerStat[];
     isRated: boolean;
     isLeaderboardEligible: boolean;
     createdAt: Date;
 }
+
+export type StatsPeriod = 'day' | 'week' | 'month' | 'all';

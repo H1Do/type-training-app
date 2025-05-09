@@ -49,6 +49,8 @@ $font-size: 16px;
 $border-width: 2px;
 $border-width-big: 3px;
 $border-radius: 6px;
+$border-radius-big: 12px;
+$border-radius-sm: 4px;
 
 $header-font-size: 0.9rem;
 $header-height: 32px;
@@ -144,3 +146,7 @@ $right-index-offset: 4px;
 $right-middle-offset: 0px;
 $right-ring-offset: 6px;
 $right-pinky-offset: 16px;
+
+// leaderboard
+
+$your-color: $green;

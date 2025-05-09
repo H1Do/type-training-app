@@ -1,10 +1,10 @@
 import type { Layout } from '../types';
+import type { TrainingStats } from '../types/stats';
 import type {
     TrainingFinishResponse,
     TrainingMode,
     TrainingResult,
     TrainingSession,
-    TrainingStats,
 } from '../types/training';
 import type { HttpClient } from './httpClient';
 

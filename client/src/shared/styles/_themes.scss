@@ -6,8 +6,9 @@ body {
         --secondary-color: #{$dark-gray};
         --background-color: #{$white};
 
-        --blue-adaptive-color: #{$blue};
+        --blue-adaptive-color: #{lighten($blue, 10%)};
         --red-adaptive-color: #{$red};
+        --green-adaptive-color: #{$green};
 
         --header-background-color: var(--primary-color);
         --header-text-color: var(--background-color);
@@ -69,6 +70,7 @@ body {
 
         --blue-adaptive-color: #{lighten($blue, 20%)};
         --red-adaptive-color: #{lighten($red, 20%)};
+        --green-adaptive-color: #{lighten($green, 20%)};
 
         --header-background-color: var(--primary-color);
         --header-text-color: var(--background-color);

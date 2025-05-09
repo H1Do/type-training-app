@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-    TrainingMode,
-    type PerItemStat,
-    type PerItemStatMetric,
-    type TrainingStats,
-} from '@/shared/types/training';
+import { TrainingMode } from '@/shared/types/training';
 import {
     AppButton,
     AppLink,
@@ -18,13 +13,15 @@ import { KEYBOARD_LAYOUTS } from '@/shared/config/keyboardLayouts';
 import { useI18n } from 'vue-i18n';
 import { RouteNames } from '@/app/router';
 import { layoutNameMap } from '@/features/settings/model/settings';
-import {
-    FingerStats,
-    KeyboardStats,
-    PerItemMetricSelector,
-} from '@/features/stats';
+import { FingerStats, KeyboardStats } from '@/features/stats';
 import { ref } from 'vue';
 import { getColorByMetric } from '@/shared/utils';
+import type {
+    PerItemStat,
+    PerItemStatMetric,
+    TrainingStats,
+} from '@/shared/types';
+import { PerItemMetricSelector } from '@/widgets';
 
 const { t } = useI18n();
 const trainingStore = useTrainingStore();
@@ -163,9 +160,12 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
                 justify="between"
                 class="modal__footer"
             >
-                <AppLink :to="RouteNames.STATS" v-if="stats.isRated">{{
-                    t('training.toStats')
-                }}</AppLink>
+                <AppLink
+                    :to="RouteNames.STATS"
+                    v-if="stats.isRated"
+                    @click="emit('resolve', false)"
+                    >{{ t('training.toStats') }}</AppLink
+                >
                 <AppButton @click="onCancel" class="close-button">{{
                     t('training.close')
                 }}</AppButton>

@@ -5,7 +5,6 @@ import TrainingDisplay from './ui/TrainingDisplay.vue';
 import { AppButton, AppIcon, AppText, HFlex, VFlex } from '@/shared/ui';
 import TrainingStats from './ui/TrainingStats.vue';
 import { useTrainingStore } from './model/trainingStore';
-import TrainingModeSelector from './ui/TrainingModeSelector.vue';
 import { useI18n } from 'vue-i18n';
 import { TrainingMode } from '@/shared/types/training';
 import { useModal, useModalService } from '@/shared/utils';
@@ -14,6 +13,7 @@ import CustomSettingsModal, {
 } from './ui/CustomConfigurationModal.vue';
 import { useSettingsStore } from '../settings';
 import { useKeyboardStore } from './model/keyboardStore';
+import { ModeSelector } from '@/widgets';
 
 const { t } = useI18n();
 
@@ -70,7 +70,11 @@ watch(
 <template>
     <VFlex gap="16px" align="center">
         <HFlex justify="between" class="settings">
-            <TrainingModeSelector />
+            <ModeSelector
+                :modelValue="trainingStore.mode"
+                @update:modelValue="trainingStore.setMode"
+                :withCustom="true"
+            />
             <AppButton
                 v-if="trainingStore.mode === TrainingMode.Custom"
                 @click="onOpenSettings"

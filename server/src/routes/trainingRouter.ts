@@ -4,7 +4,6 @@ import { authMiddleware } from '@/middleware/authMiddleware';
 import type {
     TrainingStartRequest,
     TrainingFinishRequest,
-    TrainingPrepareRequest,
     TrainingQuery,
 } from '@/types/requestTypes';
 

@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { StatsTile } from '@/features/stats';
+</script>
 
 <template>
-    <div>Stats page</div>
+    <StatsTile />
 </template>
 
 <style scoped lang="scss"></style>

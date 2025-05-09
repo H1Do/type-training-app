@@ -5,6 +5,7 @@ import {
     TrainingMode,
 } from './trainingTypes';
 import { Layout } from './keyboardTypes';
+import { StatsPeriod } from './statsTypes';
 
 export interface RequestWithUser<
     TBody = unknown,
@@ -44,4 +45,14 @@ export type TrainingPrepareRequest = RequestWithUser<
     undefined,
     {},
     TrainingQuery
+>;
+
+export type StatsQueryRequest = RequestWithUser<
+    undefined,
+    {},
+    {
+        since?: StatsPeriod;
+        mode?: TrainingMode;
+        layout?: Layout;
+    }
 >;

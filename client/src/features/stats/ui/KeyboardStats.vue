@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { useSettingsStore } from '@/features/settings';
-import type { KeyboardKey, LayoutKeys, Theme } from '@/shared/types';
 import type {
+    KeyboardKey,
+    LayoutKeys,
     PerCharStat,
     PerItemStat,
     PerItemStatMetric,
-} from '@/shared/types/training'; // путь уточни сам
+    Theme,
+} from '@/shared/types';
+
 import { AppHint } from '@/shared/ui';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

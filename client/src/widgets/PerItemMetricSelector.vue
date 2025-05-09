@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PerItemStatMetric } from '@/shared/types/training';
+import type { PerItemStatMetric } from '@/shared/types';
 import { AppSelector, type Option } from '@/shared/ui';
 import { iconLabel } from '@/shared/utils/input';
 import { useI18n } from 'vue-i18n';

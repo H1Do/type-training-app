@@ -1,12 +1,19 @@
 <script setup lang="ts">
 import { TrainingMode } from '@/shared/types/training';
 import { AppSelector, type Option } from '@/shared/ui';
-import { useTrainingStore } from '../model/trainingStore';
 import { useI18n } from 'vue-i18n';
 import { iconLabel } from '@/shared/utils/input';
 
 const { t } = useI18n();
-const trainingStore = useTrainingStore();
+
+const props = defineProps<{
+    modelValue: TrainingMode;
+    withCustom?: boolean;
+}>();
+
+const emit = defineEmits<{
+    (e: 'update:modelValue', value: TrainingMode): void;
+}>();
 
 const options: Option<TrainingMode>[] = [
     {
@@ -53,24 +60,27 @@ const options: Option<TrainingMode>[] = [
             render: () => iconLabel('CodeXml', t('training.modes.programming')),
         },
     },
-    {
+];
+
+if (props.withCustom) {
+    options.push({
         value: TrainingMode.Custom,
         label: 'Custom',
         content: {
             render: () => iconLabel('Pen', t('training.modes.custom')),
         },
-    },
-];
+    });
+}
 
 const onChange = (value: string) => {
-    trainingStore.setMode(value as TrainingMode);
+    emit('update:modelValue', value as TrainingMode);
 };
 </script>
 
 <template>
     <AppSelector
         @update:modelValue="onChange"
-        :modelValue="trainingStore.mode"
+        :modelValue="modelValue"
         :options="options"
     />
 </template>

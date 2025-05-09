@@ -1,1 +1,1 @@
-export { FingerStats, KeyboardStats, PerItemMetricSelector } from './ui';
+export { FingerStats, KeyboardStats, StatsTile } from './ui';
