@@ -23,11 +23,12 @@ $dark-purple: #4b0082;
 $light-orange: #ffcc99;
 $orange: #ffa500;
 $dark-orange: #ff8c00;
+$darkest-orange: #ff4500;
 
 $error: $red;
 $success: $green;
 $info: $blue;
-$warning: $dark-orange;
+$warning: $darkest-orange;
 
 $easy: #38a169;
 $medium: #f6e05e;
@@ -127,3 +128,19 @@ $training-display-border-radius: 12px;
 
 // hints
 $hint-offset: 2px;
+
+// stats
+$finger-width: 32px;
+$finger-height: 32px;
+
+$left-pinky-offset: 16px;
+$left-ring-offset: 6px;
+$left-middle-offset: 0px;
+$left-index-offset: 4px;
+
+$thumb-offset: 48px;
+
+$right-index-offset: 4px;
+$right-middle-offset: 0px;
+$right-ring-offset: 6px;
+$right-pinky-offset: 16px;

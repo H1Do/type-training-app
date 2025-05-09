@@ -5,6 +5,7 @@ withDefaults(
         weight?: number;
         align?: 'left' | 'center' | 'right';
         textStyle?: 'normal' | 'error' | 'warning';
+        decoration?: 'underline' | 'line-through';
     }>(),
     {
         size: '16px',
@@ -17,7 +18,11 @@ withDefaults(
 <template>
     <span
         :class="[`text-${textStyle}`, `align-${align}`]"
-        :style="{ fontSize: size, fontWeight: weight }"
+        :style="{
+            fontSize: size,
+            fontWeight: weight,
+            textDecoration: decoration,
+        }"
     >
         <slot />
     </span>

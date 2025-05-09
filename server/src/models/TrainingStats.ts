@@ -6,7 +6,7 @@ const PerCharSchema = new Schema<PerChar>({
     count: { type: Number, required: true },
     errorsCount: { type: Number, required: true },
     totalTime: { type: Number, required: true },
-    averageTime: { type: Number, required: true },
+    averageReaction: { type: Number, required: true },
     accuracy: { type: Number, required: true },
 });
 
@@ -16,7 +16,7 @@ const FingerSchema = new Schema<FingerStat>({
     count: { type: Number, required: true },
     errorsCount: { type: Number, required: true },
     totalTime: { type: Number, required: true },
-    averageTime: { type: Number, required: true },
+    averageReaction: { type: Number, required: true },
     accuracy: { type: Number, required: true },
 });
 
@@ -30,12 +30,13 @@ const TrainingStatsSchema = new Schema<TrainingStatsDoc>({
     mode: { type: String, required: true },
     layout: { type: String, required: true },
     accuracy: { type: Number, required: true },
+    count: { type: Number, required: true },
     errorsCount: { type: Number, required: true },
     corrections: { type: Number, required: true },
     averageReaction: { type: Number, required: true },
     cpm: { type: Number, required: true },
-    duration: { type: Number, required: true },
-    perChar: { type: [PerCharSchema], default: [] },
+    totalTime: { type: Number, required: true },
+    perCharStats: { type: [PerCharSchema], default: [] },
     fingerStats: { type: [FingerSchema], default: [] },
     isRated: { type: Boolean, required: true },
     isLeaderboardEligible: { type: Boolean, required: true },

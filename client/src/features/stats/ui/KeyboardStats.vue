@@ -1,54 +1,42 @@
 <script setup lang="ts">
-import type { KeyboardKey, LayoutKeys } from '@/shared/types';
-import type { PerCharStat } from '@/shared/types/training'; // путь уточни сам
-import { AppHint, AppSelector, type Option } from '@/shared/ui';
-import { iconLabel } from '@/shared/utils/input';
-import { computed, ref } from 'vue';
+import { useSettingsStore } from '@/features/settings';
+import type { KeyboardKey, LayoutKeys, Theme } from '@/shared/types';
+import type {
+    PerCharStat,
+    PerItemStat,
+    PerItemStatMetric,
+} from '@/shared/types/training'; // путь уточни сам
+import { AppHint } from '@/shared/ui';
+import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-export type StatMetric = 'averageTime' | 'errorsCount' | 'accuracy';
 
 const props = defineProps<{
     layout: LayoutKeys;
-    perChar: PerCharStat[];
+    perCharStats: PerCharStat[];
+    averageStat: PerItemStat;
+    metric: PerItemStatMetric;
+    getColorByMetric: (
+        stat: PerItemStat | undefined,
+        averageStat: PerItemStat,
+        metric: PerItemStatMetric,
+        theme: Theme,
+    ) => string | undefined;
 }>();
 
 const { t } = useI18n();
-
-const metricOptions: Option<StatMetric>[] = [
-    {
-        label: 'Reaction',
-        value: 'averageTime',
-        content: {
-            render: () => iconLabel('Timer', t('stats.metrics.reaction')),
-        },
-    },
-    {
-        label: 'Errors',
-        value: 'errorsCount',
-        content: {
-            render: () =>
-                iconLabel('SpellCheck2', t('stats.metrics.errorsCount')),
-        },
-    },
-    {
-        label: 'Accuracy',
-        value: 'accuracy',
-        content: {
-            render: () => iconLabel('SpellCheck', t('stats.metrics.accuracy')),
-        },
-    },
-];
-
-const metric = ref<StatMetric>('averageTime');
+const settingsStore = useSettingsStore();
 
 const keyStats = computed<Record<string, PerCharStat>>(() => {
     const result: Record<string, PerCharStat> = {};
 
     for (const row of props.layout) {
         for (const key of row) {
-            const lowerStat = props.perChar.find((s) => s.char === key.lower);
-            const upperStat = props.perChar.find((s) => s.char === key.upper);
+            const lowerStat = props.perCharStats.find(
+                (s) => s.char === key.lower,
+            );
+            const upperStat = props.perCharStats.find(
+                (s) => s.char === key.upper,
+            );
 
             if (lowerStat) result[key.lower] = lowerStat;
             if (upperStat) result[key.upper] = upperStat;
@@ -59,9 +47,13 @@ const keyStats = computed<Record<string, PerCharStat>>(() => {
 });
 
 const getHint = (key: KeyboardKey, stats: Record<string, PerCharStat>) => {
+    if (key.code === 'Backspace') return;
+
     if (!stats[key.lower] && !stats[key.upper])
         return `
-		Key: ${key.lower}
+		${t('stats.metrics.key')}: ${
+            key.code === 'Space' ? t('stats.space') : key.lower
+        }
 	`;
 
     const lower = stats?.[key.lower];
@@ -70,10 +62,12 @@ const getHint = (key: KeyboardKey, stats: Record<string, PerCharStat>) => {
     return `
 		${
             lower
-                ? `${t('stats.metrics.key')}: ${lower.char}
+                ? `${t('stats.metrics.key')}: ${
+                      key.code === 'Space' ? t('stats.space') : key.lower
+                  }
 		${t('stats.metrics.keyCount')}: ${lower.count}
 		${t('stats.metrics.errorsCount')}: ${lower.errorsCount}
-		${t('stats.metrics.reaction')}: ${lower.averageTime}${t('stats.training.ms')}
+		${t('stats.metrics.reaction')}: ${lower.averageReaction}${t('training.ms')}
 		${t('stats.metrics.accuracy')}: ${lower.accuracy}%`
                 : ''
         }
@@ -83,7 +77,7 @@ const getHint = (key: KeyboardKey, stats: Record<string, PerCharStat>) => {
                 ? `${t('stats.metrics.key')}: ${upper.char}
 		${t('stats.metrics.keyCount')}: ${upper.count}
 		${t('stats.metrics.errorsCount')}: ${upper.errorsCount}
-		${t('stats.metrics.reaction')}: ${upper.averageTime}${t('stats.training.ms')}
+		${t('stats.metrics.reaction')}: ${upper.averageReaction}${t('training.ms')}
 		${t('stats.metrics.accuracy')}: ${upper.accuracy}%`
                 : ''
         }
@@ -96,41 +90,12 @@ const getValue = (key: KeyboardKey, stats: Record<string, PerCharStat>) => {
 
     if (!lower && !upper) return '';
 
-    return (lower || upper)[metric.value];
-};
-
-const getColorByMetric = (stat: PerCharStat | undefined): string => {
-    if (!stat || stat.count === 0) return '#eee';
-
-    switch (metric.value) {
-        case 'averageTime': {
-            const time = stat.averageTime;
-            if (time <= 150) return '#4caf50';
-            if (time <= 250) return '#8bc34a';
-            if (time <= 400) return '#ffeb3b';
-            return '#f44336';
-        }
-        case 'errorsCount': {
-            const errorRate = stat.errorsCount / stat.count;
-            if (errorRate === 0) return '#4caf50';
-            if (errorRate < 0.2) return '#ffeb3b';
-            return '#f44336';
-        }
-        case 'accuracy': {
-            const accuracy = (stat.count - stat.errorsCount) / stat.count;
-            if (accuracy >= 0.98) return '#4caf50';
-            if (accuracy >= 0.9) return '#ffeb3b';
-            return '#f44336';
-        }
-        default:
-            return '#ccc';
-    }
+    return (lower || upper)[props.metric];
 };
 </script>
 
 <template>
     <div class="keyboard-plate__wrapper">
-        <AppSelector :options="metricOptions" v-model="metric" />
         <div
             v-for="(row, rowIndex) in layout"
             :key="rowIndex"
@@ -138,13 +103,16 @@ const getColorByMetric = (stat: PerCharStat | undefined): string => {
             :class="`keyboard-row--${rowIndex}`"
         >
             <AppHint
-                position="top-right"
+                position="top-mid-left"
                 v-for="key in row"
                 :key="key.code"
                 class="keyboard-button"
                 :style="{
                     backgroundColor: getColorByMetric(
                         keyStats[key.lower] || keyStats[key.upper],
+                        averageStat,
+                        metric,
+                        settingsStore.theme,
                     ),
                 }"
                 :class="{
@@ -214,8 +182,9 @@ const getColorByMetric = (stat: PerCharStat | undefined): string => {
     align-items: center;
     justify-content: center;
     color: var(--primary-color);
+    background-color: var(--keyboard-button-background-color);
     line-height: 1;
-    font-size: 12px;
+    font-size: 1rem;
 
     &--space {
         height: $keyboard-button-size;
@@ -231,14 +200,16 @@ const getColorByMetric = (stat: PerCharStat | undefined): string => {
         position: absolute;
         top: 2px;
         left: 3px;
+        font-size: 0.9rem;
     }
 
     &__stat {
         position: absolute;
         bottom: 2px;
         right: 3px;
-        font-size: 8px;
+        font-size: 0.55rem;
         opacity: 0.8;
+        font-weight: 900;
     }
 }
 </style>

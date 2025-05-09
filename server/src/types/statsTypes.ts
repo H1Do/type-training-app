@@ -7,7 +7,7 @@ export interface PerChar {
     count: number;
     errorsCount: number;
     totalTime: number;
-    averageTime: number;
+    averageReaction: number;
     accuracy: number;
 }
 
@@ -17,7 +17,7 @@ export interface FingerStat {
     count: number;
     errorsCount: number;
     totalTime: number;
-    averageTime: number;
+    averageReaction: number;
     accuracy: number;
 }
 
@@ -28,12 +28,13 @@ export interface TrainingStatsDoc {
     mode: TrainingMode;
     layout: Layout;
     accuracy: number;
+    count: number;
     errorsCount: number;
     corrections: number;
     averageReaction: number;
     cpm: number;
-    duration: number;
-    perChar: PerChar[];
+    totalTime: number;
+    perCharStats: PerChar[];
     fingerStats: FingerStat[];
     isRated: boolean;
     isLeaderboardEligible: boolean;

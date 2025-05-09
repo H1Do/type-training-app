@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import { TrainingMode, type TrainingStats } from '@/shared/types/training';
+import {
+    TrainingMode,
+    type PerItemStat,
+    type PerItemStatMetric,
+    type TrainingStats,
+} from '@/shared/types/training';
 import {
     AppButton,
     AppLink,
@@ -9,15 +14,32 @@ import {
     VFlex,
 } from '@/shared/ui';
 import { useTrainingStore } from '../model/trainingStore';
-import StaticKeyboard from '@/features/stats/ui/StaticKeyboard.vue';
 import { KEYBOARD_LAYOUTS } from '@/shared/config/keyboardLayouts';
 import { useI18n } from 'vue-i18n';
 import { RouteNames } from '@/app/router';
+import { layoutNameMap } from '@/features/settings/model/settings';
+import {
+    FingerStats,
+    KeyboardStats,
+    PerItemMetricSelector,
+} from '@/features/stats';
+import { ref } from 'vue';
+import { getColorByMetric } from '@/shared/utils';
 
 const { t } = useI18n();
 const trainingStore = useTrainingStore();
 
 const props = defineProps<{ stats: TrainingStats }>();
+
+const metric = ref<PerItemStatMetric>('averageReaction');
+
+const averageStat: PerItemStat = {
+    averageReaction: props.stats.averageReaction,
+    errorsCount: props.stats.errorsCount,
+    accuracy: props.stats.accuracy,
+    count: props.stats.count,
+    totalTime: props.stats.totalTime,
+};
 
 const emit = defineEmits<{
     (e: 'resolve', value: boolean): void;
@@ -34,7 +56,31 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
 <template>
     <AppModal @close="onCancel" class="modal">
         <VFlex align="center" gap="16px">
-            <h2 class="modal__title">{{ t('stats.title') }}</h2>
+            <h2 class="modal__title">{{ t('stats.trainingResult') }}</h2>
+
+            <AppText v-if="!stats.isRated" textStyle="warning">
+                {{ t('stats.notCounted.base') }}
+                <span v-if="stats.mode === TrainingMode.Custom">
+                    {{ t('stats.notCounted.custom') }}
+                </span>
+                <span v-else-if="stats.accuracy < 80">
+                    {{ t('stats.notCounted.lowAccuracy') }}
+                </span>
+                <span v-else-if="stats.corrections > 10">
+                    {{ t('stats.notCounted.tooManyCorrections') }}
+                </span>
+            </AppText>
+
+            <AppText
+                v-else-if="!stats.isLeaderboardEligible"
+                textStyle="warning"
+            >
+                {{ t('stats.leaderboardDisqualified.base') }}
+                <span v-if="stats.accuracy < 90">
+                    {{ t('stats.leaderboardDisqualified.lowAccuracy') }}
+                </span>
+            </AppText>
+
             <HFlex align="start" gap="16px">
                 <VFlex justify="between" class="stats" gap="4px">
                     <VFlex class="stats__item" align="start">
@@ -47,7 +93,7 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
                         <span class="stats__item-title">{{
                             t('training.labels.layout')
                         }}</span>
-                        <span>{{ stats.layout }}</span>
+                        <span>{{ layoutNameMap[stats.layout] }}</span>
                     </VFlex>
                     <VFlex class="stats__item" align="start">
                         <span class="stats__item-title">{{
@@ -75,7 +121,7 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
                             t('stats.metrics.time')
                         }}</span>
                         <span
-                            >{{ (stats.duration / 1000).toFixed(1)
+                            >{{ (stats.totalTime / 1000).toFixed(1)
                             }}{{ t('training.s') }}</span
                         >
                     </VFlex>
@@ -93,34 +139,23 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
                     </VFlex>
                 </VFlex>
 
-                <StaticKeyboard
-                    :layout="resolvedLayout"
-                    :perChar="stats.perChar"
-                />
+                <VFlex align="start" gap="16px">
+                    <PerItemMetricSelector v-model="metric" />
+                    <KeyboardStats
+                        :layout="resolvedLayout"
+                        :perCharStats="stats.perCharStats"
+                        :averageStat="averageStat"
+                        :metric="metric"
+                        :getColorByMetric="getColorByMetric"
+                    />
+                    <FingerStats
+                        :fingerStats="stats.fingerStats"
+                        :averageStat="averageStat"
+                        :metric="metric"
+                        :getColorByMetric="getColorByMetric"
+                    />
+                </VFlex>
             </HFlex>
-
-            <AppText v-if="!stats.isRated" textStyle="warning">
-                {{ t('stats.notCounted.base') }}
-                <span v-if="stats.mode === TrainingMode.Custom">
-                    {{ t('stats.notCounted.custom') }}
-                </span>
-                <span v-else-if="stats.accuracy < 80">
-                    {{ t('stats.notCounted.lowAccuracy') }}
-                </span>
-                <span v-else-if="stats.corrections > 10">
-                    {{ t('stats.notCounted.tooManyCorrections') }}
-                </span>
-            </AppText>
-
-            <AppText
-                v-else-if="!stats.isLeaderboardEligible"
-                textStyle="warning"
-            >
-                {{ t('stats.leaderboardDisqualified.base') }}
-                <span v-if="stats.accuracy < 90">
-                    {{ t('stats.leaderboardDisqualified.lowAccuracy') }}
-                </span>
-            </AppText>
 
             <HFlex
                 align="end"
@@ -128,9 +163,11 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
                 justify="between"
                 class="modal__footer"
             >
-                <AppLink :to="RouteNames.STATS">К общей статистике...</AppLink>
-                <AppButton @click="onCancel">{{
-                    t('training.restart')
+                <AppLink :to="RouteNames.STATS" v-if="stats.isRated">{{
+                    t('training.toStats')
+                }}</AppLink>
+                <AppButton @click="onCancel" class="close-button">{{
+                    t('training.close')
                 }}</AppButton>
             </HFlex>
         </VFlex>
@@ -165,5 +202,9 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
             margin-right: 4px;
         }
     }
+}
+
+.close-button {
+    margin-left: auto;
 }
 </style>

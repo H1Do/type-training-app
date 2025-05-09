@@ -10,7 +10,7 @@ export const ru = {
             'Конфигурация пользовательского режима должна быть задана',
         press: 'Нажмите',
         toRestart: 'для перезапуска тренировки',
-        restart: 'Перезапустить',
+        close: 'Закрыть',
         s: 'с',
         ms: 'мс',
         configuration: 'Конфигурация',
@@ -18,6 +18,7 @@ export const ru = {
         customConfiguration: 'Конфигурация пользовательского режима',
         words: 'Слова',
         keyboardBlurredHint: 'Клавиатура скрыта из-за выбранной сложности',
+        toStats: 'Перейти к статистике...',
 
         modes: {
             letters: 'Буквы',
@@ -123,7 +124,8 @@ export const ru = {
     },
 
     stats: {
-        title: 'Ваша статистика',
+        trainingResult: 'Результат тренировки',
+        space: 'Пробел',
         notCounted: {
             base: 'Результат не попадёт в статистику',
             custom: 'так как выбран пользовательский режим',
@@ -144,6 +146,18 @@ export const ru = {
             corrections: 'Кол-во исправлений',
             key: 'Клавиша',
             keyCount: 'Кол-во нажатий',
+        },
+        finger: 'Палец',
+        fingers: {
+            'left-pinky': 'Левый мизинец',
+            'left-ring': 'Левый безымянный',
+            'left-middle': 'Левый средний',
+            'left-index': 'Левый указательный',
+            thumb: 'Большой палец',
+            'right-index': 'Правый указательный',
+            'right-middle': 'Правый средний',
+            'right-ring': 'Правый безымянный',
+            'right-pinky': 'Правый мизинец',
         },
     },
 };

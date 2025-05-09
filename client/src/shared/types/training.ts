@@ -19,21 +19,36 @@ export interface TrainingResult {
     }[];
 }
 
-export interface PerCharStat {
-    char: string;
+export interface PerItemStat {
     accuracy: number;
     count: number;
     errorsCount: number;
     totalTime: number;
-    averageTime: number;
+    averageReaction: number;
+}
+
+export type PerItemStatMetric = Exclude<
+    keyof PerItemStat,
+    'count' | 'totalTime'
+>;
+
+export interface PerCharStat extends PerItemStat {
+    char: string;
+}
+
+export interface FingerStat extends PerItemStat {
+    finger: string;
+    chars: string[];
 }
 
 export interface TrainingStats {
     accuracy: number;
     averageReaction: number;
     cpm: number;
-    duration: number;
-    perChar: PerCharStat[];
+    totalTime: number;
+    count: number;
+    perCharStats: PerCharStat[];
+    fingerStats: FingerStat[];
     corrections: number;
     errorsCount: number;
     isRated: boolean;

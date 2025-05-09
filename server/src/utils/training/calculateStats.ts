@@ -8,9 +8,9 @@ export function calculateDetailedStats(
     const inputs = events.filter((e) => e.type === 'input');
     const correct = inputs.filter((e) => e.actual === e.expected).length;
     const total = inputs.length;
-    const duration = finishedAt - startedAt;
+    const totalTime = finishedAt - startedAt;
 
-    const perCharMap = new Map<
+    const perCharStatsMap = new Map<
         string,
         { count: number; errorsCount: number; totalTime: number }
     >();
@@ -29,7 +29,7 @@ export function calculateDetailedStats(
         const { expected: key, finger } = event;
         if (!key) continue;
 
-        const charStat = perCharMap.get(key) ?? {
+        const charStat = perCharStatsMap.get(key) ?? {
             count: 0,
             errorsCount: 0,
             totalTime: 0,
@@ -37,7 +37,7 @@ export function calculateDetailedStats(
         charStat.count += 1;
         charStat.totalTime += event.time;
         if (event.actual !== event.expected) charStat.errorsCount += 1;
-        perCharMap.set(key, charStat);
+        perCharStatsMap.set(key, charStat);
 
         if (finger) {
             const fStat = fingerMap.get(finger) ?? {
@@ -54,14 +54,16 @@ export function calculateDetailedStats(
         }
     }
 
-    const perChar = Array.from(perCharMap.entries()).map(([char, data]) => ({
-        char,
-        ...data,
-        accuracy: Math.round(
-            ((data.count - data.errorsCount) / data.count) * 100,
-        ),
-        averageTime: Math.round(data.totalTime / data.count),
-    }));
+    const perCharStats = Array.from(perCharStatsMap.entries()).map(
+        ([char, data]) => ({
+            char,
+            ...data,
+            accuracy: Math.round(
+                ((data.count - data.errorsCount) / data.count) * 100,
+            ),
+            averageReaction: Math.round(data.totalTime / data.count),
+        }),
+    );
 
     const fingerStats = Array.from(fingerMap.entries()).map(
         ([finger, data]) => ({
@@ -70,7 +72,7 @@ export function calculateDetailedStats(
             count: data.count,
             errorsCount: data.errorsCount,
             totalTime: data.totalTime,
-            averageTime: Math.round(data.totalTime / data.count),
+            averageReaction: Math.round(data.totalTime / data.count),
             accuracy: Math.round(
                 ((data.count - data.errorsCount) / data.count) * 100,
             ),
@@ -84,9 +86,10 @@ export function calculateDetailedStats(
         averageReaction: total
             ? Math.round(inputs.reduce((a, b) => a + b.time, 0) / total)
             : 0,
-        cpm: duration ? Math.round(total / (duration / 1000 / 60)) : 0,
-        duration,
-        perChar,
+        cpm: totalTime ? Math.round(total / (totalTime / 1000 / 60)) : 0,
+        count: total,
+        totalTime,
+        perCharStats,
         fingerStats,
     };
 }

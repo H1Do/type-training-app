@@ -9,7 +9,7 @@ export const en = {
         settingsNotice: 'Custom mode must be configured',
         press: 'Press',
         toRestart: 'to restart training',
-        restart: 'Restart',
+        close: 'Close',
         s: 's',
         ms: 'ms',
         configuration: 'Configuration',
@@ -17,6 +17,7 @@ export const en = {
         customConfiguration: 'Custom configuration',
         words: 'Words',
         keyboardBlurredHint: 'Keyboard is blurred due to selected difficulty',
+        toStats: 'Go to stats...',
 
         modes: {
             letters: 'Letters',
@@ -122,7 +123,8 @@ export const en = {
     },
 
     stats: {
-        title: 'Your Stats',
+        trainingResult: 'Training result',
+        space: 'Space',
         notCounted: {
             base: 'Result will not be included in the statistics',
             custom: 'because custom mode was selected',
@@ -138,10 +140,22 @@ export const en = {
             cpm: 'CPM',
             reaction: 'Average reaction',
             time: 'Duration',
-            errors: 'Errors (total)',
+            errorsCount: 'Errors (total)',
             corrections: 'Corrections (total)',
             key: 'Key',
             keyCount: 'Pressed (total)',
+        },
+        finger: 'Finger',
+        fingers: {
+            'left-pinky': 'Left pinky',
+            'left-ring': 'Left ring',
+            'left-middle': 'Left middle',
+            'left-index': 'Left index',
+            thumb: 'Thumb',
+            'right-index': 'Right index',
+            'right-middle': 'Right middle',
+            'right-ring': 'Right ring',
+            'right-pinky': 'Right pinky',
         },
     },
 };

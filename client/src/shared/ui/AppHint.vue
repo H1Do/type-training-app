@@ -52,7 +52,7 @@ onBeforeUnmount(() => {
     >
         <slot />
         <span
-            v-if="show"
+            v-if="show && hint"
             class="hover-hint-text"
             :class="`hover-hint--${props.position}`"
         >

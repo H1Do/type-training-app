@@ -86,24 +86,24 @@ const onChangePassword = async () => {
     width: 100%;
 
     .changePassword {
-        color: $dark-blue;
-        border-color: $dark-blue;
+        color: var(--blue-adaptive-color);
+        border-color: var(--blue-adaptive-color);
 
         &:hover {
-            background-color: $dark-blue;
+            background-color: var(--blue-adaptive-color);
             color: $white;
-            border-color: $dark-blue;
+            border-color: var(--blue-adaptive-color);
         }
     }
 
     .logout {
-        color: $dark-red;
-        border-color: $dark-red;
+        color: var(--red-adaptive-color);
+        border-color: var(--red-adaptive-color);
 
         &:hover {
-            background-color: $dark-red;
+            background-color: var(--red-adaptive-color);
             color: $white;
-            border-color: $dark-red;
+            border-color: var(--red-adaptive-color);
         }
     }
 }

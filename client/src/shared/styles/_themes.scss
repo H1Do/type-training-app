@@ -6,6 +6,9 @@ body {
         --secondary-color: #{$dark-gray};
         --background-color: #{$white};
 
+        --blue-adaptive-color: #{$blue};
+        --red-adaptive-color: #{$red};
+
         --header-background-color: var(--primary-color);
         --header-text-color: var(--background-color);
         --footer-background-color: var(--primary-color);
@@ -63,6 +66,9 @@ body {
         --primary-color: #{$white};
         --secondary-color: #{$light-gray};
         --background-color: #{$black};
+
+        --blue-adaptive-color: #{lighten($blue, 20%)};
+        --red-adaptive-color: #{lighten($red, 20%)};
 
         --header-background-color: var(--primary-color);
         --header-text-color: var(--background-color);
