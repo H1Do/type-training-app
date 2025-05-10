@@ -95,9 +95,9 @@ const stats = computed(() => [
     position: relative;
     display: flex;
     justify-content: space-between;
-    padding: 0 1rem;
+    padding: $training-stats-padding;
     font-family: 'Fira Code', monospace;
-    font-size: 1rem;
+    font-size: $training-stats-font-size;
     color: var(--secondary-color);
     width: 100%;
     overflow: hidden;
@@ -111,8 +111,8 @@ const stats = computed(() => [
     height: 100%;
     backdrop-filter: blur(3px);
     color: ver(--secondary-color);
-    font-size: 0.9rem;
-    font-weight: bold;
+    font-size: $training-stats-overlay-font-size;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -123,17 +123,17 @@ const stats = computed(() => [
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 4rem;
+    min-width: $training-stats-stat-min-width;
 
     &__label {
-        font-size: 0.75rem;
+        font-size: $training-stats-stat-label-font-size;
         color: $gray;
-        margin-bottom: 0.25rem;
+        margin-bottom: $training-stats-stat-margin-bottom;
     }
 
     &__value {
-        font-weight: bold;
-        font-size: 1.1rem;
+        font-weight: 700;
+        font-size: $training-stats-stat-value-font-size;
     }
 }
 </style>

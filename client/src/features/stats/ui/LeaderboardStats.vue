@@ -25,10 +25,10 @@ const userEntry = computed(() => {
 </script>
 
 <template>
-    <VFlex class="leaderboard" gap="12px">
+    <VFlex class="leaderboard" gap="0.75rem">
         <h2 class="leaderboard__title">{{ t('stats.leaderboard.title') }}</h2>
 
-        <VFlex class="leaderboard__list" gap="12px" align="stretch">
+        <VFlex class="leaderboard__list" gap="0.75rem" align="stretch">
             <HFlex
                 v-for="(entry, index) in statsStore.stats?.leaderboard ?? []"
                 :key="entry.userId + '-' + entry.cpm"
@@ -38,7 +38,7 @@ const userEntry = computed(() => {
                 ]"
                 justify="between"
                 align="center"
-                gap="8px"
+                gap="0.5rem"
             >
                 <span class="leaderboard__info">#{{ index + 1 }}</span>
                 <span class="leaderboard__info leaderboard__info-username">{{
@@ -62,7 +62,7 @@ const userEntry = computed(() => {
                 class="leaderboard__item leaderboard__item--me"
                 justify="between"
                 align="center"
-                gap="8px"
+                gap="0.5rem"
             >
                 <span class="leaderboard__rank"
                     >#{{ statsStore.stats?.position }}</span
@@ -86,24 +86,24 @@ const userEntry = computed(() => {
 @use '@/shared/styles/variables' as *;
 
 .leaderboard {
-    width: 200px;
+    width: $leaderboard-width;
 
     &__list {
         width: 100%;
     }
 
     &__title {
-        font-size: 0.9rem;
+        font-size: $leaderboard-title-font-size;
         font-weight: 500;
         margin: 0;
     }
 
     &__item {
         display: flex;
-        gap: 6px;
+        gap: $leaderboard-item-gap;
         align-items: center;
-        font-size: 0.75rem;
-        padding: 2px 6px;
+        font-size: $leaderboard-item-font-size;
+        padding: $leaderboard-item-padding;
         border: $border-width solid var(--primary-color);
         border-radius: $border-radius-sm;
         background-color: var(--background-tertiary);
@@ -126,14 +126,14 @@ const userEntry = computed(() => {
 
     &__dots {
         color: var(--hint-color);
-        font-size: 0.75rem;
+        font-size: $leaderboard-item-font-size;
     }
 
     &__info {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
-        max-width: 72px;
+        max-width: $leaderboard-info-max-width;
 
         &-username {
             margin-right: auto;

@@ -49,10 +49,10 @@ const layout = computed(() => KEYBOARD_LAYOUTS[statsStore.layout]);
 </script>
 
 <template>
-    <VFlex gap="16px">
-        <HFlex gap="16px">
-            <VFlex gap="16px">
-                <HFlex gap="16px">
+    <VFlex gap="1rem">
+        <HFlex gap="1rem">
+            <VFlex gap="1rem">
+                <HFlex gap="1rem">
                     <ModeSelector
                         :modelValue="statsStore.mode"
                         @update:modelValue="statsStore.setMode"
@@ -67,7 +67,7 @@ const layout = computed(() => KEYBOARD_LAYOUTS[statsStore.layout]);
                     />
                 </HFlex>
 
-                <VFlex gap="16px">
+                <VFlex gap="1rem">
                     <PerItemMetricSelector v-model="metric" />
                     <KeyboardStats
                         :perCharStats="statsStore.stats?.perCharStats ?? []"

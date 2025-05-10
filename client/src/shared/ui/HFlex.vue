@@ -3,7 +3,24 @@ withDefaults(
     defineProps<{
         align?: 'start' | 'center' | 'end' | 'stretch';
         justify?: 'start' | 'center' | 'between' | 'around' | 'evenly' | 'end';
-        gap?: '0px' | '4px' | '8px' | '12px' | '16px';
+        gap?:
+            | '0px'
+            | '4px'
+            | '8px'
+            | '12px'
+            | '16px'
+            | '20px'
+            | '24px'
+            | '28px'
+            | '32px'
+            | '0.25rem'
+            | '0.5rem'
+            | '0.75rem'
+            | '1rem'
+            | '1.25rem'
+            | '1.5rem'
+            | '1.75rem'
+            | '2rem';
     }>(),
     {
         align: 'start',

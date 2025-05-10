@@ -57,8 +57,8 @@ const difficultyHintMap = computed(() => ({
             class="difficulty"
             :class="difficultyColorClassMap[difficulty]"
         >
-            <VFlex align="center" gap="4px">
-                <AppIcon :name="difficultyIconMap[difficulty]" :size="36" />
+            <VFlex align="center" gap="0.25rem">
+                <AppIcon :name="difficultyIconMap[difficulty]" size="2.25rem" />
                 <AppText :weight="600">{{
                     difficultyNameMap[difficulty]
                 }}</AppText>

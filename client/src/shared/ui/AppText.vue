@@ -8,7 +8,7 @@ withDefaults(
         decoration?: 'underline' | 'line-through';
     }>(),
     {
-        size: '16px',
+        size: '1rem',
         weight: 400,
         textStyle: 'normal',
     },

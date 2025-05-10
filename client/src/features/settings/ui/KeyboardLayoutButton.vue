@@ -21,8 +21,8 @@ const settingsStore = useSettingsStore();
         "
         class="layout"
     >
-        <VFlex align="center" gap="4px">
-            <AppIcon name="Keyboard" :size="36" />
+        <VFlex align="center" gap="0.25rem">
+            <AppIcon name="Keyboard" size="2.25rem" />
             <AppText :weight="600">{{ layoutNameMap[layout] }}</AppText>
         </VFlex>
     </AppButton>

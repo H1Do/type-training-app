@@ -107,13 +107,13 @@ const onConfirm = () =>
 
 <template>
     <AppModal @close="onCancel">
-        <VFlex gap="8px" align="center">
+        <VFlex gap="0.5rem" align="center">
             <AppText :weight="600">
                 {{ t('training.customConfiguration') }}
             </AppText>
-            <HFlex gap="16px" justify="center" align="center" class="settings">
+            <HFlex gap="1rem" justify="center" align="center" class="settings">
                 <VFlex align="center">
-                    <AppText size="12px">{{
+                    <AppText size="0.75rem">{{
                         t('training.labels.mode')
                     }}</AppText>
                     <AppSelector
@@ -122,7 +122,7 @@ const onConfirm = () =>
                     />
                 </VFlex>
                 <VFlex align="center">
-                    <AppText size="12px">{{
+                    <AppText size="0.75rem">{{
                         t('training.labels.length')
                     }}</AppText>
                     <AppInput
@@ -133,7 +133,7 @@ const onConfirm = () =>
                     />
                 </VFlex>
                 <VFlex align="center">
-                    <AppText size="12px">{{ t('settings.layout') }}</AppText>
+                    <AppText size="0.75rem">{{ t('settings.layout') }}</AppText>
                     <LayoutSelector v-model="selectedLayout" />
                 </VFlex>
             </HFlex>
@@ -147,13 +147,15 @@ const onConfirm = () =>
                 :disabled="!isCorrect"
                 class="confirm-button"
             >
-                <AppIcon name="Save" :size="18" /> {{ t('training.save') }}
+                <AppIcon name="Save" size="1.125rem" /> {{ t('training.save') }}
             </AppButton>
         </VFlex>
     </AppModal>
 </template>
 
 <style scoped lang="scss">
+@use '@/shared/styles/variables' as *;
+
 .settings {
     width: 100%;
 }
@@ -161,6 +163,6 @@ const onConfirm = () =>
 .confirm-button {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: $gap-xs;
 }
 </style>

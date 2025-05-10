@@ -5,7 +5,6 @@ import { AppButton, AppIcon } from '@/shared/ui';
 import AppLink from '@/shared/ui/AppLink.vue';
 import HFlex from '@/shared/ui/HFlex.vue';
 import { useConfirmDialog, useModalService } from '@/shared/utils';
-import { LogInIcon } from 'lucide-vue-next';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
 
@@ -39,30 +38,34 @@ const onLogout = async () => {
         </div>
         <nav class="nav">
             <AppLink :to="RouteNames.MAIN" class="app-link">
-                <AppIcon name="HomeIcon" class="app-link-icon" />
+                <AppIcon name="HomeIcon" class="app-link-icon" size="1.25rem" />
                 <span>{{ t('header.main') }}</span>
             </AppLink>
             <AppLink :to="RouteNames.STATS" class="app-link">
-                <AppIcon name="ChartNoAxesColumn" class="app-link-icon" />
+                <AppIcon
+                    name="ChartNoAxesColumn"
+                    class="app-link-icon"
+                    size="1.25rem"
+                />
                 <span>{{ t('header.stats') }}</span>
             </AppLink>
             <AppLink :to="RouteNames.LESSONS" class="app-link">
-                <AppIcon name="Book" class="app-link-icon" />
+                <AppIcon name="Book" class="app-link-icon" size="1.25rem" />
                 <span>{{ t('header.lessons') }}</span>
             </AppLink>
             <AppLink :to="RouteNames.TRAINING" class="app-link">
-                <AppIcon name="Keyboard" class="app-link-icon" />
+                <AppIcon name="Keyboard" class="app-link-icon" size="1.25rem" />
                 <span>{{ t('header.training') }}</span>
             </AppLink>
             <AppLink :to="RouteNames.SETTINGS" class="app-link">
-                <AppIcon name="Settings" class="app-link-icon" />
+                <AppIcon name="Settings" class="app-link-icon" size="1.25rem" />
                 <span>{{ t('header.settings') }}</span>
             </AppLink>
         </nav>
         <div class="user-actions">
-            <HFlex v-if="isAuthenticated" gap="16px" align="center">
+            <HFlex v-if="isAuthenticated" gap="1rem" align="center">
                 <AppLink :to="RouteNames.PROFILE" class="app-link">
-                    <AppIcon name="User" class="app-link-icon" />
+                    <AppIcon name="User" class="app-link-icon" size="1.25rem" />
                     <span>{{ username }}</span>
                 </AppLink>
                 <AppButton
@@ -71,12 +74,20 @@ const onLogout = async () => {
                     class="app-link"
                     @click="onLogout"
                 >
-                    <AppIcon name="LogOutIcon" class="app-link-icon" />
+                    <AppIcon
+                        name="LogOutIcon"
+                        class="app-link-icon"
+                        size="1.25rem"
+                    />
                     <span>{{ t('header.logout') }}</span>
                 </AppButton>
             </HFlex>
             <AppLink v-else :to="RouteNames.AUTH" class="app-link">
-                <LogInIcon class="app-link-icon" />
+                <AppIcon
+                    name="LogInIcon"
+                    class="app-link-icon"
+                    size="1.25rem"
+                />
                 <span>{{ t('header.login/register') }}</span>
             </AppLink>
         </div>
@@ -103,13 +114,13 @@ const onLogout = async () => {
 .nav,
 .user-actions {
     display: flex;
-    gap: 16px;
+    gap: $gap;
 }
 
 .app-link {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: $gap-xs;
     color: var(--header-text-color);
     text-decoration: none;
     position: relative;
@@ -124,18 +135,17 @@ const onLogout = async () => {
         max-width: 0;
         overflow: hidden;
         white-space: nowrap;
-        transition: opacity 0.3s ease, max-width 0.3s ease;
+        transition: opacity $transition-duration-slow ease,
+            max-width $transition-duration-slow ease;
     }
 
     &:hover span {
         opacity: 1;
-        max-width: 200px;
+        max-width: $header-span-max-width;
     }
 }
 
 .app-link-icon {
-    height: 20px;
-    width: 20px;
     flex-shrink: 0;
 }
 </style>

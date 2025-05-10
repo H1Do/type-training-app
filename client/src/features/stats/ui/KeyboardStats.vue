@@ -144,12 +144,12 @@ const getValue = (key: KeyboardKey, stats: Record<string, PerCharStat>) => {
 .keyboard-plate__wrapper {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: $gap-sm;
 }
 
 .keyboard-row {
     display: flex;
-    gap: 4px;
+    gap: $gap-xs;
     justify-content: center;
 
     &--0 {
@@ -201,16 +201,16 @@ const getValue = (key: KeyboardKey, stats: Record<string, PerCharStat>) => {
 
     &__symbol {
         position: absolute;
-        top: 2px;
-        left: 3px;
-        font-size: 0.9rem;
+        top: $symbol-top;
+        left: $symbol-left;
+        font-size: $symbol-font-size;
     }
 
     &__stat {
         position: absolute;
-        bottom: 2px;
-        right: 3px;
-        font-size: 0.55rem;
+        bottom: $stat-bottom;
+        right: $stat-right;
+        font-size: $stat-font-size;
         opacity: 0.8;
         font-weight: 900;
     }

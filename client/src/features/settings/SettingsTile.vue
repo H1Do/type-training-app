@@ -10,13 +10,13 @@ const { t } = useI18n();
 </script>
 
 <template>
-    <VFlex align="center" gap="8px">
-        <HFlex gap="8px" align="stretch">
-            <VFlex gap="8px" align="center" justify="between">
+    <VFlex align="center" gap="0.5rem">
+        <HFlex gap="0.5rem" align="stretch">
+            <VFlex gap="0.5rem" align="center" justify="between">
                 <AppText :weight="600">{{ t('settings.theme') }}</AppText>
                 <ToggleThemeButton />
             </VFlex>
-            <VFlex gap="8px" align="center" justify="between">
+            <VFlex gap="0.5rem" align="center" justify="between">
                 <AppText :weight="600">{{
                     t('settings.localization')
                 }}</AppText>
@@ -24,13 +24,13 @@ const { t } = useI18n();
             </VFlex>
         </HFlex>
         <AppText :weight="600">{{ t('settings.layout') }}</AppText>
-        <HFlex gap="8px" align="center">
+        <HFlex gap="0.5rem" align="center">
             <KeyboardLayoutButton :layout="Layout.QWERTY" />
             <KeyboardLayoutButton :layout="Layout.YCUKEN" />
         </HFlex>
 
         <AppText :weight="600">{{ t('settings.difficulty') }}</AppText>
-        <HFlex gap="8px" align="center">
+        <HFlex gap="0.5rem" align="center">
             <DifficultyButton :difficulty="Difficulty.Easy" />
             <DifficultyButton :difficulty="Difficulty.Medium" />
             <DifficultyButton :difficulty="Difficulty.Hard" />

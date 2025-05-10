@@ -38,7 +38,7 @@ const onChangePassword = async () => {
 </script>
 
 <template>
-    <VFlex gap="16px">
+    <VFlex gap="1rem">
         <h2 class="title"><User2Icon />{{ t('profile.profileData') }}</h2>
         <AppTable>
             <AppTableRow>
@@ -56,7 +56,7 @@ const onChangePassword = async () => {
                 }}</AppTableCell>
             </AppTableRow>
         </AppTable>
-        <HFlex justify="between" gap="8px" class="buttons">
+        <HFlex justify="between" gap="0.5rem" class="buttons">
             <AppButton class="changePassword" @click="onChangePassword">
                 {{ t('profile.changePassword') }}
             </AppButton>
@@ -74,12 +74,12 @@ const onChangePassword = async () => {
     display: flex;
     align-items: center;
     font-size: 1.1rem;
-    gap: 8px;
+    gap: $gap-sm;
     margin-inline: auto;
 }
 
 .data {
-    padding-left: 16px;
+    padding-left: $gap;
 }
 
 .buttons {

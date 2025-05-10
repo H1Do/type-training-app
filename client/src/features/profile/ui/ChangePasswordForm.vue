@@ -61,10 +61,12 @@ const handleCancel = () => emit('resolve', false);
 </template>
 
 <style scoped lang="scss">
+@use '@/shared/styles/variables.scss' as *;
+
 .form {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    width: 300px;
+    gap: $gap-sm;
+    width: $change-password-width;
 }
 </style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { AppIcon } from '@/shared/ui';
 import AppLink from '@/shared/ui/AppLink.vue';
-import { Mail, Send } from 'lucide-vue-next';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -11,10 +11,12 @@ const { t } = useI18n();
         <div>&copy; 2025 Type Training App.</div>
         <div>{{ t('footer.credits') }}</div>
         <AppLink class="link" type="external" to="mailto:hidouchiha@gmail.com">
-            <Mail class="link-icon" /> hidouchiha@gmail.com
+            <AppIcon name="Mail" class="link-icon" size="1rem" />
+            hidouchiha@gmail.com
         </AppLink>
+
         <AppLink class="link" type="external" to="https://t.me/h1dio">
-            <Send class="link-icon" /> @h1dio
+            <AppIcon name="Send" class="link-icon" size="1rem" /> @h1dio
         </AppLink>
     </footer>
 </template>
@@ -33,7 +35,7 @@ const { t } = useI18n();
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 32px;
+    gap: $gap-xl;
 }
 
 .link {
@@ -43,7 +45,6 @@ const { t } = useI18n();
 }
 
 .link-icon {
-    width: 16px;
-    margin-right: 4px;
+    margin-right: 0.25rem;
 }
 </style>

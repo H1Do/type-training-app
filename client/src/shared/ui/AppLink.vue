@@ -62,7 +62,7 @@ withDefaults(
     }
 
     &:disabled {
-        opacity: 0.7;
+        opacity: $app-link-disabled-opacity;
         cursor: not-allowed;
         pointer-events: none;
     }
@@ -84,7 +84,7 @@ withDefaults(
         }
 
         &:disabled {
-            opacity: 0.7;
+            opacity: $app-link-disabled-opacity;
             cursor: not-allowed;
         }
     }

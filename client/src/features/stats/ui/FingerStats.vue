@@ -69,7 +69,7 @@ const getHint = (finger: Finger, stats: FingerStat | undefined) => {
 </script>
 
 <template>
-    <HFlex class="finger-stats" gap="16px">
+    <HFlex class="finger-stats" gap="1rem">
         <AppHint
             v-for="finger in fingers"
             position="top-mid-left"
@@ -163,7 +163,7 @@ const getHint = (finger: Finger, stats: FingerStat | undefined) => {
     }
 
     &__stat {
-        font-size: 0.8rem;
+        font-size: $finger-stats-font-size;
         font-weight: 600;
         line-height: 1;
     }

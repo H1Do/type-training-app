@@ -55,8 +55,8 @@ const onInput = (event: Event) => {
     color: var(--primary-color);
     border: $border-width solid var(--primary-color);
     border-radius: $border-radius;
-    padding: 6px 12px;
-    font-size: 16px;
+    padding: $input-padding;
+    font-size: $input-font-size;
     transition: background-color $transition-duration,
         color $transition-duration, border-color $transition-duration;
     outline: none;
@@ -104,7 +104,7 @@ const onInput = (event: Event) => {
     }
 
     &:disabled {
-        opacity: 0.7;
+        opacity: $input-disabled-opacity;
         cursor: not-allowed;
         background-color: var(--background-color);
     }

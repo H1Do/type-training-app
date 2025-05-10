@@ -35,7 +35,7 @@ withDefaults(
     color: var(--primary-color);
     border: $border-width solid var(--primary-color);
     border-radius: $border-radius;
-    padding: 6px 12px;
+    padding: $button-padding;
     cursor: pointer;
     transition: background-color $transition-duration,
         color $transition-duration;
@@ -52,7 +52,7 @@ withDefaults(
     }
 
     &:disabled {
-        opacity: 0.5;
+        opacity: $button-disabled-opacity;
         cursor: not-allowed;
 
         &:hover {

@@ -25,7 +25,7 @@ const onConfirm = () => emit('resolve', true);
     <AppModal @close="onCancel">
         <VFlex
             class="confirm-dialog"
-            gap="16px"
+            gap="1rem"
             align="center"
             justify="between"
         >

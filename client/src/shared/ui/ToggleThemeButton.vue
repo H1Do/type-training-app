@@ -16,9 +16,9 @@ const { t } = useI18n();
             <AppIcon
                 name="SunIcon"
                 v-if="settingsStore.theme === Theme.LIGHT"
-                :size="32"
+                size="2rem"
             />
-            <AppIcon name="MoonIcon" v-else :size="32" />
+            <AppIcon name="MoonIcon" v-else size="2rem" />
         </AppButton>
     </AppHint>
 </template>

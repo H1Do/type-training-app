@@ -68,7 +68,7 @@ watch(
 </script>
 
 <template>
-    <VFlex gap="16px" align="center">
+    <VFlex gap="1rem" align="center">
         <HFlex justify="between" class="settings">
             <ModeSelector
                 :modelValue="trainingStore.mode"
@@ -80,7 +80,7 @@ watch(
                 @click="onOpenSettings"
                 class="settings-button"
             >
-                <AppIcon name="Settings" :size="20" />
+                <AppIcon name="Settings" size="1.25rem" />
                 {{ t('training.configuration') }}
             </AppButton>
         </HFlex>
@@ -102,15 +102,17 @@ watch(
 </template>
 
 <style scoped lang="scss">
+@use '@/shared/styles/variables' as *;
+
 .settings {
     width: 100%;
-    padding-inline: 16px;
+    padding-inline: $training-tile-settings-padding-inline;
 }
 
 .settings-button {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: $gap-xs-sm;
 }
 
 .clear-button {

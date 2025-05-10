@@ -22,7 +22,7 @@ const onSubmit = async () => {
 </script>
 
 <template>
-    <VFlex align="center" gap="4px" class="tile">
+    <VFlex align="center" gap="0.25rem" class="tile">
         <Transition name="fade" mode="out-in">
             <LoginForm
                 v-if="authStore.type === 'login'"
@@ -53,7 +53,7 @@ const onSubmit = async () => {
 @use '@/shared/styles/variables' as *;
 
 .tile {
-    max-width: 200px;
+    max-width: $auth-tile-max-width;
 }
 
 .fade-enter-active,

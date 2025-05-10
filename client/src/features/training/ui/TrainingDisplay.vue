@@ -129,7 +129,7 @@ const getCharClass = (globalIndex: number): Record<string, boolean> => {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 3px;
+    height: $caret-height;
     background-color: var(--caret-color);
     pointer-events: none;
 }

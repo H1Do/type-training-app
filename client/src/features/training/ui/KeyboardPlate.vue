@@ -112,8 +112,8 @@ function onKeyUp(e: KeyboardEvent) {
 .keyboard-plate {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    padding: 10px;
+    gap: $gap-xs-sm;
+    padding: $plate-padding;
     user-select: none;
 
     &--blurred {
@@ -126,7 +126,7 @@ function onKeyUp(e: KeyboardEvent) {
 
     &__hint {
         position: absolute;
-        max-width: 240px;
+        max-width: $plate-hint-max-width;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -75%);
@@ -135,7 +135,7 @@ function onKeyUp(e: KeyboardEvent) {
 
 .keyboard-row {
     display: flex;
-    gap: 4px;
+    gap: $gap-xs;
     justify-content: center;
 
     &--0 {

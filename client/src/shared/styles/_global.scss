@@ -16,10 +16,10 @@
 }
 
 html {
-    font-size: $font-size;
+    font-size: clamp(16px, 1.67vh, 32px);
 }
-
 body {
     position: relative;
+    margin-inline: auto;
     max-width: 1440px;
 }

@@ -48,7 +48,7 @@ const submitForm = (event: Event) => {
 
 <template>
     <form class="form" @submit="submitForm">
-        <VFlex align="stretch" gap="16px">
+        <VFlex align="stretch" gap="1rem">
             <AppInput
                 type="email"
                 name="email"
@@ -65,7 +65,7 @@ const submitForm = (event: Event) => {
                 @input="updateField('password', $event)"
                 :placeholder="t('auth.password')"
             />
-            <VFlex align="stretch" gap="4px">
+            <VFlex align="stretch" gap="0.25rem">
                 <AppButton type="submit">{{ t('auth.login') }}</AppButton>
                 <AppText
                     v-if="userStore.error"

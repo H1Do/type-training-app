@@ -87,12 +87,12 @@ const selectedOption = computed(() =>
         color: var(--primary-color);
         border: $border-width solid var(--primary-color);
         border-radius: $border-radius;
-        padding: 6px 12px;
-        font-size: 16px;
+        padding: $app-selector-padding;
+        font-size: $app-selector-font-size;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: $app-selector-gap;
         white-space: nowrap;
         transition: background-color $transition-duration,
             color $transition-duration;
@@ -111,19 +111,19 @@ const selectedOption = computed(() =>
 
     &__dropdown {
         position: absolute;
-        top: calc(100% + 4px);
+        top: $app-selector-drop-down-top;
         left: 0;
         background: var(--background-color);
         border: $border-width solid var(--primary-color);
         border-radius: $border-radius;
-        padding: 4px 0;
-        z-index: 10;
+        padding: $app-selector-drop-down-padding;
+        z-index: $app-selector-drop-down-z-index;
         min-width: 100%;
     }
 
     &__option {
-        padding: 6px 12px;
-        font-size: 16px;
+        padding: $app-selector-option-padding;
+        font-size: $app-selector-option-font-size;
         cursor: pointer;
         color: var(--primary-color);
         background: transparent;
@@ -132,7 +132,7 @@ const selectedOption = computed(() =>
         text-align: left;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: $app-selector-option-gap;
         white-space: nowrap;
 
         &:hover {

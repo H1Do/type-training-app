@@ -5,14 +5,14 @@ import * as Icons from 'lucide-vue-next';
 const props = withDefaults(
     defineProps<{
         name: string;
-        size?: number;
+        size?: string;
         color?: string;
-        strokeWidth?: number;
+        strokeWidth?: string;
     }>(),
     {
-        size: 24,
+        size: '1.5rem',
         color: '#000',
-        strokeWidth: 2,
+        strokeWidth: '2px',
     },
 );
 

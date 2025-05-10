@@ -52,7 +52,7 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
 
 <template>
     <AppModal @close="onCancel" class="modal">
-        <VFlex align="center" gap="16px">
+        <VFlex align="center" gap="1rem">
             <h2 class="modal__title">{{ t('stats.trainingResult') }}</h2>
 
             <AppText v-if="!stats.isRated" textStyle="warning">
@@ -78,8 +78,8 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
                 </span>
             </AppText>
 
-            <HFlex align="start" gap="16px">
-                <VFlex justify="between" class="stats" gap="4px">
+            <HFlex align="start" gap="1rem">
+                <VFlex justify="between" class="stats" gap="0.25rem">
                     <VFlex class="stats__item" align="start">
                         <span class="stats__item-title">{{
                             t('training.labels.mode')
@@ -136,7 +136,7 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
                     </VFlex>
                 </VFlex>
 
-                <VFlex align="start" gap="16px">
+                <VFlex align="start" gap="1rem">
                     <PerItemMetricSelector v-model="metric" />
                     <KeyboardStats
                         :layout="resolvedLayout"
@@ -156,7 +156,7 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
 
             <HFlex
                 align="end"
-                gap="16px"
+                gap="1rem"
                 justify="between"
                 class="modal__footer"
             >
@@ -178,10 +178,10 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
 @use '@/shared/styles/variables' as *;
 
 .modal {
-    padding: 1rem;
+    padding: $training-summary-padding;
 
     &__title {
-        font-size: 1.5rem;
+        font-size: $training-summary-title-font-size;
         margin: 0;
     }
 
@@ -191,15 +191,15 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
 }
 
 .stats {
-    font-size: 0.8rem;
+    font-size: $training-summary-stats-font-size;
     border: $border-width solid var(--primary-color);
-    padding: 4px 8px;
+    padding: $training-summary-stats-padding;
     border-radius: $border-radius;
 
     &__item {
         &-title {
             font-weight: bold;
-            margin-right: 4px;
+            margin-right: $training-summary-stats-title-margin-right;
         }
     }
 }

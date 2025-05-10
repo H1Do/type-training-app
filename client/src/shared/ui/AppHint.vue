@@ -82,13 +82,13 @@ onBeforeUnmount(() => {
         color: var(--hint-color);
         border: $border-width solid var(--hint-border-color);
         border-radius: $border-radius;
-        font-size: 0.8rem;
-        padding: 4px 8px;
+        font-size: $hint-font-size;
+        padding: $hint-padding;
         white-space: nowrap;
         pointer-events: none;
-        z-index: 10;
+        z-index: $hint-z-index;
         opacity: 0;
-        transition: opacity 0.2s ease;
+        transition: opacity $transition-duration ease;
     }
 
     &:hover .hover-hint-text {
