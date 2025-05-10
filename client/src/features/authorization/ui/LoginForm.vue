@@ -39,7 +39,7 @@ const updateField = (field: keyof typeof props.modelValue, event: Event) => {
 const submitForm = (event: Event) => {
     event.preventDefault();
     if (!canSubmit.value) {
-        userStore.setError('All fields are required');
+        userStore.setError(t('auth.allFieldsRequired'));
         return;
     }
     emit('submit', props.modelValue);

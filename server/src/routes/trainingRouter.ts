@@ -1,40 +1,35 @@
-import { Request, Router } from 'express';
+import { Router } from 'express';
 import { trainingController } from '../controllers/trainingController';
-import { authMiddleware } from '@/middleware/authMiddleware';
 import type {
     TrainingStartRequest,
     TrainingFinishRequest,
-    TrainingQuery,
 } from '@/types/requestTypes';
+import { createAuthMiddleware } from '@/middleware/authMiddleware';
+import { strictRateLimiter } from '@/middleware/rateLimiter';
 
 export const trainingRouter = Router();
 
-trainingRouter.get(
-    '/prepare',
-    async (req: Request<{}, any, any, TrainingQuery>, res, next) => {
+trainingRouter.post(
+    '/session',
+    createAuthMiddleware(),
+    strictRateLimiter,
+    async (req, res, next) => {
         try {
-            await trainingController.prepare(req, res, next);
+            await trainingController.startSession(
+                req as TrainingStartRequest,
+                res,
+                next,
+            );
         } catch (e) {
             next(e);
         }
     },
 );
 
-trainingRouter.post('/session', authMiddleware, async (req, res, next) => {
-    try {
-        await trainingController.startSession(
-            req as TrainingStartRequest,
-            res,
-            next,
-        );
-    } catch (e) {
-        next(e);
-    }
-});
-
 trainingRouter.post(
     '/session/:id/finish',
-    authMiddleware,
+    strictRateLimiter,
+    createAuthMiddleware(),
     async (req, res, next) => {
         try {
             await trainingController.finishSession(

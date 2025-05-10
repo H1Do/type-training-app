@@ -1,39 +1,52 @@
 import { Router } from 'express';
 import { userController } from '../controllers/userController';
 import { AuthRequest } from '@/types/requestTypes';
-import { authMiddleware } from '@/middleware/authMiddleware';
+import { createAuthMiddleware } from '@/middleware/authMiddleware';
+import {
+    strictRateLimiter,
+    moderateRateLimiter,
+} from '@/middleware/rateLimiter';
 
 export const userRouter = Router();
 
-userRouter.post('/registration', async (req, res, next) => {
+userRouter.post('/registration', strictRateLimiter, async (req, res, next) => {
     try {
         await userController.registration(req as AuthRequest, res, next);
     } catch (error) {
         next(error);
     }
 });
-userRouter.post('/login', async (req, res, next) => {
+
+userRouter.post('/login', strictRateLimiter, async (req, res, next) => {
     try {
         await userController.login(req as AuthRequest, res, next);
     } catch (error) {
         next(error);
     }
 });
-userRouter.post('/logout', async (req, res, next) => {
+
+userRouter.post('/logout', moderateRateLimiter, async (req, res, next) => {
     try {
         await userController.logout(req as AuthRequest, res, next);
     } catch (error) {
         next(error);
     }
 });
-userRouter.post('/change-password', authMiddleware, async (req, res, next) => {
-    try {
-        await userController.changePassword(req as AuthRequest, res, next);
-    } catch (error) {
-        next(error);
-    }
-});
-userRouter.get('/', authMiddleware, async (req, res, next) => {
+
+userRouter.post(
+    '/change-password',
+    strictRateLimiter,
+    createAuthMiddleware(true),
+    async (req, res, next) => {
+        try {
+            await userController.changePassword(req as AuthRequest, res, next);
+        } catch (error) {
+            next(error);
+        }
+    },
+);
+
+userRouter.get('/', createAuthMiddleware(true), async (req, res, next) => {
     try {
         await userController.getUser(req as AuthRequest, res, next);
     } catch (error) {

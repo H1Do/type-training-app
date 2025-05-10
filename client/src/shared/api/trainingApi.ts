@@ -29,12 +29,20 @@ export class TrainingApi {
 
     async startSession(
         mode: TrainingMode,
-        sequence: string[],
         layout: Layout,
+        items?: string,
+        length?: number,
+        isWords?: boolean,
     ): Promise<TrainingSession> {
         const res = await this.httpClient.post<TrainingSession>(
             '/api/training/session',
-            { mode, sequence, layout },
+            {
+                mode,
+                layout,
+                items,
+                length,
+                isWords,
+            },
         );
         return res.data;
     }

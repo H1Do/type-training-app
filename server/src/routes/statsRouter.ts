@@ -3,18 +3,24 @@ import {
     statsController,
     StatsQueryRequest,
 } from '../controllers/statsController';
-import { authMiddleware } from '@/middleware/authMiddleware';
+import { createAuthMiddleware } from '@/middleware/authMiddleware';
+import { moderateRateLimiter } from '@/middleware/rateLimiter';
 
 export const statsRouter = Router();
 
-statsRouter.get('/me', authMiddleware, async (req, res, next) => {
-    try {
-        await statsController.getUserStats(
-            req as unknown as StatsQueryRequest,
-            res,
-            next,
-        );
-    } catch (e) {
-        next(e);
-    }
-});
+statsRouter.get(
+    '/me',
+    moderateRateLimiter,
+    createAuthMiddleware(true),
+    async (req, res, next) => {
+        try {
+            await statsController.getUserStats(
+                req as unknown as StatsQueryRequest,
+                res,
+                next,
+            );
+        } catch (e) {
+            next(e);
+        }
+    },
+);

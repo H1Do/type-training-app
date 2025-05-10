@@ -5,3 +5,4 @@ export { default as LayoutSelector } from './LayoutSelector.vue';
 export { default as PeriodSelector } from './PeriodSelector.vue';
 export { default as ModeSelector } from './ModeSelector.vue';
 export { default as PerItemMetricSelector } from './PerItemMetricSelector.vue';
+export { default as MetricSelector } from './MetricSelector.vue';

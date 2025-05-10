@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useSettingsStore } from '@/features/settings';
 import { useTrainingStore } from '@/features/training';
-import { HFlex, VFlex } from '@/shared/ui';
+import { HFlex, NoDataWrapper, VFlex } from '@/shared/ui';
 import { LayoutSelector, ModeSelector, PeriodSelector } from '@/widgets';
 import { computed, onMounted, ref, watch } from 'vue';
 import { useStatsStore } from '../model/statsStore';
@@ -12,6 +12,7 @@ import { getColorByMetric } from '@/shared/utils';
 import PerItemMetricSelector from '@/widgets/PerItemMetricSelector.vue';
 import { KEYBOARD_LAYOUTS } from '@/shared/config/keyboardLayouts';
 import LeaderboardStats from './LeaderboardStats.vue';
+import SessionChart from './SessionChart.vue';
 
 const statsStore = useStatsStore();
 const trainingStore = useTrainingStore();
@@ -24,7 +25,6 @@ onMounted(() => {
             ? TrainingMode['100PopularWords']
             : trainingStore.mode,
     );
-    statsStore.fetchStats();
 });
 
 watch(
@@ -32,7 +32,6 @@ watch(
     () => {
         statsStore.fetchStats();
     },
-    { immediate: false },
 );
 
 const metric = ref<PerItemStatMetric>('averageReaction');
@@ -46,12 +45,21 @@ const averageStat = computed(() => ({
 }));
 
 const layout = computed(() => KEYBOARD_LAYOUTS[statsStore.layout]);
+
+const noData = computed(() => {
+    return (
+        !statsStore.stats?.fingerStats?.length &&
+        !statsStore.stats?.perCharStats?.length &&
+        !statsStore.stats?.sessions?.length &&
+        !statsStore.stats?.leaderboard?.length
+    );
+});
 </script>
 
 <template>
     <VFlex gap="1rem">
         <HFlex gap="1rem">
-            <VFlex gap="1rem">
+            <VFlex gap="1.5rem">
                 <HFlex gap="1rem">
                     <ModeSelector
                         :modelValue="statsStore.mode"
@@ -68,23 +76,34 @@ const layout = computed(() => KEYBOARD_LAYOUTS[statsStore.layout]);
                 </HFlex>
 
                 <VFlex gap="1rem">
-                    <PerItemMetricSelector v-model="metric" />
-                    <KeyboardStats
-                        :perCharStats="statsStore.stats?.perCharStats ?? []"
-                        :averageStat="averageStat"
-                        :layout="layout"
-                        :metric="metric"
-                        :getColorByMetric="getColorByMetric"
-                    />
-                    <FingerStats
-                        :fingerStats="statsStore.stats?.fingerStats ?? []"
-                        :averageStat="averageStat"
-                        :metric="metric"
-                        :getColorByMetric="getColorByMetric"
-                    />
+                    <NoDataWrapper :noData="noData">
+                        <HFlex gap="1rem">
+                            <LeaderboardStats />
+                            <VFlex gap="1rem">
+                                <PerItemMetricSelector v-model="metric" />
+                                <KeyboardStats
+                                    :perCharStats="
+                                        statsStore.stats?.perCharStats ?? []
+                                    "
+                                    :averageStat="averageStat"
+                                    :layout="layout"
+                                    :metric="metric"
+                                    :getColorByMetric="getColorByMetric"
+                                />
+                                <FingerStats
+                                    :fingerStats="
+                                        statsStore.stats?.fingerStats ?? []
+                                    "
+                                    :averageStat="averageStat"
+                                    :metric="metric"
+                                    :getColorByMetric="getColorByMetric"
+                                />
+                            </VFlex>
+                            <SessionChart />
+                        </HFlex>
+                    </NoDataWrapper>
                 </VFlex>
             </VFlex>
-            <LeaderboardStats />
         </HFlex>
     </VFlex>
 </template>

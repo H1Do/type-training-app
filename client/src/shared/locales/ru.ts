@@ -85,6 +85,12 @@ export const ru = {
         confirmPassword: 'Подтверждение пароля',
         registration: 'Регистрация',
         switch: 'Переключиться на',
+        toRegistration: 'регистрацию',
+        toLogin: 'вход',
+        passwordWeak:
+            'Пароль должен быть не менее 8 символов и содержать заглавные, строчные буквы, цифры и специальные символы.',
+        allFieldsRequired: 'Все поля обязательны',
+        passwordsDoNotMatch: 'Пароли не совпадают',
     },
 
     profile: {
@@ -97,8 +103,6 @@ export const ru = {
         oldPassword: 'Старый пароль',
         newPassword: 'Новый пароль',
         confirmPassword: 'Подтверждение пароля',
-        allFieldsRequired: 'Все поля обязательны',
-        passwordsDoNotMatch: 'Пароли не совпадают',
     },
 
     settings: {
@@ -128,6 +132,7 @@ export const ru = {
         space: 'Пробел',
         notCounted: {
             base: 'Результат не попадёт в статистику',
+            notAuth: 'так как вы не авторизованы',
             custom: 'так как выбран пользовательский режим',
             lowAccuracy: 'из-за слишком низкой точности (меньше 80%)',
             tooManyCorrections:
@@ -146,6 +151,7 @@ export const ru = {
             corrections: 'Кол-во исправлений',
             key: 'Клавиша',
             keyCount: 'Кол-во нажатий',
+            errorsRate: 'Частота ошибок',
         },
         finger: 'Палец',
         fingers: {
@@ -169,5 +175,12 @@ export const ru = {
         leaderboard: {
             title: 'Таблица лидеров',
         },
+        chart: {
+            title: 'График',
+        },
+    },
+
+    ui: {
+        noData: 'Нет данных',
     },
 };

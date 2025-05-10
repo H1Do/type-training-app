@@ -22,13 +22,13 @@ const settingsStore = useSettingsStore();
 const keyboardStore = useKeyboardStore();
 const modalService = useModalService();
 
-const prepareTraining = async () => {
-    await trainingStore.prepare();
+const startTraining = async () => {
+    await trainingStore.start();
 };
 
 const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Escape') {
-        prepareTraining();
+        startTraining();
     }
 };
 
@@ -46,12 +46,12 @@ const onOpenSettings = async () => {
     trainingStore.setCustomIsWords(isWords);
     trainingStore.setCustomLength(length);
     trainingStore.setCustomText(text);
-    prepareTraining();
+    startTraining();
 };
 
 onMounted(() => {
     window.addEventListener('keydown', onKeyDown);
-    prepareTraining();
+    startTraining();
 });
 
 onUnmounted(() => {
@@ -61,7 +61,7 @@ onUnmounted(() => {
 watch(
     () => trainingStore.mode,
     () => {
-        prepareTraining();
+        startTraining();
         keyboardStore.reset();
     },
 );
@@ -90,7 +90,7 @@ watch(
         <AppText class="restart-message">
             {{ t('training.press') }}
             <AppButton
-                @click="prepareTraining"
+                @click="startTraining"
                 buttonStyle="clear"
                 class="clear-button"
             >

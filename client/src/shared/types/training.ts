@@ -1,3 +1,4 @@
+import type { Layout } from './layout';
 import type { TrainingStats } from './stats';
 
 export interface TrainingSession {
@@ -17,6 +18,8 @@ export interface TrainingResult {
         time: number;
         timestamp: number;
     }[];
+    layout: Layout;
+    mode: TrainingMode;
 }
 
 export interface TrainingFinishResponse {

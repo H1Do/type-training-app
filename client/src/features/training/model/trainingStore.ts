@@ -4,6 +4,7 @@ import { TrainingMode, type TrainingSession } from '@/shared/types/training';
 import TrainingSummaryModal from '../ui/TrainingSummaryModal.vue';
 import { useSettingsStore } from '@/features/settings';
 import type { Finger } from '@/shared/types';
+import { AxiosError } from 'axios';
 
 interface TrainingSessionState extends TrainingSession {
     startedAt: number;
@@ -82,50 +83,46 @@ export const useTrainingStore = defineStore('training', {
             this.customIsWords = isWords;
         },
 
-        async prepare() {
+        async start() {
             const settingsStore = useSettingsStore();
-            const trainingStore = useTrainingStore();
 
-            if (trainingStore.isCustomMode && !this.isCustomSettingsSet) {
+            if (this.isCustomMode && !this.isCustomSettingsSet) {
                 this.reset();
                 return;
             }
 
-            this.sequence = await this.trainingApi.prepareSequence(
-                this.mode,
-                settingsStore.layout,
-                this.customText,
-                this.customLength,
-                this.customIsWords || undefined,
-            );
+            try {
+                const session = await this.trainingApi.startSession(
+                    this.mode,
+                    settingsStore.layout,
+                    this.customText,
+                    this.customLength,
+                    this.customIsWords || undefined,
+                );
 
-            this.input = [];
-            this.events = [];
-            this.lastInputTimestamp = 0;
-            this.session = null;
-        },
+                this.sequence = session.sequence;
+                this.input = [];
+                this.events = [];
+                this.lastInputTimestamp = 0;
 
-        async start() {
-            if (this.sequence.length === 0) return;
-
-            const settingsStore = useSettingsStore();
-
-            const session = await this.trainingApi.startSession(
-                this.mode,
-                this.sequence,
-                settingsStore.layout,
-            );
-
-            this.session = {
-                id: session.id,
-                sequence: session.sequence,
-                startedAt: Date.now(),
-                finishedAt: null,
-            };
+                this.session = {
+                    id: session.id,
+                    sequence: session.sequence,
+                    startedAt: 0,
+                    finishedAt: null,
+                };
+            } catch (error) {
+                if (error instanceof AxiosError) {
+                    const message = error?.response?.data?.message;
+                    this.messageService.error(message);
+                }
+            }
         },
 
         async finish() {
             if (!this.session) return;
+
+            const settingsStore = useSettingsStore();
 
             const result = {
                 sessionId: this.session.id,
@@ -133,15 +130,24 @@ export const useTrainingStore = defineStore('training', {
                 finishedAt: Date.now(),
                 input: this.input,
                 events: this.events,
+                layout: settingsStore.layout,
+                mode: this.mode,
             };
 
             this.session.finishedAt = result.finishedAt;
 
-            const response = await this.trainingApi.finishSession(result);
+            try {
+                const response = await this.trainingApi.finishSession(result);
 
-            await this.modalService.open(TrainingSummaryModal, {
-                stats: response.stats,
-            });
+                await this.modalService.open(TrainingSummaryModal, {
+                    stats: response.stats,
+                });
+            } catch (error) {
+                if (error instanceof AxiosError) {
+                    const message = error?.response?.data?.message;
+                    this.messageService.error(message);
+                }
+            }
         },
 
         async processKey(inputChar: string, finger: Finger | null) {
@@ -151,6 +157,11 @@ export const useTrainingStore = defineStore('training', {
 
             if (!this.session) {
                 this.start();
+                return;
+            }
+
+            if (this.session.startedAt === 0) {
+                this.session.startedAt = Date.now();
             }
 
             const expected = this.sequence[this.input.length] || '';

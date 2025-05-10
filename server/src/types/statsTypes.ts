@@ -41,4 +41,14 @@ export interface TrainingStatsDoc {
     createdAt: Date;
 }
 
+export interface SessionDto {
+    accuracy: number;
+    averageReaction: number;
+    cpm: number;
+    count: number;
+    errorsCount: number;
+    errorsRate: number;
+    createdAt: Date;
+}
+
 export type StatsPeriod = 'day' | 'week' | 'month' | 'all';

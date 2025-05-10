@@ -41,16 +41,25 @@ const updateField = (field: keyof typeof props.modelValue, event: Event) => {
     emit('update:error', '');
 };
 
+import { isPasswordStrong } from '@/shared/utils/validatePasswordStrength';
+
 const submitForm = (event: Event) => {
     event.preventDefault();
     if (!canSubmit.value) {
-        userStore.setError('All fields are required');
+        userStore.setError(t('auth.allFieldsRequired'));
         return;
     }
+
     if (props.modelValue.password !== props.modelValue.confirmPassword) {
-        userStore.setError('Passwords do not match');
+        userStore.setError(t('auth.passwordsDoNotMatch'));
         return;
     }
+
+    if (!isPasswordStrong(props.modelValue.password)) {
+        userStore.setError(t('auth.passwordWeak'));
+        return;
+    }
+
     emit('submit', props.modelValue);
 };
 </script>

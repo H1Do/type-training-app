@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouteNames } from '@/app/router/router';
 import { useUserStore } from '@/entities/user';
-import { AppButton, AppIcon } from '@/shared/ui';
+import { AppButton, AppIcon, LogoIcon } from '@/shared/ui';
 import AppLink from '@/shared/ui/AppLink.vue';
 import HFlex from '@/shared/ui/HFlex.vue';
 import { useConfirmDialog, useModalService } from '@/shared/utils';
@@ -33,13 +33,13 @@ const onLogout = async () => {
     <header class="app-header">
         <div class="logo">
             <AppLink :to="RouteNames.MAIN" class="app-link">
-                Type Training App
+                <LogoIcon />
             </AppLink>
         </div>
         <nav class="nav">
             <AppLink :to="RouteNames.MAIN" class="app-link">
                 <AppIcon name="HomeIcon" class="app-link-icon" size="1.25rem" />
-                <span>{{ t('header.main') }}</span>
+                <span class="app-link-text">{{ t('header.main') }}</span>
             </AppLink>
             <AppLink :to="RouteNames.STATS" class="app-link">
                 <AppIcon
@@ -47,26 +47,26 @@ const onLogout = async () => {
                     class="app-link-icon"
                     size="1.25rem"
                 />
-                <span>{{ t('header.stats') }}</span>
+                <span class="app-link-text">{{ t('header.stats') }}</span>
             </AppLink>
             <AppLink :to="RouteNames.LESSONS" class="app-link">
                 <AppIcon name="Book" class="app-link-icon" size="1.25rem" />
-                <span>{{ t('header.lessons') }}</span>
+                <span class="app-link-text">{{ t('header.lessons') }}</span>
             </AppLink>
             <AppLink :to="RouteNames.TRAINING" class="app-link">
                 <AppIcon name="Keyboard" class="app-link-icon" size="1.25rem" />
-                <span>{{ t('header.training') }}</span>
+                <span class="app-link-text">{{ t('header.training') }}</span>
             </AppLink>
             <AppLink :to="RouteNames.SETTINGS" class="app-link">
                 <AppIcon name="Settings" class="app-link-icon" size="1.25rem" />
-                <span>{{ t('header.settings') }}</span>
+                <span class="app-link-text">{{ t('header.settings') }}</span>
             </AppLink>
         </nav>
         <div class="user-actions">
             <HFlex v-if="isAuthenticated" gap="1rem" align="center">
                 <AppLink :to="RouteNames.PROFILE" class="app-link">
                     <AppIcon name="User" class="app-link-icon" size="1.25rem" />
-                    <span>{{ username }}</span>
+                    <span class="app-link-text">{{ username }}</span>
                 </AppLink>
                 <AppButton
                     buttonStyle="clear"
@@ -79,7 +79,7 @@ const onLogout = async () => {
                         class="app-link-icon"
                         size="1.25rem"
                     />
-                    <span>{{ t('header.logout') }}</span>
+                    <span class="app-link-text">{{ t('header.logout') }}</span>
                 </AppButton>
             </HFlex>
             <AppLink v-else :to="RouteNames.AUTH" class="app-link">
@@ -88,7 +88,9 @@ const onLogout = async () => {
                     class="app-link-icon"
                     size="1.25rem"
                 />
-                <span>{{ t('header.login/register') }}</span>
+                <span class="app-link-text">{{
+                    t('header.login/register')
+                }}</span>
             </AppLink>
         </div>
     </header>
@@ -147,5 +149,9 @@ const onLogout = async () => {
 
 .app-link-icon {
     flex-shrink: 0;
+}
+
+.app-link-text {
+    font-weight: 500;
 }
 </style>

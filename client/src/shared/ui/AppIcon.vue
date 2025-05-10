@@ -4,7 +4,7 @@ import * as Icons from 'lucide-vue-next';
 
 const props = withDefaults(
     defineProps<{
-        name: string;
+        name?: string;
         size?: string;
         color?: string;
         strokeWidth?: string;
@@ -25,9 +25,11 @@ const iconComponents = Icons as unknown as IconComponents;
 
 <template>
     <component
+        v-if="props.name"
         :is="iconComponents[props.name]"
         :size="props.size"
         :color="props.color"
         :stroke-width="props.strokeWidth"
     />
+    <slot v-else />
 </template>

@@ -34,10 +34,16 @@ const routes = [
     {
         path: RouteNames.STATS,
         component: () => import('@/pages/StatsPage.vue'),
+        meta: {
+            requiredAuthStatus: true,
+        },
     },
     {
         path: RouteNames.LESSONS,
         component: () => import('@/pages/LessonsPage.vue'),
+        meta: {
+            requiredAuthStatus: true,
+        },
     },
     {
         path: RouteNames.TRAINING,

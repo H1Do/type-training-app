@@ -3,7 +3,7 @@ import { TrainingStats } from '@/models/TrainingStats';
 import { ApiError } from '@/errors/ApiError';
 import { RequestWithUser } from '@/types/requestTypes';
 import { FingerStat, PerCharStat } from '@/types/statsTypes';
-import type { TrainingStatsDoc } from '@/types/statsTypes';
+import type { SessionDto, TrainingStatsDoc } from '@/types/statsTypes';
 import { TrainingMode } from '@/types/trainingTypes';
 import { Layout } from '@/types/keyboardTypes';
 
@@ -135,45 +135,6 @@ export const statsController = {
                 filter,
             ).lean();
 
-            if (!sessions.length) {
-                return res.json({
-                    totalSessions: 0,
-                    accuracy: 100,
-                    cpm: 0,
-                    averageReaction: 0,
-                    perChar: [],
-                    fingerStats: [],
-                    leaderboard: [],
-                    position: null,
-                });
-            }
-
-            const totalSessions = sessions.length;
-            console.log(sessions);
-            const totalInputs = sessions.reduce(
-                (acc, s) =>
-                    acc + s.perCharStats?.reduce((a, c) => a + c.count, 0),
-                0,
-            );
-            const totalCorrect = sessions.reduce(
-                (acc, s) =>
-                    acc +
-                    s.perCharStats?.reduce(
-                        (a, c) => a + (c.count - c.errorsCount),
-                        0,
-                    ),
-                0,
-            );
-
-            const accuracy = Math.round((totalCorrect / totalInputs) * 100);
-            const cpm = Math.round(
-                sessions.reduce((a, s) => a + s.cpm, 0) / totalSessions,
-            );
-            const averageReaction = Math.round(
-                sessions.reduce((a, s) => a + s.averageReaction, 0) /
-                    totalSessions,
-            );
-
             const leaderboardFilter: Record<string, any> = {
                 isLeaderboardEligible: true,
             };
@@ -210,6 +171,45 @@ export const statsController = {
                 isCurrentUser: entry._id.toString() === userId,
             }));
 
+            if (!sessions.length) {
+                return res.json({
+                    totalSessions: 0,
+                    accuracy: 100,
+                    cpm: 0,
+                    averageReaction: 0,
+                    perChar: [],
+                    fingerStats: [],
+                    leaderboard: leaderboard,
+                    position: null,
+                });
+            }
+
+            const totalSessions = sessions.length;
+
+            const totalInputs = sessions.reduce(
+                (acc, s) =>
+                    acc + s.perCharStats?.reduce((a, c) => a + c.count, 0),
+                0,
+            );
+            const totalCorrect = sessions.reduce(
+                (acc, s) =>
+                    acc +
+                    s.perCharStats?.reduce(
+                        (a, c) => a + (c.count - c.errorsCount),
+                        0,
+                    ),
+                0,
+            );
+
+            const accuracy = Math.round((totalCorrect / totalInputs) * 100);
+            const cpm = Math.round(
+                sessions.reduce((a, s) => a + s.cpm, 0) / totalSessions,
+            );
+            const averageReaction = Math.round(
+                sessions.reduce((a, s) => a + s.averageReaction, 0) /
+                    totalSessions,
+            );
+
             const userBest = await TrainingStats.findOne({
                 userId,
                 isLeaderboardEligible: true,
@@ -231,6 +231,16 @@ export const statsController = {
                 position += 1;
             }
 
+            const sessionDtos: SessionDto[] = sessions.map((s) => ({
+                accuracy: s.accuracy,
+                averageReaction: s.averageReaction,
+                cpm: s.cpm,
+                count: s.count,
+                errorsCount: s.errorsCount,
+                errorsRate: s.errorsCount / s.count,
+                createdAt: s.createdAt,
+            }));
+
             return res.json({
                 totalSessions,
                 accuracy,
@@ -241,6 +251,7 @@ export const statsController = {
                 totalTime: sessions.reduce((acc, s) => acc + s.totalTime, 0),
                 perCharStats: mergePerCharStat(sessions),
                 fingerStats: mergeFingerStats(sessions),
+                sessions: sessionDtos,
                 leaderboard,
                 userBestResult: userBest,
                 position,

@@ -27,18 +27,21 @@ const handleCancel = () => emit('resolve', false);
             <AppInput
                 v-model="form.oldPassword"
                 type="password"
+                id="oldPassword"
                 :placeholder="t('profile.oldPassword')"
                 @input="form.error = ''"
             />
             <AppInput
                 v-model="form.newPassword"
                 type="password"
+                id="newPassword"
                 :placeholder="t('profile.newPassword')"
                 @input="form.error = ''"
             />
             <AppInput
                 v-model="form.confirmPassword"
                 type="password"
+                id="confirmPassword"
                 :placeholder="t('profile.confirmPassword')"
                 @input="form.error = ''"
             />

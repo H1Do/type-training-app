@@ -41,6 +41,18 @@ export interface TrainingStats {
     layout: Layout;
 }
 
+export type StatMetric = keyof SessionDto;
+
+export interface SessionDto {
+    accuracy: number;
+    averageReaction: number;
+    cpm: number;
+    count: number;
+    errorsCount: number;
+    errorsRate: number;
+    createdAt: Date;
+}
+
 export interface LeaderboardEntry {
     userId: string;
     username: string;
@@ -66,6 +78,7 @@ export interface StatsResponse {
     perCharStats: PerCharStat[];
     fingerStats: FingerStat[];
     leaderboard: LeaderboardEntry[];
+    sessions: SessionDto[];
     position: number | null;
     userBestResult?: UserBestResult | null;
 }

@@ -94,7 +94,7 @@ const userEntry = computed(() => {
 
     &__title {
         font-size: $leaderboard-title-font-size;
-        font-weight: 500;
+        font-weight: 700;
         margin: 0;
     }
 
@@ -112,7 +112,6 @@ const userEntry = computed(() => {
 
         &--me {
             font-weight: 600;
-            border-width: $border-width-big;
             background-color: var(--blue-adaptive-color);
             color: $white;
         }

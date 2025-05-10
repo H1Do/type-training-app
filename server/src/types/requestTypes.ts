@@ -33,20 +33,6 @@ export type TrainingFinishRequest = RequestWithUser<
     { id: string }
 >;
 
-export type TrainingQuery = {
-    mode: TrainingMode;
-    layout: Layout;
-    items?: string;
-    length?: number;
-    isWords?: boolean;
-};
-
-export type TrainingPrepareRequest = RequestWithUser<
-    undefined,
-    {},
-    TrainingQuery
->;
-
 export type StatsQueryRequest = RequestWithUser<
     undefined,
     {},

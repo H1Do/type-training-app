@@ -7,12 +7,12 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
 const trainingStore = useTrainingStore();
-const now = useTrainingTimer(200);
+const now = useTrainingTimer(100);
 
 const showNotice = computed(() => !trainingStore.events.length);
 
 const isActive = computed(
-    () => trainingStore.session && !trainingStore.isFinished,
+    () => trainingStore.session?.startedAt && !trainingStore.isFinished,
 );
 
 const effectiveNow = computed(() =>
@@ -24,7 +24,7 @@ const effectiveNow = computed(() =>
 const duration = computed(() => {
     if (!trainingStore.session?.startedAt) return 0;
     const raw = (effectiveNow.value - trainingStore.session.startedAt) / 1000;
-    return Math.max(0.1, raw);
+    return Math.max(0, raw);
 });
 
 const cpm = computed(() => {

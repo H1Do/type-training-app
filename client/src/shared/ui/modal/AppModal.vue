@@ -25,10 +25,29 @@ onMounted(() => {
 onBeforeUnmount(() => {
     window.removeEventListener('keydown', handleKeydown);
 });
+
+let mouseDownOnOverlay = false;
+
+function handleMouseDown(e: MouseEvent) {
+    if (e.target === e.currentTarget) {
+        mouseDownOnOverlay = true;
+    }
+}
+
+function handleMouseUp(e: MouseEvent) {
+    if (mouseDownOnOverlay && e.target === e.currentTarget) {
+        emit('close');
+    }
+    mouseDownOnOverlay = false;
+}
 </script>
 
 <template>
-    <div class="app-modal__wrapper" @click.self="emit('close')">
+    <div
+        class="app-modal__wrapper"
+        @mousedown="handleMouseDown"
+        @mouseup="handleMouseUp"
+    >
         <div class="app-modal">
             <component :is="component" v-if="component" />
             <slot v-else />

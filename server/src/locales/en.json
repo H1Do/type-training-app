@@ -18,5 +18,7 @@
     "messages.session_finished": "Session finished",
 
     "errors.layout_required": "Layout is required",
-    "errors.items_required": "Symbols/words are required for custom mode"
+    "errors.items_required": "Symbols/words are required for custom mode",
+
+    "errors.too_many_requests": "Too many requests. Please try again later."
 }

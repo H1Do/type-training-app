@@ -2,7 +2,6 @@ import { Response, NextFunction } from 'express';
 import { ApiError } from '../errors/ApiError';
 import {
     TrainingFinishRequest,
-    TrainingPrepareRequest,
     TrainingStartRequest,
 } from '@/types/requestTypes';
 import { TrainingSession } from '@/models/TrainingSession';
@@ -17,21 +16,14 @@ import { TrainingStats } from '@/models/TrainingStats';
 import { calculateDetailedStats } from '@/utils/training/calculateStats';
 
 class TrainingController {
-    async prepare(
-        req: TrainingPrepareRequest,
+    async startSession(
+        req: TrainingStartRequest,
         res: Response,
         next: NextFunction,
     ) {
         try {
-            const { mode, layout, items, length, isWords } = req.query;
-
-            if (!mode) {
-                return next(
-                    ApiError.badRequest(
-                        req.t?.('errors.mode_required') ?? 'Mode is required',
-                    ),
-                );
-            }
+            const { mode, layout, items, length, isWords } = req.body;
+            const userId = req.user?.id;
 
             if (!layout) {
                 return next(
@@ -41,6 +33,16 @@ class TrainingController {
                     ),
                 );
             }
+
+            if (!mode) {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.mode_required') ?? 'Mode is required',
+                    ),
+                );
+            }
+
+            let sequence: string[];
 
             if (mode === TrainingMode.Custom) {
                 if (!items) {
@@ -53,54 +55,17 @@ class TrainingController {
                 }
 
                 const itemsArray = items.split(' ');
-                const sequence = generateCustomSequence(
-                    itemsArray,
-                    length,
-                    isWords,
-                );
-                return res.status(200).json(sequence);
+                sequence = generateCustomSequence(itemsArray, length, isWords);
+            } else {
+                sequence = generateSequence(mode, layout, length);
             }
 
-            const sequence = generateSequence(mode, layout, length);
-            return res.status(200).json(sequence);
-        } catch (e) {
-            next(e);
-        }
-    }
-
-    async startSession(
-        req: TrainingStartRequest,
-        res: Response,
-        next: NextFunction,
-    ) {
-        try {
-            const { mode, sequence, layout } = req.body;
-            const userId = req.user?.id;
-
-            if (!layout) {
-                return next(
-                    ApiError.badRequest(
-                        req.t?.('errors.layout_required') ??
-                            'Layout is required',
-                    ),
-                );
+            if (!userId) {
+                return res.status(200).json({
+                    id: null,
+                    sequence,
+                });
             }
-
-            if (!mode || !Array.isArray(sequence)) {
-                return next(
-                    ApiError.badRequest(
-                        req.t?.('errors.invalid_session_data') ??
-                            'Mode and sequence are required',
-                    ),
-                );
-            }
-
-            if (!userId)
-                return next(
-                    ApiError.unauthorized(
-                        req.t?.('errors.unauthorized') ?? 'Unauthorized',
-                    ),
-                );
 
             const session = await TrainingSession.create({
                 userId,
@@ -109,7 +74,6 @@ class TrainingController {
                 sequence,
                 input: [],
                 events: [],
-                startedAt: Date.now(),
             });
 
             return res.status(201).json({
@@ -128,32 +92,48 @@ class TrainingController {
     ) {
         try {
             const { id } = req.params;
-            const { input, events, finishedAt, startedAt } = req.body;
+            const {
+                input,
+                events,
+                finishedAt,
+                startedAt,
+                layout: reqLayout,
+                mode: reqMode,
+            } = req.body;
             const userId = req.user?.id;
 
-            if (!userId)
-                return next(
-                    ApiError.unauthorized(
-                        req.t?.('errors.unauthorized') ?? 'Unauthorized',
-                    ),
-                );
+            const stats = calculateDetailedStats(events, startedAt, finishedAt);
+
+            if (!id || !userId) {
+                return res.status(200).json({
+                    message:
+                        req.t?.('messages.session_finished') ??
+                        'Session finished',
+                    stats: {
+                        ...stats,
+                        layout: reqLayout,
+                        mode: reqMode,
+                        isRated: false,
+                        isLeaderboardEligible: false,
+                    },
+                });
+            }
 
             const session = await TrainingSession.findOne({ _id: id, userId });
-            if (!session)
+            if (!session) {
                 return next(
                     ApiError.notFound(
                         req.t?.('errors.session_not_found') ??
                             'Session not found',
                     ),
                 );
+            }
 
             session.input = input;
             session.events = events;
             session.startedAt = startedAt;
             session.finishedAt = finishedAt;
             await session.save();
-
-            const stats = calculateDetailedStats(events, startedAt, finishedAt);
 
             const { layout, mode } = session;
             const isRated =

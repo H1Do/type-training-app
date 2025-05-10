@@ -16,7 +16,9 @@ export type TrainingPools = Record<TrainingMode, string | string[]>;
 export interface StartSessionRequest {
     mode: TrainingMode;
     layout: Layout;
-    sequence: string[];
+    items?: string;
+    length?: number;
+    isWords?: boolean;
 }
 
 export interface InputEventRecord {
@@ -33,6 +35,8 @@ export interface FinishSessionRequest {
     finishedAt: number;
     input: string[];
     events: InputEventRecord[];
+    layout?: Layout;
+    mode?: TrainingMode;
 }
 
 export interface TrainingSessionDoc {

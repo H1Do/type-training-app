@@ -22,9 +22,12 @@ import type {
     TrainingStats,
 } from '@/shared/types';
 import { PerItemMetricSelector } from '@/widgets';
+import { useUserStore } from '@/entities/user';
 
 const { t } = useI18n();
+
 const trainingStore = useTrainingStore();
+const userStore = useUserStore();
 
 const props = defineProps<{ stats: TrainingStats }>();
 
@@ -44,7 +47,7 @@ const emit = defineEmits<{
 
 const onCancel = () => {
     emit('resolve', false);
-    trainingStore.prepare();
+    trainingStore.start();
 };
 
 const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
@@ -57,7 +60,10 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
 
             <AppText v-if="!stats.isRated" textStyle="warning">
                 {{ t('stats.notCounted.base') }}
-                <span v-if="stats.mode === TrainingMode.Custom">
+                <span v-if="!userStore.isAuthenticated">
+                    {{ t('stats.notCounted.notAuth') }}
+                </span>
+                <span v-else-if="stats.mode === TrainingMode.Custom">
                     {{ t('stats.notCounted.custom') }}
                 </span>
                 <span v-else-if="stats.accuracy < 80">

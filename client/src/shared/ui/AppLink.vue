@@ -71,7 +71,6 @@ withDefaults(
         background: none;
         border: none;
         padding: 0;
-        text-align: left;
         cursor: pointer;
         transition: color $transition-duration;
 

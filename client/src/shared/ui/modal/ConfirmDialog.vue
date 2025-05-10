@@ -74,19 +74,23 @@ const onConfirm = () => emit('resolve', true);
 
         .cancel {
             background-color: var(--decline-color);
-            color: white;
+            border-color: var(--decline-color);
+            color: $white;
 
             &:hover {
                 background-color: var(--decline-color-hover);
+                color: $white;
             }
         }
 
         .accept {
             background-color: var(--accept-color);
-            color: white;
+            border-color: var(--accept-color);
+            color: $white;
 
             &:hover {
                 background-color: var(--accept-color-hover);
+                color: $white;
             }
         }
     }

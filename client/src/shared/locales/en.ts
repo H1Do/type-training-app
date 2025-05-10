@@ -84,6 +84,12 @@ export const en = {
         confirmPassword: 'Confirm password',
         registration: 'Registration',
         switch: 'Switch to',
+        toRegistration: 'registration',
+        toLogin: 'login',
+        passwordWeak:
+            'Password must be at least 8 characters and include uppercase, lowercase, numbers, and symbols.',
+        allFieldsRequired: 'All fields are required',
+        passwordsDoNotMatch: 'Passwords do not match',
     },
 
     profile: {
@@ -96,8 +102,6 @@ export const en = {
         oldPassword: 'Old password',
         newPassword: 'New password',
         confirmPassword: 'Confirm password',
-        allFieldsRequired: 'All fields are required',
-        passwordsDoNotMatch: 'Passwords do not match',
     },
 
     settings: {
@@ -127,6 +131,7 @@ export const en = {
         space: 'Space',
         notCounted: {
             base: 'Result will not be included in the statistics',
+            notAuth: 'due to not being logged in',
             custom: 'because custom mode was selected',
             lowAccuracy: 'due to low accuracy (less than 80%)',
             tooManyCorrections: 'due to too many corrections (more than 10)',
@@ -144,6 +149,7 @@ export const en = {
             corrections: 'Corrections (total)',
             key: 'Key',
             keyCount: 'Pressed (total)',
+            errorsRate: 'Errors rate',
         },
         finger: 'Finger',
         fingers: {
@@ -167,5 +173,9 @@ export const en = {
         leaderboard: {
             title: 'Leaderboard',
         },
+    },
+
+    ui: {
+        noData: 'No data',
     },
 };

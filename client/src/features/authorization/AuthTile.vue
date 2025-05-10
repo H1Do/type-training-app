@@ -38,12 +38,16 @@ const onSubmit = async () => {
             />
         </Transition>
 
-        <AppLink type="button" @click="authStore.toggleType">
+        <AppLink
+            type="button"
+            @click="authStore.toggleType"
+            class="switch-link"
+        >
             {{ t('auth.switch') }}
             {{
                 authStore.type === 'login'
-                    ? t('auth.registration')
-                    : t('auth.login')
+                    ? t('auth.toRegistration')
+                    : t('auth.toLogin')
             }}
         </AppLink>
     </VFlex>
@@ -54,6 +58,10 @@ const onSubmit = async () => {
 
 .tile {
     max-width: $auth-tile-max-width;
+}
+
+.switch-link {
+    text-align: center;
 }
 
 .fade-enter-active,
