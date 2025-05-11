@@ -20,6 +20,7 @@ export interface TrainingResult {
     }[];
     layout: Layout;
     mode: TrainingMode;
+    sequence: string[];
 }
 
 export interface TrainingFinishResponse {

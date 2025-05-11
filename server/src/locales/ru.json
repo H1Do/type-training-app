@@ -20,5 +20,11 @@
     "errors.layout_required": "Раскладка обязательна",
     "errors.items_required": "Необходимы символы/слова для пользовательского режима",
 
-    "errors.too_many_requests": "Слишком много запросов. Пожалуйста, попробуйте позже."
+    "errors.too_many_requests": "Слишком много запросов. Пожалуйста, попробуйте позже.",
+
+    "messages.lesson_completed": "Урок завершён",
+    "messages.low_accuracy": "Недостаточная точность",
+    "messages.low_speed": "Слишком низкая скорость печати",
+
+    "errors.lesson_not_found": "Урок не найден"
 }

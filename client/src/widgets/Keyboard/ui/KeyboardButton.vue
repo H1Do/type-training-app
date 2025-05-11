@@ -1,32 +1,26 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useKeyboardStore } from '../model/keyboardStore';
-import type { KeyboardKey } from '@/shared/types';
-import { Difficulty } from '@/shared/types';
-import { useSettingsStore } from '../../settings/model/settings';
+import { type KeyboardKey, Difficulty } from '@/shared/types';
 
-const { keyData } = defineProps<{ keyData: KeyboardKey }>();
+const props = defineProps<{
+    keyData: KeyboardKey;
+    pressedKeyCode: string;
+    hintedKeyCode: string;
+    isError: boolean;
+    isShiftPressed: boolean;
+    difficulty: Difficulty;
+}>();
 
-const keyboardStore = useKeyboardStore();
-const settingsStore = useSettingsStore();
+const isHinted = computed(() => props.keyData.code === props.hintedKeyCode);
+const isActive = computed(() => props.keyData.code === props.pressedKeyCode);
+const isErrored = computed(() => isActive.value && props.isError);
 
-const isHinted = computed(() => keyData.code === keyboardStore.hintedKeyCode);
-const isActive = computed(() => keyData.code === keyboardStore.pressedKeyCode);
-const isError = computed(
-    () =>
-        keyData.code === keyboardStore.pressedKeyCode && keyboardStore.isError,
-);
-
-const easyMode = computed(() => settingsStore.difficulty === Difficulty.Easy);
-const mediumMode = computed(
-    () => settingsStore.difficulty === Difficulty.Medium,
-);
-const expertMode = computed(
-    () => settingsStore.difficulty === Difficulty.Expert,
-);
+const easyMode = computed(() => props.difficulty === Difficulty.Easy);
+const mediumMode = computed(() => props.difficulty === Difficulty.Medium);
+const expertMode = computed(() => props.difficulty === Difficulty.Expert);
 
 const displayedSymbol = computed(() =>
-    keyboardStore.isShiftPressed ? keyData.upper : keyData.lower,
+    props.isShiftPressed ? props.keyData.upper : props.keyData.lower,
 );
 </script>
 
@@ -36,7 +30,7 @@ const displayedSymbol = computed(() =>
         :class="{
             'keyboard-button--active': isActive && !expertMode,
             'keyboard-button--hinted': isHinted && (easyMode || mediumMode),
-            'keyboard-button--error': isError && (easyMode || mediumMode),
+            'keyboard-button--error': isErrored && (easyMode || mediumMode),
             'keyboard-button--space': keyData.code === 'Space',
             'keyboard-button--backspace': keyData.code === 'Backspace',
             [`keyboard-button--finger-${keyData.finger}`]: easyMode,

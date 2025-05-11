@@ -112,6 +112,9 @@ const chartOptions: import('chart.js').ChartOptions<'line'> = {
     &__canvas {
         width: 100%;
         height: $chart-height;
+        border: $border-width solid var(--primary-color);
+        padding: 0.25rem;
+        border-radius: $border-radius;
     }
 }
 </style>

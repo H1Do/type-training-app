@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref } from 'vue';
-import { useKeyboardStore } from '../model/keyboardStore';
 import { Difficulty } from '@/shared/types';
-import { useSettingsStore } from '../../settings/model/settings';
 
-const keyboardStore = useKeyboardStore();
-const settingsStore = useSettingsStore();
+const props = defineProps<{
+    isShiftRequired: boolean;
+    difficulty: Difficulty;
+}>();
 
-const isHinted = computed(() => keyboardStore.isShiftRequired);
 const isActive = ref(false);
 
 const onKeyDown = (e: KeyboardEvent) => {
@@ -32,12 +31,12 @@ onUnmounted(() => {
     window.removeEventListener('keyup', onKeyUp);
 });
 
-const easyMode = computed(() => settingsStore.difficulty === Difficulty.Easy);
-const mediumMode = computed(
-    () => settingsStore.difficulty === Difficulty.Medium,
-);
-const expertMode = computed(
-    () => settingsStore.difficulty === Difficulty.Expert,
+const easyMode = computed(() => props.difficulty === Difficulty.Easy);
+const mediumMode = computed(() => props.difficulty === Difficulty.Medium);
+const expertMode = computed(() => props.difficulty === Difficulty.Expert);
+
+const isHinted = computed(
+    () => props.isShiftRequired && (easyMode.value || mediumMode.value),
 );
 </script>
 
@@ -46,11 +45,11 @@ const expertMode = computed(
         class="shift-button"
         :class="{
             'shift-button--active': isActive && !expertMode,
-            'shift-button--hinted': isHinted && (easyMode || mediumMode),
+            'shift-button--hinted': isHinted,
             'shift-button--zone': easyMode,
         }"
     >
-        <span class="keyboard-button__symbol"> Shift </span>
+        <span class="keyboard-button__symbol">Shift</span>
     </div>
 </template>
 

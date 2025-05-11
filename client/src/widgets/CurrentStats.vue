@@ -1,52 +1,54 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useTrainingStore } from '../model/trainingStore';
 import { useTrainingTimer } from '@/shared/utils';
 import { useI18n } from 'vue-i18n';
+import type { InputEventRecord } from '@/shared/types';
 
 const { t } = useI18n();
 
-const trainingStore = useTrainingStore();
+const props = defineProps<{
+    startedAt: number | null;
+    finishedAt: number | null;
+    input: string[];
+    undoCount: number;
+    events: InputEventRecord[];
+    isCustomMode: boolean;
+    isCustomSettingsSet: boolean;
+}>();
+
 const now = useTrainingTimer(100);
 
-const showNotice = computed(() => !trainingStore.events.length);
+const showNotice = computed(() => !props.events.length);
 
-const isActive = computed(
-    () => trainingStore.session?.startedAt && !trainingStore.isFinished,
-);
+const isActive = computed(() => props.startedAt && !props.finishedAt);
 
 const effectiveNow = computed(() =>
-    isActive.value
-        ? now.value
-        : trainingStore.session?.finishedAt ?? Date.now(),
+    isActive.value ? now.value : props.finishedAt ?? Date.now(),
 );
 
 const duration = computed(() => {
-    if (!trainingStore.session?.startedAt) return 0;
-    const raw = (effectiveNow.value - trainingStore.session.startedAt) / 1000;
+    if (!props.startedAt) return 0;
+    const raw = (effectiveNow.value - props.startedAt) / 1000;
     return Math.max(0, raw);
 });
 
 const cpm = computed(() => {
-    if (!trainingStore.session?.startedAt) return 0;
-    const charCount = trainingStore.input.length;
+    const charCount = props.input.length;
     return duration.value === 0
         ? 0
         : Math.round((charCount / duration.value) * 60);
 });
 
 const reaction = computed(() => {
-    if (!trainingStore.session?.startedAt) return 0;
-    const times = trainingStore.events
+    const times = props.events
         .filter((e) => e.type === 'input' && e.time)
-        .map((e) => e.time);
+        .map((e) => e.time ?? 0);
     if (!times.length) return 0;
     return Math.round(times.reduce((a, b) => a + b, 0) / times.length);
 });
 
 const accuracy = computed(() => {
-    if (!trainingStore.session?.startedAt) return 100;
-    const inputs = trainingStore.events.filter((e) => e.type === 'input');
+    const inputs = props.events.filter((e) => e.type === 'input');
     const correct = inputs.filter((e) => e.actual === e.expected).length;
     if (!inputs.length) return 100;
     return Math.round((correct / inputs.length) * 100);
@@ -63,21 +65,19 @@ const stats = computed(() => [
         label: t('training.reaction'),
         value: `${reaction.value}${t('training.ms')}`,
     },
-    { label: t('training.undo'), value: trainingStore.undoCount },
+    { label: t('training.undo'), value: props.undoCount },
 ]);
 </script>
 
 <template>
-    <div class="training-stats">
+    <div class="current-stats">
         <div
-            v-if="
-                trainingStore.isCustomMode && !trainingStore.isCustomSettingsSet
-            "
-            class="training-stats__overlay"
+            v-if="props.isCustomMode && !props.isCustomSettingsSet"
+            class="current-stats__overlay"
         >
             {{ t('training.settingsNotice') }}
         </div>
-        <div v-else-if="showNotice" class="training-stats__overlay">
+        <div v-else-if="showNotice" class="current-stats__overlay">
             {{ t('training.startNotice') }}
         </div>
 
@@ -91,27 +91,27 @@ const stats = computed(() => [
 <style scoped lang="scss">
 @use '@/shared/styles/variables' as *;
 
-.training-stats {
+.current-stats {
     position: relative;
     display: flex;
     justify-content: space-between;
-    padding: $training-stats-padding;
+    padding: $current-stats-padding;
     font-family: 'Fira Code', monospace;
-    font-size: $training-stats-font-size;
+    font-size: $current-stats-font-size;
     color: var(--secondary-color);
     width: 100%;
     overflow: hidden;
 }
 
-.training-stats__overlay {
+.current-stats__overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     backdrop-filter: blur(3px);
-    color: ver(--secondary-color);
-    font-size: $training-stats-overlay-font-size;
+    color: var(--secondary-color);
+    font-size: $current-stats-overlay-font-size;
     font-weight: 700;
     display: flex;
     align-items: center;
@@ -123,17 +123,17 @@ const stats = computed(() => [
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: $training-stats-stat-min-width;
+    min-width: $current-stats-stat-min-width;
 
     &__label {
-        font-size: $training-stats-stat-label-font-size;
+        font-size: $current-stats-stat-label-font-size;
         color: $gray;
-        margin-bottom: $training-stats-stat-margin-bottom;
+        margin-bottom: $current-stats-stat-margin-bottom;
     }
 
     &__value {
         font-weight: 700;
-        font-size: $training-stats-stat-value-font-size;
+        font-size: $current-stats-stat-value-font-size;
     }
 }
 </style>

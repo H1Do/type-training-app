@@ -1,7 +1,13 @@
 import { createApp, watch } from 'vue';
 import App from './app/App.vue';
 import { createPinia } from 'pinia';
-import { HttpClient, TrainingApi, UserApi } from './shared/api';
+import {
+    HttpClient,
+    LessonsApi,
+    StatsApi,
+    TrainingApi,
+    UserApi,
+} from './shared/api';
 import { MessageService, ModalService } from './app/providers';
 import { router } from './app/router';
 import { useUserStore } from './entities/user';
@@ -10,7 +16,6 @@ import { createI18n } from 'vue-i18n';
 import { useSettingsStore } from './features/settings';
 import { Localization } from './shared/types';
 import { en, ru } from './shared/locales';
-import { StatsApi } from './shared/api/statsApi';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -19,6 +24,7 @@ const httpClient = new HttpClient();
 const userApi = new UserApi(httpClient);
 const trainingApi = new TrainingApi(httpClient);
 const statsApi = new StatsApi(httpClient);
+const lessonsApi = new LessonsApi(httpClient);
 const modalService = new ModalService();
 const messageService = new MessageService();
 
@@ -50,6 +56,7 @@ pinia.use(({ store }) => {
     store.userApi = userApi;
     store.trainingApi = trainingApi;
     store.statsApi = statsApi;
+    store.lessonsApi = lessonsApi;
     store.modalService = modalService;
     store.messageService = messageService;
     store.router = router;

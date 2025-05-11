@@ -30,6 +30,7 @@ export interface TrainingStatsDoc {
     accuracy: number;
     count: number;
     errorsCount: number;
+    textErrorsCount: number;
     corrections: number;
     averageReaction: number;
     cpm: number;
@@ -47,6 +48,7 @@ export interface SessionDto {
     cpm: number;
     count: number;
     errorsCount: number;
+    textErrorsCount: number;
     errorsRate: number;
     createdAt: Date;
 }

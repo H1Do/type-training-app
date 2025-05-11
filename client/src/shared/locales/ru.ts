@@ -135,19 +135,22 @@ export const ru = {
             notAuth: 'так как вы не авторизованы',
             custom: 'так как выбран пользовательский режим',
             lowAccuracy: 'из-за слишком низкой точности (меньше 80%)',
-            tooManyCorrections:
-                'из-за большого количества исправлений (больше 10)',
+            tooManyTextErrors:
+                'из-за большого количества ошибок в тексте (больше 10)',
         },
         leaderboardDisqualified: {
             base: 'Результат не будет учитываться в таблице лидеров',
             lowAccuracy: 'из-за низкой точности (меньше 90%)',
+            tooManyCorrections:
+                'из-за большого количества исправлений (больше 10)',
         },
         metrics: {
             accuracy: 'Точность',
             cpm: 'СВМ',
             reaction: 'Средняя реакция',
             time: 'Время',
-            errorsCount: 'Кол-во ошибок',
+            errorsCount: 'Кол-во ошибочных нажатий',
+            textErrorsCount: 'Кол-во ошибок в тексте',
             corrections: 'Кол-во исправлений',
             key: 'Клавиша',
             keyCount: 'Кол-во нажатий',
@@ -176,8 +179,21 @@ export const ru = {
             title: 'Таблица лидеров',
         },
         chart: {
-            title: 'График',
+            title: 'Статистика сессий',
         },
+        sessions: {
+            title: 'Карта нажатий',
+        },
+    },
+
+    lessons: {
+        title: 'Уроки',
+        layout: 'Раскладка',
+        description: 'Зажмите и ',
+        prevLessons: 'Предыдущие уроки',
+        nextLessons: 'Следующие уроки',
+        prevLesson: 'Предыдущий урок',
+        nextLesson: 'Следующий урок',
     },
 
     ui: {

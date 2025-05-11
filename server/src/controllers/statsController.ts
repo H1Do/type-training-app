@@ -1,101 +1,15 @@
 import { Response, NextFunction } from 'express';
 import { TrainingStats } from '@/models/TrainingStats';
 import { ApiError } from '@/errors/ApiError';
-import { RequestWithUser } from '@/types/requestTypes';
+import { StatsQueryRequest } from '@/types/requestTypes';
 import { FingerStat, PerCharStat } from '@/types/statsTypes';
-import type { SessionDto, TrainingStatsDoc } from '@/types/statsTypes';
-import { TrainingMode } from '@/types/trainingTypes';
-import { Layout } from '@/types/keyboardTypes';
+import type {
+    SessionDto,
+    StatsPeriod,
+    TrainingStatsDoc,
+} from '@/types/statsTypes';
 
-export type StatsPeriod = 'day' | 'week' | 'month' | 'all';
-
-export type StatsQueryRequest = RequestWithUser<
-    undefined,
-    {},
-    {
-        since?: StatsPeriod;
-        mode?: TrainingMode;
-        layout?: Layout;
-    }
->;
-
-const mergePerCharStat = (sessions: TrainingStatsDoc[]): PerCharStat[] => {
-    const map = new Map<
-        string,
-        { count: number; errorsCount: number; totalTime: number }
-    >();
-
-    for (const session of sessions) {
-        if (!session.perCharStats) continue;
-
-        for (const charStat of session.perCharStats) {
-            const existing = map.get(charStat.char) ?? {
-                count: 0,
-                errorsCount: 0,
-                totalTime: 0,
-            };
-            existing.count += charStat.count;
-            existing.errorsCount += charStat.errorsCount;
-            existing.totalTime += charStat.totalTime;
-            map.set(charStat.char, existing);
-        }
-    }
-
-    return Array.from(map.entries()).map(([char, data]) => ({
-        char,
-        count: data.count,
-        errorsCount: data.errorsCount,
-        totalTime: data.totalTime,
-        averageReaction: Math.round(data.totalTime / data.count),
-        accuracy: Math.round(
-            ((data.count - data.errorsCount) / data.count) * 100,
-        ),
-    }));
-};
-
-const mergeFingerStats = (sessions: TrainingStatsDoc[]): FingerStat[] => {
-    const map = new Map<
-        string,
-        {
-            chars: Set<string>;
-            count: number;
-            errorsCount: number;
-            totalTime: number;
-        }
-    >();
-
-    for (const session of sessions) {
-        if (!session.fingerStats) continue;
-
-        for (const finger of session.fingerStats ?? []) {
-            const existing = map.get(finger.finger) ?? {
-                chars: new Set<string>(),
-                count: 0,
-                errorsCount: 0,
-                totalTime: 0,
-            };
-            finger.chars.forEach((c: string) => existing.chars.add(c));
-            existing.count += finger.count;
-            existing.errorsCount += finger.errorsCount;
-            existing.totalTime += finger.totalTime;
-            map.set(finger.finger, existing);
-        }
-    }
-
-    return Array.from(map.entries()).map(([finger, data]) => ({
-        finger,
-        chars: Array.from(data.chars),
-        count: data.count,
-        errorsCount: data.errorsCount,
-        totalTime: data.totalTime,
-        averageReaction: Math.round(data.totalTime / data.count),
-        accuracy: Math.round(
-            ((data.count - data.errorsCount) / data.count) * 100,
-        ),
-    }));
-};
-
-export const statsController = {
+export const StatsController = {
     async getUserStats(
         req: StatsQueryRequest,
         res: Response,
@@ -237,6 +151,7 @@ export const statsController = {
                 cpm: s.cpm,
                 count: s.count,
                 errorsCount: s.errorsCount,
+                textErrorsCount: s.textErrorsCount,
                 errorsRate: s.errorsCount / s.count,
                 createdAt: s.createdAt,
             }));
@@ -248,6 +163,10 @@ export const statsController = {
                 averageReaction,
                 count: totalInputs,
                 errorsCount: totalInputs - totalCorrect,
+                totalTextErrorsCount: sessions.reduce(
+                    (a, s) => a + s.textErrorsCount,
+                    0,
+                ),
                 totalTime: sessions.reduce((acc, s) => acc + s.totalTime, 0),
                 perCharStats: mergePerCharStat(sessions),
                 fingerStats: mergeFingerStats(sessions),
@@ -261,3 +180,79 @@ export const statsController = {
         }
     },
 };
+
+function mergePerCharStat(sessions: TrainingStatsDoc[]): PerCharStat[] {
+    const map = new Map<
+        string,
+        { count: number; errorsCount: number; totalTime: number }
+    >();
+
+    for (const session of sessions) {
+        if (!session.perCharStats) continue;
+
+        for (const charStat of session.perCharStats) {
+            const existing = map.get(charStat.char) ?? {
+                count: 0,
+                errorsCount: 0,
+                totalTime: 0,
+            };
+            existing.count += charStat.count;
+            existing.errorsCount += charStat.errorsCount;
+            existing.totalTime += charStat.totalTime;
+            map.set(charStat.char, existing);
+        }
+    }
+
+    return Array.from(map.entries()).map(([char, data]) => ({
+        char,
+        count: data.count,
+        errorsCount: data.errorsCount,
+        totalTime: data.totalTime,
+        averageReaction: Math.round(data.totalTime / data.count),
+        accuracy: Math.round(
+            ((data.count - data.errorsCount) / data.count) * 100,
+        ),
+    }));
+}
+
+function mergeFingerStats(sessions: TrainingStatsDoc[]): FingerStat[] {
+    const map = new Map<
+        string,
+        {
+            chars: Set<string>;
+            count: number;
+            errorsCount: number;
+            totalTime: number;
+        }
+    >();
+
+    for (const session of sessions) {
+        if (!session.fingerStats) continue;
+
+        for (const finger of session.fingerStats ?? []) {
+            const existing = map.get(finger.finger) ?? {
+                chars: new Set<string>(),
+                count: 0,
+                errorsCount: 0,
+                totalTime: 0,
+            };
+            finger.chars.forEach((c: string) => existing.chars.add(c));
+            existing.count += finger.count;
+            existing.errorsCount += finger.errorsCount;
+            existing.totalTime += finger.totalTime;
+            map.set(finger.finger, existing);
+        }
+    }
+
+    return Array.from(map.entries()).map(([finger, data]) => ({
+        finger,
+        chars: Array.from(data.chars),
+        count: data.count,
+        errorsCount: data.errorsCount,
+        totalTime: data.totalTime,
+        averageReaction: Math.round(data.totalTime / data.count),
+        accuracy: Math.round(
+            ((data.count - data.errorsCount) / data.count) * 100,
+        ),
+    }));
+}

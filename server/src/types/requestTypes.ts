@@ -42,3 +42,15 @@ export type StatsQueryRequest = RequestWithUser<
         layout?: Layout;
     }
 >;
+
+export type LessonCompleteRequest = RequestWithUser<
+    {
+        cpm: number;
+        accuracy: number;
+    },
+    { id: string }
+>;
+
+export type LessonGetByIdRequest = RequestWithUser<undefined, { id: string }>;
+
+export type LessonGetAllRequest = RequestWithUser;

@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, watch } from 'vue';
-import KeyboardPlate from './ui/KeyboardPlate.vue';
-import TrainingDisplay from './ui/TrainingDisplay.vue';
 import { AppButton, AppIcon, AppText, HFlex, VFlex } from '@/shared/ui';
-import TrainingStats from './ui/TrainingStats.vue';
 import { useTrainingStore } from './model/trainingStore';
 import { useI18n } from 'vue-i18n';
 import { TrainingMode } from '@/shared/types/training';
@@ -12,8 +9,14 @@ import CustomSettingsModal, {
     type ConfigurationResult,
 } from './ui/CustomConfigurationModal.vue';
 import { useSettingsStore } from '../settings';
-import { useKeyboardStore } from './model/keyboardStore';
-import { ModeSelector } from '@/widgets';
+import {
+    CharDisplay,
+    CurrentStats,
+    KeyboardPlate,
+    ModeSelector,
+    useKeyboardStore,
+} from '@/widgets';
+import { KEYBOARD_LAYOUTS } from '@/shared/config/keyboardLayouts';
 
 const { t } = useI18n();
 
@@ -84,9 +87,27 @@ watch(
                 {{ t('training.configuration') }}
             </AppButton>
         </HFlex>
-        <TrainingDisplay />
-        <TrainingStats />
-        <KeyboardPlate />
+        <CharDisplay
+            :sequence="trainingStore.sequence"
+            :input="trainingStore.input"
+            :currentIndex="trainingStore.currentIndex"
+        />
+        <CurrentStats
+            :startedAt="trainingStore.session?.startedAt ?? null"
+            :finishedAt="trainingStore.session?.finishedAt ?? null"
+            :input="trainingStore.input"
+            :undoCount="trainingStore.undoCount"
+            :events="trainingStore.events"
+            :isCustomMode="trainingStore.isCustomMode"
+            :isCustomSettingsSet="trainingStore.isCustomSettingsSet"
+        />
+        <KeyboardPlate
+            :layout="KEYBOARD_LAYOUTS[settingsStore.layout]"
+            :currentSymbol="trainingStore.currentSymbol"
+            :difficulty="settingsStore.difficulty"
+            :onBackspace="trainingStore.backspace"
+            :onProcessKey="trainingStore.processKey"
+        />
         <AppText class="restart-message">
             {{ t('training.press') }}
             <AppButton

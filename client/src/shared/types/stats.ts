@@ -35,6 +35,7 @@ export interface TrainingStats {
     fingerStats: FingerStat[];
     corrections: number;
     errorsCount: number;
+    textErrorsCount: number;
     isRated: boolean;
     isLeaderboardEligible: boolean;
     mode: TrainingMode;
@@ -49,6 +50,7 @@ export interface SessionDto {
     cpm: number;
     count: number;
     errorsCount: number;
+    textErrorsCount: number;
     errorsRate: number;
     createdAt: Date;
 }
@@ -73,6 +75,7 @@ export interface StatsResponse {
     cpm: number;
     count: number;
     errorsCount: number;
+    textErrorsCount: number;
     totalTime: number;
     averageReaction: number;
     perCharStats: PerCharStat[];

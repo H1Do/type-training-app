@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n';
+import AppLoader from './AppLoader.vue';
 
 defineProps<{
     noData: boolean;
+    isLoading?: boolean;
     message?: string;
 }>();
 
@@ -15,7 +17,11 @@ const { t } = useI18n();
             <slot />
         </div>
 
-        <div v-if="noData" class="overlay">
+        <div v-if="isLoading && noData" class="overlay">
+            <AppLoader />
+        </div>
+
+        <div v-else-if="noData" class="overlay">
             {{ message || t('ui.noData') }}
         </div>
     </div>

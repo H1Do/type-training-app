@@ -20,5 +20,11 @@
     "errors.layout_required": "Layout is required",
     "errors.items_required": "Symbols/words are required for custom mode",
 
-    "errors.too_many_requests": "Too many requests. Please try again later."
+    "errors.too_many_requests": "Too many requests. Please try again later.",
+
+    "messages.lesson_completed": "Lesson completed",
+    "messages.low_accuracy": "Minimum accuracy not reached",
+    "messages.low_speed": "Typing speed is too low",
+
+    "errors.lesson_not_found": "Lesson not found"
 }

@@ -4,11 +4,17 @@ export function calculateDetailedStats(
     events: InputEventRecord[],
     startedAt: number,
     finishedAt: number,
+    input: string[],
+    sequence: string[],
 ) {
     const inputs = events.filter((e) => e.type === 'input');
     const correct = inputs.filter((e) => e.actual === e.expected).length;
     const total = inputs.length;
     const totalTime = finishedAt - startedAt;
+
+    const textErrorsCount =
+        Math.max(input.length, sequence.length) -
+        input.filter((c, i) => c === sequence[i]).length;
 
     const perCharStatsMap = new Map<
         string,
@@ -82,6 +88,7 @@ export function calculateDetailedStats(
     return {
         accuracy: total ? Math.round((correct / total) * 100) : 100,
         errorsCount: total - correct,
+        textErrorsCount,
         corrections: events.filter((e) => e.type === 'backspace').length,
         averageReaction: total
             ? Math.round(inputs.reduce((a, b) => a + b.time, 0) / total)

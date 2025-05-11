@@ -6,7 +6,7 @@ import { AxiosError } from 'axios';
 export const useStatsStore = defineStore('stats', {
     state: () => ({
         stats: null as StatsResponse | null,
-        loading: false,
+        isLoading: false,
         error: null as string | null,
 
         period: 'day' as StatsPeriod,
@@ -16,7 +16,7 @@ export const useStatsStore = defineStore('stats', {
 
     actions: {
         async fetchStats() {
-            this.loading = true;
+            this.isLoading = true;
             this.error = null;
             try {
                 this.stats = await this.statsApi.getStats(
@@ -32,7 +32,7 @@ export const useStatsStore = defineStore('stats', {
                     this.messageService.error(this.error);
                 }
             } finally {
-                this.loading = false;
+                this.isLoading = false;
             }
         },
 

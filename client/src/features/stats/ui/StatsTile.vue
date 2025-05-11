@@ -1,18 +1,25 @@
 <script setup lang="ts">
 import { useSettingsStore } from '@/features/settings';
 import { useTrainingStore } from '@/features/training';
-import { HFlex, NoDataWrapper, VFlex } from '@/shared/ui';
-import { LayoutSelector, ModeSelector, PeriodSelector } from '@/widgets';
-import { computed, onMounted, ref, watch } from 'vue';
-import { useStatsStore } from '../model/statsStore';
-import { TrainingMode, type PerItemStatMetric } from '@/shared/types';
-import KeyboardStats from './KeyboardStats.vue';
-import FingerStats from './FingerStats.vue';
-import { getColorByMetric } from '@/shared/utils';
-import PerItemMetricSelector from '@/widgets/PerItemMetricSelector.vue';
 import { KEYBOARD_LAYOUTS } from '@/shared/config/keyboardLayouts';
+import { TrainingMode, type PerItemStatMetric } from '@/shared/types';
+import { onMounted, watch, ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useStatsStore } from '../model/statsStore';
+import { getColorByMetric } from '@/shared/utils';
+import { HFlex, NoDataWrapper, VFlex } from '@/shared/ui';
+import {
+    FingerMapStats,
+    KeyboardMapStats,
+    LayoutSelector,
+    ModeSelector,
+    PeriodSelector,
+    PerItemMetricSelector,
+} from '@/widgets';
 import LeaderboardStats from './LeaderboardStats.vue';
 import SessionChart from './SessionChart.vue';
+
+const { t } = useI18n();
 
 const statsStore = useStatsStore();
 const trainingStore = useTrainingStore();
@@ -32,6 +39,7 @@ watch(
     () => {
         statsStore.fetchStats();
     },
+    { immediate: true },
 );
 
 const metric = ref<PerItemStatMetric>('averageReaction');
@@ -76,30 +84,50 @@ const noData = computed(() => {
                 </HFlex>
 
                 <VFlex gap="1rem">
-                    <NoDataWrapper :noData="noData">
+                    <NoDataWrapper
+                        :noData="noData"
+                        :isLoading="statsStore.isLoading"
+                    >
                         <HFlex gap="1rem">
-                            <LeaderboardStats />
                             <VFlex gap="1rem">
-                                <PerItemMetricSelector v-model="metric" />
-                                <KeyboardStats
-                                    :perCharStats="
-                                        statsStore.stats?.perCharStats ?? []
-                                    "
-                                    :averageStat="averageStat"
-                                    :layout="layout"
-                                    :metric="metric"
-                                    :getColorByMetric="getColorByMetric"
-                                />
-                                <FingerStats
-                                    :fingerStats="
-                                        statsStore.stats?.fingerStats ?? []
-                                    "
-                                    :averageStat="averageStat"
-                                    :metric="metric"
-                                    :getColorByMetric="getColorByMetric"
-                                />
+                                <h2 class="title">
+                                    {{ t('stats.leaderboard.title') }}
+                                </h2>
+                                <LeaderboardStats />
                             </VFlex>
-                            <SessionChart />
+                            <VFlex gap="1rem">
+                                <h2 class="title">
+                                    {{ t('stats.sessions.title') }}
+                                </h2>
+                                <VFlex gap="1rem">
+                                    <PerItemMetricSelector v-model="metric" />
+                                    <KeyboardMapStats
+                                        :perCharStats="
+                                            statsStore.stats?.perCharStats ?? []
+                                        "
+                                        :averageStat="averageStat"
+                                        :layout="layout"
+                                        :metric="metric"
+                                        :theme="settingsStore.theme"
+                                        :getColorByMetric="getColorByMetric"
+                                    />
+                                    <FingerMapStats
+                                        :fingerStats="
+                                            statsStore.stats?.fingerStats ?? []
+                                        "
+                                        :averageStat="averageStat"
+                                        :metric="metric"
+                                        :theme="settingsStore.theme"
+                                        :getColorByMetric="getColorByMetric"
+                                    />
+                                </VFlex>
+                            </VFlex>
+                            <VFlex gap="1rem">
+                                <h2 class="title">
+                                    {{ t('stats.chart.title') }}
+                                </h2>
+                                <SessionChart />
+                            </VFlex>
                         </HFlex>
                     </NoDataWrapper>
                 </VFlex>
@@ -108,4 +136,12 @@ const noData = computed(() => {
     </VFlex>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+@use '@/shared/styles/variables.scss' as *;
+
+.title {
+    font-size: $stats-title;
+    font-weight: 700;
+    margin: 0;
+}
+</style>

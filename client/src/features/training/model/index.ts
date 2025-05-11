@@ -1,2 +1,1 @@
-export { useKeyboardStore } from './keyboardStore';
-export { useTrainingStore, type InputEventRecord } from './trainingStore';
+export { useTrainingStore } from './trainingStore';

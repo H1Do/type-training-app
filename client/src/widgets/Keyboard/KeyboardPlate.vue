@@ -1,25 +1,28 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, watch } from 'vue';
-import KeyboardButton from './KeyboardButton.vue';
-import { useSettingsStore } from '@/features/settings/model/settings';
-import { KEYBOARD_LAYOUTS } from '@/shared/config/keyboardLayouts';
-import { useKeyboardStore } from '../model/keyboardStore';
-import { useTrainingStore } from '../model/trainingStore';
-import { Difficulty, type KeyCode } from '@/shared/types';
 import AppText from '@/shared/ui/AppText.vue';
-import ShiftButton from './ShiftButton.vue';
+import {
+    Difficulty,
+    type Finger,
+    type KeyCode,
+    type KeyboardKey,
+} from '@/shared/types';
 import { useI18n } from 'vue-i18n';
+import { useKeyboardStore } from './model/keyboardStore';
+import { KeyboardButton, ShiftButton } from './ui';
+
+const props = defineProps<{
+    layout: KeyboardKey[][];
+    currentSymbol: string | null;
+    difficulty: Difficulty;
+    onBackspace: () => void;
+    onProcessKey: (symbol: string, finger: Finger | null) => void;
+}>();
 
 const { t } = useI18n();
-
-const settingsStore = useSettingsStore();
 const keyboardStore = useKeyboardStore();
-const trainingStore = useTrainingStore();
 
-const layout = computed(() => KEYBOARD_LAYOUTS[settingsStore.layout]);
-const isBlurred = computed(
-    () => settingsStore.difficulty === Difficulty.Expert,
-);
+const isBlurred = computed(() => props.difficulty === Difficulty.Expert);
 
 onMounted(() => {
     window.addEventListener('keydown', onKeyDown);
@@ -32,7 +35,7 @@ onUnmounted(() => {
 });
 
 watch(
-    layout,
+    () => props.layout,
     (newLayout) => {
         keyboardStore.buildKeyMaps(newLayout);
     },
@@ -40,8 +43,8 @@ watch(
 );
 
 watch(
-    () => trainingStore.currentSymbol,
-    (symbol: string | null) => {
+    () => props.currentSymbol,
+    (symbol) => {
         if (!symbol) return;
         const key = keyboardStore.getKeyBySymbol(symbol);
         if (key) {
@@ -56,17 +59,18 @@ watch(
 
 function onKeyDown(e: KeyboardEvent) {
     if (e.code === 'Backspace') {
-        trainingStore.backspace();
+        props.onBackspace();
         keyboardStore.onKeyDown(e.code as KeyCode);
         return;
     }
+
     keyboardStore.onKeyDown(e.code as KeyCode);
 
     const symbol = keyboardStore.getSymbolByCode(e.code);
     const finger = keyboardStore.getFingerByCode(e.code);
 
     if (symbol) {
-        trainingStore.processKey(symbol, finger);
+        props.onProcessKey(symbol, finger);
     }
 }
 
@@ -82,16 +86,25 @@ function onKeyUp(e: KeyboardEvent) {
             :class="{ 'keyboard-plate--blurred': isBlurred }"
         >
             <div
-                v-for="(row, rowIndex) in layout"
+                v-for="(row, rowIndex) in props.layout"
                 :key="rowIndex"
                 class="keyboard-row"
                 :class="`keyboard-row--${rowIndex}`"
             >
-                <ShiftButton v-if="rowIndex === 3" />
+                <ShiftButton
+                    v-if="rowIndex === 3"
+                    :isShiftRequired="keyboardStore.isShiftRequired"
+                    :difficulty="difficulty"
+                />
                 <KeyboardButton
                     v-for="key in row"
                     :key="key.code"
                     :keyData="key"
+                    :pressedKeyCode="keyboardStore.pressedKeyCode"
+                    :hintedKeyCode="keyboardStore.hintedKeyCode"
+                    :isError="keyboardStore.isError"
+                    :isShiftPressed="keyboardStore.isShiftPressed"
+                    :difficulty="difficulty"
                 />
             </div>
         </div>

@@ -37,6 +37,7 @@ export interface FinishSessionRequest {
     events: InputEventRecord[];
     layout?: Layout;
     mode?: TrainingMode;
+    sequence?: string[];
 }
 
 export interface TrainingSessionDoc {

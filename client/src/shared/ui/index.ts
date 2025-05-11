@@ -11,5 +11,6 @@ export { default as HFlex } from './HFlex.vue';
 export { default as ToggleThemeButton } from './ToggleThemeButton.vue';
 export { default as LogoIcon } from './LogoIcon.vue';
 export { default as NoDataWrapper } from './NoDataWrapper.vue';
+export { default as AppLoader } from './AppLoader.vue';
 export * from './modal';
 export * from './table';

@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useTrainingStore } from '../model/trainingStore';
 import { CHARS_PER_LINE, SHOWED_LINES } from '@/shared/config/training';
 
-const trainingStore = useTrainingStore();
-
-const sequence = computed(() => trainingStore.sequence);
+const props = defineProps<{
+    sequence: string[];
+    input: string[];
+    currentIndex: number;
+}>();
 
 const totalLines = computed(() =>
-    Math.ceil(sequence.value.length / CHARS_PER_LINE),
+    Math.ceil(props.sequence.length / CHARS_PER_LINE),
 );
 
 const completedLines = computed(() =>
-    Math.floor(trainingStore.input.length / CHARS_PER_LINE),
+    Math.floor(props.input.length / CHARS_PER_LINE),
 );
 
 const offset = computed(() => {
@@ -29,8 +30,8 @@ const offset = computed(() => {
 
 const rows = computed(() => {
     const result: string[][] = [];
-    for (let i = 0; i < sequence.value.length; i += CHARS_PER_LINE) {
-        result.push(sequence.value.slice(i, i + CHARS_PER_LINE));
+    for (let i = 0; i < props.sequence.length; i += CHARS_PER_LINE) {
+        result.push(props.sequence.slice(i, i + CHARS_PER_LINE));
     }
 
     const startLine = offset.value / CHARS_PER_LINE;
@@ -38,8 +39,8 @@ const rows = computed(() => {
 });
 
 const getCharClass = (globalIndex: number): Record<string, boolean> => {
-    const expected = sequence.value[globalIndex];
-    const actual = trainingStore.input[globalIndex];
+    const expected = props.sequence[globalIndex];
+    const actual = props.input[globalIndex];
 
     return {
         correct: actual === expected && actual !== undefined,
@@ -50,11 +51,11 @@ const getCharClass = (globalIndex: number): Record<string, boolean> => {
 </script>
 
 <template>
-    <div class="training-display">
+    <div class="char-display">
         <div
             v-for="(row, rowIndex) in rows"
             :key="rowIndex"
-            class="training-display__row"
+            class="char-display__row"
         >
             <span
                 v-for="(char, index) in row"
@@ -68,7 +69,7 @@ const getCharClass = (globalIndex: number): Record<string, boolean> => {
                 <span v-else>{{ char }}</span>
                 <span
                     v-if="
-                        trainingStore.currentIndex ===
+                        props.currentIndex ===
                         offset + rowIndex * CHARS_PER_LINE + index
                     "
                     class="caret"
@@ -81,25 +82,25 @@ const getCharClass = (globalIndex: number): Record<string, boolean> => {
 <style scoped lang="scss">
 @use '@/shared/styles/variables' as *;
 
-.training-display {
+.char-display {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: $training-display-width;
-    height: $training-display-height;
+    width: $char-display-width;
+    height: $char-display-height;
     font-family: 'Fira Code', monospace;
-    font-size: $training-display-font-size;
-    border: $border-width-big solid $training-display-border-color;
-    border-radius: $training-display-border-radius;
+    font-size: $char-display-font-size;
+    border: $border-width-big solid $char-display-border-color;
+    border-radius: $char-display-border-radius;
     user-select: none;
 }
 
-.training-display__row {
+.char-display__row {
     display: flex;
     justify-content: start;
     white-space: nowrap;
-    gap: $training-display-font-gap;
+    gap: $char-display-font-gap;
 }
 
 .char {
@@ -108,7 +109,7 @@ const getCharClass = (globalIndex: number): Record<string, boolean> => {
 
 .whitespace {
     display: inline-block;
-    width: $training-display-whitespace-size;
+    width: $char-display-whitespace-size;
     text-align: center;
 }
 

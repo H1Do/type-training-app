@@ -3,6 +3,7 @@ withDefaults(
     defineProps<{
         align?: 'start' | 'center' | 'end' | 'stretch';
         justify?: 'start' | 'center' | 'between' | 'around' | 'evenly' | 'end';
+        wrap?: boolean;
         gap?:
             | '0px'
             | '4px'
@@ -34,7 +35,7 @@ withDefaults(
     <div
         class="h-flex"
         :class="`align-${align} justify-${justify}`"
-        :style="{ gap }"
+        :style="{ gap, flexWrap: wrap ? 'wrap' : 'nowrap' }"
     >
         <slot />
     </div>

@@ -99,12 +99,19 @@ class TrainingController {
                 startedAt,
                 layout: reqLayout,
                 mode: reqMode,
+                sequence: reqSequence,
             } = req.body;
             const userId = req.user?.id;
 
-            const stats = calculateDetailedStats(events, startedAt, finishedAt);
-
             if (!id || !userId) {
+                const stats = calculateDetailedStats(
+                    events,
+                    startedAt,
+                    finishedAt,
+                    input,
+                    reqSequence ?? [],
+                );
+
                 return res.status(200).json({
                     message:
                         req.t?.('messages.session_finished') ??
@@ -129,6 +136,14 @@ class TrainingController {
                 );
             }
 
+            const stats = calculateDetailedStats(
+                events,
+                startedAt,
+                finishedAt,
+                input,
+                session.sequence,
+            );
+
             session.input = input;
             session.events = events;
             session.startedAt = startedAt;
@@ -139,8 +154,9 @@ class TrainingController {
             const isRated =
                 mode !== TrainingMode.Custom &&
                 stats.accuracy >= 80 &&
-                stats.corrections <= 10;
-            const isLeaderboardEligible = isRated && stats.accuracy >= 90;
+                stats.textErrorsCount <= 10;
+            const isLeaderboardEligible =
+                isRated && stats.accuracy >= 90 && stats.corrections <= 10;
 
             const statsDoc = await TrainingStats.create({
                 sessionId: session._id,

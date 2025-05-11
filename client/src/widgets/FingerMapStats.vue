@@ -9,15 +9,14 @@ import {
 } from '@/shared/types';
 import { AppHint, HFlex } from '@/shared/ui';
 import { computed } from 'vue';
-import { useSettingsStore } from '@/features/settings';
 
 const { t } = useI18n();
-const settingsStore = useSettingsStore();
 
 const props = defineProps<{
     fingerStats: FingerStat[];
     averageStat: PerItemStat;
     metric: PerItemStatMetric;
+    theme: Theme;
     getColorByMetric: (
         stat: PerItemStat | undefined,
         averageStat: PerItemStat,
@@ -83,7 +82,7 @@ const getHint = (finger: Finger, stats: FingerStat | undefined) => {
                     fingerToStats[finger],
                     averageStat,
                     metric,
-                    settingsStore.theme,
+                    theme,
                 ),
             }"
             :hint="getHint(finger, fingerToStats[finger])"

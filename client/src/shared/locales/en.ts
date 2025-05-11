@@ -134,18 +134,20 @@ export const en = {
             notAuth: 'due to not being logged in',
             custom: 'because custom mode was selected',
             lowAccuracy: 'due to low accuracy (less than 80%)',
-            tooManyCorrections: 'due to too many corrections (more than 10)',
+            tooManyTextErrors: 'due to too many text errors (more than 10)',
         },
         leaderboardDisqualified: {
             base: 'Result will not count towards the leaderboard',
             lowAccuracy: 'due to low accuracy (less than 90%)',
+            tooManyCorrections: 'due to too many corrections (more than 10)',
         },
         metrics: {
             accuracy: 'Accuracy',
             cpm: 'CPM',
             reaction: 'Average reaction',
             time: 'Duration',
-            errorsCount: 'Errors (total)',
+            errorsCount: 'Errors clicks (total)',
+            textErrorsCount: 'Text errors (total)',
             corrections: 'Corrections (total)',
             key: 'Key',
             keyCount: 'Pressed (total)',
@@ -173,6 +175,21 @@ export const en = {
         leaderboard: {
             title: 'Leaderboard',
         },
+        chart: {
+            title: 'Session statistics',
+        },
+        sessions: {
+            title: 'Click map',
+        },
+    },
+
+    lessons: {
+        title: 'Lessons',
+        layout: 'Layout',
+        prevLessons: 'Previous lessons',
+        nextLessons: 'Next lessons',
+        prevLesson: 'Previous lesson',
+        nextLesson: 'Next lesson',
     },
 
     ui: {

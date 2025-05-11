@@ -6,3 +6,8 @@ export { default as PeriodSelector } from './PeriodSelector.vue';
 export { default as ModeSelector } from './ModeSelector.vue';
 export { default as PerItemMetricSelector } from './PerItemMetricSelector.vue';
 export { default as MetricSelector } from './MetricSelector.vue';
+export { default as CharDisplay } from './CharDisplay.vue';
+export { default as CurrentStats } from './CurrentStats.vue';
+export { default as KeyboardMapStats } from './KeyboardMapStats.vue';
+export { default as FingerMapStats } from './FingerMapStats.vue';
+export * from './Keyboard/index';

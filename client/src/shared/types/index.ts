@@ -4,3 +4,5 @@ export * from './theme';
 export * from './difficulty';
 export * from './training';
 export * from './stats';
+export * from './lessons';
+export * from './keyboard';

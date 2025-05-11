@@ -32,6 +32,7 @@ const TrainingStatsSchema = new Schema<TrainingStatsDoc>({
     accuracy: { type: Number, required: true },
     count: { type: Number, required: true },
     errorsCount: { type: Number, required: true },
+    textErrorsCount: { type: Number, required: true },
     corrections: { type: Number, required: true },
     averageReaction: { type: Number, required: true },
     cpm: { type: Number, required: true },

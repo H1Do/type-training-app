@@ -12,8 +12,10 @@ import { useTrainingStore } from '../model/trainingStore';
 import { KEYBOARD_LAYOUTS } from '@/shared/config/keyboardLayouts';
 import { useI18n } from 'vue-i18n';
 import { RouteNames } from '@/app/router';
-import { layoutNameMap } from '@/features/settings/model/settings';
-import { FingerStats, KeyboardStats } from '@/features/stats';
+import {
+    layoutNameMap,
+    useSettingsStore,
+} from '@/features/settings/model/settings';
 import { ref } from 'vue';
 import { getColorByMetric } from '@/shared/utils';
 import type {
@@ -21,12 +23,17 @@ import type {
     PerItemStatMetric,
     TrainingStats,
 } from '@/shared/types';
-import { PerItemMetricSelector } from '@/widgets';
+import {
+    FingerMapStats,
+    KeyboardMapStats,
+    PerItemMetricSelector,
+} from '@/widgets';
 import { useUserStore } from '@/entities/user';
 
 const { t } = useI18n();
 
 const trainingStore = useTrainingStore();
+const settingsStore = useSettingsStore();
 const userStore = useUserStore();
 
 const props = defineProps<{ stats: TrainingStats }>();
@@ -69,8 +76,8 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
                 <span v-else-if="stats.accuracy < 80">
                     {{ t('stats.notCounted.lowAccuracy') }}
                 </span>
-                <span v-else-if="stats.corrections > 10">
-                    {{ t('stats.notCounted.tooManyCorrections') }}
+                <span v-else-if="stats.errorsCount > 10">
+                    {{ t('stats.notCounted.tooManyTextErrors') }}
                 </span>
             </AppText>
 
@@ -81,6 +88,9 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
                 {{ t('stats.leaderboardDisqualified.base') }}
                 <span v-if="stats.accuracy < 90">
                     {{ t('stats.leaderboardDisqualified.lowAccuracy') }}
+                </span>
+                <span v-else-if="stats.corrections > 10">
+                    {{ t('stats.leaderboardDisqualified.tooManyCorrections') }}
                 </span>
             </AppText>
 
@@ -136,6 +146,12 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
                     </VFlex>
                     <VFlex class="stats__item" align="start">
                         <span class="stats__item-title">{{
+                            t('stats.metrics.textErrorsCount')
+                        }}</span>
+                        <span>{{ stats.textErrorsCount }}</span>
+                    </VFlex>
+                    <VFlex class="stats__item" align="start">
+                        <span class="stats__item-title">{{
                             t('stats.metrics.corrections')
                         }}</span>
                         <span>{{ stats.corrections }}</span>
@@ -144,17 +160,19 @@ const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
 
                 <VFlex align="start" gap="1rem">
                     <PerItemMetricSelector v-model="metric" />
-                    <KeyboardStats
+                    <KeyboardMapStats
                         :layout="resolvedLayout"
                         :perCharStats="stats.perCharStats"
                         :averageStat="averageStat"
                         :metric="metric"
+                        :theme="settingsStore.theme"
                         :getColorByMetric="getColorByMetric"
                     />
-                    <FingerStats
+                    <FingerMapStats
                         :fingerStats="stats.fingerStats"
                         :averageStat="averageStat"
                         :metric="metric"
+                        :theme="settingsStore.theme"
                         :getColorByMetric="getColorByMetric"
                     />
                 </VFlex>

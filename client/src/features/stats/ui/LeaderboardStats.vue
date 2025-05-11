@@ -26,8 +26,6 @@ const userEntry = computed(() => {
 
 <template>
     <VFlex class="leaderboard" gap="0.75rem">
-        <h2 class="leaderboard__title">{{ t('stats.leaderboard.title') }}</h2>
-
         <VFlex class="leaderboard__list" gap="0.75rem" align="stretch">
             <HFlex
                 v-for="(entry, index) in statsStore.stats?.leaderboard ?? []"
@@ -90,12 +88,6 @@ const userEntry = computed(() => {
 
     &__list {
         width: 100%;
-    }
-
-    &__title {
-        font-size: $leaderboard-title-font-size;
-        font-weight: 700;
-        margin: 0;
     }
 
     &__item {

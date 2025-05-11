@@ -1,23 +1,13 @@
 import { defineStore } from 'pinia';
-import type { TrainingApi } from '@/shared/api/trainingApi';
 import { TrainingMode, type TrainingSession } from '@/shared/types/training';
 import TrainingSummaryModal from '../ui/TrainingSummaryModal.vue';
 import { useSettingsStore } from '@/features/settings';
-import type { Finger } from '@/shared/types';
+import type { Finger, InputEventRecord } from '@/shared/types';
 import { AxiosError } from 'axios';
 
 interface TrainingSessionState extends TrainingSession {
     startedAt: number;
     finishedAt: number | null;
-}
-
-export interface InputEventRecord {
-    type: 'input' | 'backspace';
-    actual?: string;
-    expected?: string;
-    time: number;
-    timestamp: number;
-    finger: Finger | null;
 }
 
 export const useTrainingStore = defineStore('training', {
@@ -132,6 +122,7 @@ export const useTrainingStore = defineStore('training', {
                 events: this.events,
                 layout: settingsStore.layout,
                 mode: this.mode,
+                sequence: this.sequence,
             };
 
             this.session.finishedAt = result.finishedAt;
@@ -216,10 +207,6 @@ export const useTrainingStore = defineStore('training', {
             this.input = [];
             this.events = [];
             this.lastInputTimestamp = 0;
-        },
-
-        setApi(api: TrainingApi) {
-            this.trainingApi = api;
         },
     },
 });

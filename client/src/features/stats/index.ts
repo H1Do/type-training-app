@@ -1,1 +1,1 @@
-export { FingerStats, KeyboardStats, StatsTile } from './ui';
+export { StatsTile } from './ui';

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useSettingsStore } from '@/features/settings';
 import type {
     KeyboardKey,
     LayoutKeys,
@@ -18,6 +17,7 @@ const props = defineProps<{
     perCharStats: PerCharStat[];
     averageStat: PerItemStat;
     metric: PerItemStatMetric;
+    theme: Theme;
     getColorByMetric: (
         stat: PerItemStat | undefined,
         averageStat: PerItemStat,
@@ -27,7 +27,6 @@ const props = defineProps<{
 }>();
 
 const { t } = useI18n();
-const settingsStore = useSettingsStore();
 
 const keyStats = computed<Record<string, PerCharStat>>(() => {
     const result: Record<string, PerCharStat> = {};
@@ -115,7 +114,7 @@ const getValue = (key: KeyboardKey, stats: Record<string, PerCharStat>) => {
                         keyStats[key.lower] || keyStats[key.upper],
                         averageStat,
                         metric,
-                        settingsStore.theme,
+                        theme,
                     ),
                 }"
                 :class="{
