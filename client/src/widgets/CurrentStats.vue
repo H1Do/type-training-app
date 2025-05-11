@@ -12,8 +12,8 @@ const props = defineProps<{
     input: string[];
     undoCount: number;
     events: InputEventRecord[];
-    isCustomMode: boolean;
-    isCustomSettingsSet: boolean;
+    isCustomMode?: boolean;
+    isCustomSettingsSet?: boolean;
 }>();
 
 const now = useTrainingTimer(100);

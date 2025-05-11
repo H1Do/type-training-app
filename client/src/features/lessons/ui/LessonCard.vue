@@ -80,11 +80,10 @@ const title = `#${props.lesson.order} - ${props.lesson.title}`;
 }
 
 .lesson-card__star {
-    color: var(--secondary-color);
-    transition: opacity $transition-duration;
-}
+    color: var(--star-color);
 
-.lesson-card__star.filled {
-    fill: $star-color;
+    &.filled {
+        fill: var(--star-fill);
+    }
 }
 </style>

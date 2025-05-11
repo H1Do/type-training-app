@@ -14,6 +14,14 @@ import {
 } from '@/constants/training';
 import { TrainingStats } from '@/models/TrainingStats';
 import { calculateDetailedStats } from '@/utils/training/calculateStats';
+import {
+    MAX_CORRECTIONS_FOR_LEADERBOARD,
+    MAX_ERRORS_FOR_STATS,
+    MIN_ACCURACY_FOR_LEADERBOARD,
+    MIN_ACCURACY_FOR_STATS,
+} from '@/constants/stats';
+import { User } from '@/models/User';
+import { addExpToUser, calculateExp } from '@/utils/levelSystem';
 
 class TrainingController {
     async startSession(
@@ -92,6 +100,7 @@ class TrainingController {
     ) {
         try {
             const { id } = req.params;
+
             const {
                 input,
                 events,
@@ -153,10 +162,12 @@ class TrainingController {
             const { layout, mode } = session;
             const isRated =
                 mode !== TrainingMode.Custom &&
-                stats.accuracy >= 80 &&
-                stats.textErrorsCount <= 10;
+                stats.accuracy >= MIN_ACCURACY_FOR_STATS &&
+                stats.textErrorsCount <= MAX_ERRORS_FOR_STATS;
             const isLeaderboardEligible =
-                isRated && stats.accuracy >= 90 && stats.corrections <= 10;
+                isRated &&
+                stats.accuracy >= MIN_ACCURACY_FOR_LEADERBOARD &&
+                stats.corrections <= MAX_CORRECTIONS_FOR_LEADERBOARD;
 
             const statsDoc = await TrainingStats.create({
                 sessionId: session._id,
@@ -171,10 +182,36 @@ class TrainingController {
             session.statsId = statsDoc._id;
             await session.save();
 
+            let exp = null;
+
+            if (isRated) {
+                const user = await User.findById(userId);
+                if (!user) {
+                    return next(ApiError.notFound('User not found'));
+                }
+
+                const earnedExp = calculateExp({
+                    cpm: stats.cpm,
+                    accuracy: stats.accuracy,
+                    charCount: session.sequence.length,
+                });
+
+                const levelUpResult = addExpToUser(user, earnedExp);
+                await user.save();
+
+                exp = {
+                    earned: earnedExp,
+                    level: levelUpResult.newLevel,
+                    current: levelUpResult.currentExp,
+                    required: levelUpResult.requiredExp,
+                };
+            }
+
             return res.status(200).json({
                 message:
                     req.t?.('messages.session_finished') ?? 'Session finished',
                 stats: statsDoc,
+                exp,
             });
         } catch (e) {
             next(e);

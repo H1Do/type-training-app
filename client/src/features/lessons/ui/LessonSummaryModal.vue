@@ -1,45 +1,41 @@
 <script setup lang="ts">
-import { TrainingMode } from '@/shared/types/training';
 import {
     AppButton,
+    AppIcon,
     AppLink,
     AppModal,
-    AppText,
     HFlex,
     VFlex,
 } from '@/shared/ui';
-import { useTrainingStore } from '../model/trainingStore';
-import { KEYBOARD_LAYOUTS } from '@/shared/config/keyboardLayouts';
-import { useI18n } from 'vue-i18n';
-import { RouteNames } from '@/app/router';
-import {
-    layoutNameMap,
-    useSettingsStore,
-} from '@/features/settings/model/settings';
-import { ref } from 'vue';
-import { getColorByMetric, getExpForLevel } from '@/shared/utils';
+import { useLessonsStore } from '../model/lessonsStore';
 import type {
+    LessonsStats,
     PerItemStat,
     PerItemStatMetric,
-    TrainingStats,
 } from '@/shared/types';
+import { computed, ref } from 'vue';
+import { useSettingsStore } from '@/features/settings';
+import { useI18n } from 'vue-i18n';
+import { KEYBOARD_LAYOUTS } from '@/shared/config/keyboardLayouts';
+import { getColorByMetric, getExpForLevel } from '@/shared/utils';
 import {
     FingerMapStats,
     KeyboardMapStats,
     PerItemMetricSelector,
 } from '@/widgets';
-import { useUserStore } from '@/entities/user';
-import type { ExpReward } from '@/shared/types/level';
+import { RouteNames, RoutePaths } from '@/app/router';
+import { layoutNameMap } from '@/features/settings/model/settings';
 import LevelProgress from '@/widgets/LevelProgress.vue';
+import type { ExpReward } from '@/shared/types/level';
 
 const { t } = useI18n();
 
-const trainingStore = useTrainingStore();
+const lessonsStore = useLessonsStore();
 const settingsStore = useSettingsStore();
-const userStore = useUserStore();
 
 const props = defineProps<{
-    stats: TrainingStats;
+    stats: LessonsStats;
+    stars: 1 | 2 | 3;
     exp: ExpReward | null;
     isLevelUp: boolean;
 }>();
@@ -56,20 +52,40 @@ const averageStat: PerItemStat = {
 
 const resolvedLayout = KEYBOARD_LAYOUTS[props.stats.layout] ?? [];
 
+const stars = computed(() =>
+    Array.from({ length: 3 }, (_, i) => i < props.stars),
+);
+
+const nextLessonId = computed(() => lessonsStore.currentLesson?.nextLessonId);
+
 const emit = defineEmits<{
     (e: 'resolve', value: boolean): void;
 }>();
 
 const onCancel = () => {
     emit('resolve', false);
-    trainingStore.start();
+    lessonsStore.reset();
 };
 </script>
 
 <template>
     <AppModal @close="onCancel" class="modal">
         <VFlex align="center" gap="1rem">
-            <h2 class="modal__title">{{ t('stats.trainingResult') }}</h2>
+            <HFlex align="center" gap="1rem">
+                <h2 class="modal__title">
+                    {{ `${t('stats.trainingResult')} (${stats.lesson.title})` }}
+                </h2>
+
+                <HFlex gap="0.5rem">
+                    <AppIcon
+                        name="Star"
+                        v-for="(filled, i) in stars"
+                        :key="i"
+                        :class="['star', { filled }]"
+                        size="1.75rem"
+                    />
+                </HFlex>
+            </HFlex>
 
             <LevelProgress
                 class="level-progress"
@@ -81,48 +97,19 @@ const onCancel = () => {
                 :isLevelUp="isLevelUp"
             />
 
-            <AppText v-if="!stats.isRated" textStyle="warning">
-                {{ t('stats.notCounted.base') }}
-                <span v-if="!userStore.isAuthenticated">
-                    {{ t('stats.notCounted.notAuth') }}
-                </span>
-                <span v-else-if="stats.mode === TrainingMode.Custom">
-                    {{ t('stats.notCounted.custom') }}
-                </span>
-                <span v-else-if="stats.accuracy < 80">
-                    {{ t('stats.notCounted.lowAccuracy') }}
-                </span>
-                <span v-else-if="stats.errorsCount > 10">
-                    {{ t('stats.notCounted.tooManyTextErrors') }}
-                </span>
-            </AppText>
-
-            <AppText
-                v-else-if="!stats.isLeaderboardEligible"
-                textStyle="warning"
-            >
-                {{ t('stats.leaderboardDisqualified.base') }}
-                <span v-if="stats.accuracy < 90">
-                    {{ t('stats.leaderboardDisqualified.lowAccuracy') }}
-                </span>
-                <span v-else-if="stats.corrections > 10">
-                    {{ t('stats.leaderboardDisqualified.tooManyCorrections') }}
-                </span>
-            </AppText>
-
             <HFlex align="start" gap="1rem">
                 <VFlex justify="between" class="stats" gap="0.25rem">
                     <VFlex class="stats__item" align="start">
                         <span class="stats__item-title">{{
-                            t('training.labels.mode')
+                            t('stats.metrics.lesson')
                         }}</span>
-                        <span>{{ t('training.modes.' + stats.mode) }}</span>
+                        <span>{{ stats.lesson.title }}</span>
                     </VFlex>
                     <VFlex class="stats__item" align="start">
                         <span class="stats__item-title">{{
-                            t('training.labels.layout')
+                            t('stats.metrics.layout')
                         }}</span>
-                        <span>{{ layoutNameMap[stats.layout] }}</span>
+                        <span>{{ layoutNameMap[stats.lesson.layout] }}</span>
                     </VFlex>
                     <VFlex class="stats__item" align="start">
                         <span class="stats__item-title">{{
@@ -201,14 +188,23 @@ const onCancel = () => {
                 class="modal__footer"
             >
                 <AppLink
-                    :to="RouteNames.STATS"
-                    v-if="stats.isRated"
+                    :to="RoutePaths.LESSONS"
                     @click="emit('resolve', false)"
-                    >{{ t('training.toStats') }}</AppLink
+                    >{{ t('lessons.toLessons') }}</AppLink
                 >
-                <AppButton @click="onCancel" class="close-button">{{
-                    t('training.close')
-                }}</AppButton>
+                <AppLink
+                    :to="{
+                        name: RouteNames.LESSON,
+                        params: { id: nextLessonId },
+                    }"
+                    :disabled="!nextLessonId"
+                    @click="emit('resolve', false)"
+                >
+                    {{ t('lessons.nextLesson') }}
+                </AppLink>
+                <AppButton @click="onCancel" class="next-button">
+                    {{ t('training.close') }}
+                </AppButton>
             </HFlex>
         </VFlex>
     </AppModal>
@@ -244,11 +240,15 @@ const onCancel = () => {
     }
 }
 
-.close-button {
+.next-button {
     margin-left: auto;
 }
 
-.level-progress {
-    width: 70%;
+.star {
+    color: var(--star-color);
+
+    &.filled {
+        fill: var(--star-fill);
+    }
 }
 </style>

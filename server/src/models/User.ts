@@ -1,6 +1,7 @@
+import { UserDoc } from '@/types/userTypes';
 import mongoose, { Schema } from 'mongoose';
 
-const userSchema = new Schema({
+const userSchema = new Schema<UserDoc>({
     username: {
         type: String,
         required: true,
@@ -18,6 +19,16 @@ const userSchema = new Schema({
     createdAt: {
         type: Date,
         default: Date.now,
+    },
+    level: {
+        type: Number,
+        required: true,
+        default: 1,
+    },
+    exp: {
+        type: Number,
+        required: true,
+        default: 0,
     },
 });
 

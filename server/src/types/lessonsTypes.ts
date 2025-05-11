@@ -1,5 +1,6 @@
 import { Document, Types } from 'mongoose';
 import { Layout } from '@/types/keyboardTypes';
+import { InputEventRecord } from './trainingTypes';
 
 export interface LessonDoc extends Document {
     title: string;
@@ -11,6 +12,8 @@ export interface LessonDoc extends Document {
     cpmFor3: number;
     minAccuracy: number;
     order: number;
+    prevLessonId?: Types.ObjectId;
+    nextLessonId?: Types.ObjectId;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -21,4 +24,13 @@ export interface UserLessonProgressDoc extends Document {
     stars: 1 | 2 | 3;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface FinishLessonRequest {
+    lessonId: string;
+    startedAt: number;
+    finishedAt: number;
+    input: string[];
+    events: InputEventRecord[];
+    sequence: string[];
 }

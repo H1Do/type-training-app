@@ -6,3 +6,4 @@ export { default as SettingsPage } from './SettingsPage.vue';
 export { default as NotFoundPage } from './NotFoundPage.vue';
 export { default as StatsPage } from './StatsPage.vue';
 export { default as LessonsPage } from './LessonsPage.vue';
+export { default as LessonPage } from './LessonPage.vue';

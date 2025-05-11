@@ -4,6 +4,7 @@ import TrainingSummaryModal from '../ui/TrainingSummaryModal.vue';
 import { useSettingsStore } from '@/features/settings';
 import type { Finger, InputEventRecord } from '@/shared/types';
 import { AxiosError } from 'axios';
+import { useUserStore } from '@/entities/user';
 
 interface TrainingSessionState extends TrainingSession {
     startedAt: number;
@@ -128,10 +129,23 @@ export const useTrainingStore = defineStore('training', {
             this.session.finishedAt = result.finishedAt;
 
             try {
-                const response = await this.trainingApi.finishSession(result);
+                const data = await this.trainingApi.finishSession(result);
+
+                let isLevelUp = false;
+
+                if (data.exp) {
+                    const userStore = useUserStore();
+
+                    isLevelUp = userStore.level < data.exp.level;
+
+                    userStore.setLevel(data.exp.level);
+                    userStore.setExp(data.exp.current);
+                }
 
                 await this.modalService.open(TrainingSummaryModal, {
-                    stats: response.stats,
+                    stats: data.stats,
+                    exp: data.exp,
+                    isLevelUp,
                 });
             } catch (error) {
                 if (error instanceof AxiosError) {

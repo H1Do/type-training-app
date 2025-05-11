@@ -52,13 +52,11 @@ class UserController {
             path: '/',
         });
 
-        return res
-            .status(201)
-            .json({
-                message:
-                    req.t?.('messages.registration_success') ??
-                    'User registered successfully',
-            });
+        return res.status(201).json({
+            message:
+                req.t?.('messages.registration_success') ??
+                'User registered successfully',
+        });
     }
 
     async login(req: AuthRequest, res: Response, next: NextFunction) {
@@ -102,24 +100,20 @@ class UserController {
             path: '/',
         });
 
-        return res
-            .status(200)
-            .json({
-                message:
-                    req.t?.('messages.login_success') ??
-                    'User logged in successfully',
-            });
+        return res.status(200).json({
+            message:
+                req.t?.('messages.login_success') ??
+                'User logged in successfully',
+        });
     }
 
     async logout(req: AuthRequest, res: Response, next: NextFunction) {
         res.clearCookie('token');
-        return res
-            .status(200)
-            .json({
-                message:
-                    req.t?.('messages.logout_success') ??
-                    'User logged out successfully',
-            });
+        return res.status(200).json({
+            message:
+                req.t?.('messages.logout_success') ??
+                'User logged out successfully',
+        });
     }
 
     async changePassword(req: AuthRequest, res: Response, next: NextFunction) {
@@ -166,13 +160,11 @@ class UserController {
         user.password = hashedPassword;
         await user.save();
 
-        return res
-            .status(200)
-            .json({
-                message:
-                    req.t?.('messages.password_change_success') ??
-                    'Password changed successfully',
-            });
+        return res.status(200).json({
+            message:
+                req.t?.('messages.password_change_success') ??
+                'Password changed successfully',
+        });
     }
 
     async getUser(req: AuthRequest, res: Response, next: NextFunction) {
@@ -196,10 +188,12 @@ class UserController {
         }
 
         const userDto: UserDto = {
-            id: user._id.toString(),
+            id: user.id.toString(),
             username: user.username,
             email: user.email,
             createdAt: user.createdAt,
+            level: user.level,
+            exp: user.exp,
         };
 
         return res.status(200).json(userDto);

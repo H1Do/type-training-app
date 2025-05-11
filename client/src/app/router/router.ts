@@ -1,60 +1,89 @@
 import { useUserStore } from '@/entities/user';
 import { createRouter, createWebHistory } from 'vue-router';
 
-export enum RouteNames {
+export enum RoutePaths {
     MAIN = '/',
     AUTH = '/auth',
     PROFILE = '/profile',
     STATS = '/stats',
     LESSONS = '/lessons',
+    LESSON = '/lessons/:id',
     TRAINING = '/training',
     SETTINGS = '/settings',
     NOT_FOUND = '/:pathMatch(.*)*',
 }
 
+export enum RouteNames {
+    MAIN = 'main',
+    AUTH = 'auth',
+    PROFILE = 'profile',
+    STATS = 'stats',
+    LESSONS = 'lessons',
+    LESSON = 'lesson',
+    TRAINING = 'training',
+    SETTINGS = 'settings',
+    NOT_FOUND = 'notFound',
+}
+
 const routes = [
     {
-        path: RouteNames.MAIN,
+        name: RouteNames.MAIN,
+        path: RoutePaths.MAIN,
         component: () => import('@/pages/MainPage.vue'),
     },
     {
-        path: RouteNames.AUTH,
+        name: RouteNames.AUTH,
+        path: RoutePaths.AUTH,
         component: () => import('@/pages/AuthPage.vue'),
         meta: {
             requiredAuthStatus: false,
         },
     },
     {
-        path: RouteNames.PROFILE,
+        name: RouteNames.PROFILE,
+        path: RoutePaths.PROFILE,
         component: () => import('@/pages/ProfilePage.vue'),
         meta: {
             requiredAuthStatus: true,
         },
     },
     {
-        path: RouteNames.STATS,
+        name: RouteNames.STATS,
+        path: RoutePaths.STATS,
         component: () => import('@/pages/StatsPage.vue'),
         meta: {
             requiredAuthStatus: true,
         },
     },
     {
-        path: RouteNames.LESSONS,
+        name: RouteNames.LESSONS,
+        path: RoutePaths.LESSONS,
         component: () => import('@/pages/LessonsPage.vue'),
         meta: {
             requiredAuthStatus: true,
         },
     },
     {
-        path: RouteNames.TRAINING,
+        name: RouteNames.LESSON,
+        path: RoutePaths.LESSON,
+        component: () => import('@/pages/LessonPage.vue'),
+        meta: {
+            requiredAuthStatus: true,
+        },
+    },
+    {
+        name: RouteNames.TRAINING,
+        path: RoutePaths.TRAINING,
         component: () => import('@/pages/TrainingPage.vue'),
     },
     {
-        path: RouteNames.SETTINGS,
+        name: RouteNames.SETTINGS,
+        path: RoutePaths.SETTINGS,
         component: () => import('@/pages/SettingsPage.vue'),
     },
     {
-        path: RouteNames.NOT_FOUND,
+        name: RouteNames.NOT_FOUND,
+        path: RoutePaths.NOT_FOUND,
         component: () => import('@/pages/NotFoundPage.vue'),
     },
 ];
@@ -70,9 +99,9 @@ router.beforeEach(async (to, _, next) => {
     const reqAuth = to.meta.requiredAuthStatus;
 
     if (reqAuth && !userStore.isAuthenticated) {
-        next({ path: RouteNames.AUTH });
+        next({ path: RoutePaths.AUTH });
     } else if (reqAuth === false && userStore.isAuthenticated) {
-        next({ path: RouteNames.MAIN });
+        next({ path: RoutePaths.MAIN });
     } else {
         next();
     }

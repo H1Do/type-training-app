@@ -1,22 +1,35 @@
 import { defineStore } from 'pinia';
 import type { UserState } from './types';
 import { AxiosError } from 'axios';
-import { RouteNames } from '@/app/router';
+import { RoutePaths } from '@/app/router';
 
 export const useUserStore = defineStore('user', {
     state: (): UserState => ({
         isAuthenticated: false,
         username: '',
         email: '',
-        error: '',
         createdAt: '',
+        level: 1,
+        exp: 0,
+        error: '',
     }),
     actions: {
+        setLevel(level: number) {
+            this.level = level;
+        },
+
+        setExp(exp: number) {
+            this.exp = exp;
+        },
+
         clearUserState(errorMessage?: string) {
             this.error = errorMessage ?? '';
             this.username = '';
             this.email = '';
             this.isAuthenticated = false;
+            this.createdAt = '';
+            this.level = 1;
+            this.exp = 0;
         },
 
         async checkAuth() {
@@ -27,6 +40,8 @@ export const useUserStore = defineStore('user', {
                 this.email = data.email;
                 this.createdAt = data.createdAt;
                 this.isAuthenticated = true;
+                this.level = data.level;
+                this.exp = data.exp;
 
                 return true;
             } catch (error: unknown) {
@@ -47,6 +62,8 @@ export const useUserStore = defineStore('user', {
                 this.username = data.username;
                 this.email = data.email;
                 this.isAuthenticated = true;
+                this.level = data.level;
+                this.exp = data.exp;
                 this.messageService.success(this.t('auth.loginSuccess'));
                 this.checkAuth();
             } catch (error: unknown) {
@@ -71,6 +88,8 @@ export const useUserStore = defineStore('user', {
                 this.username = data.username;
                 this.email = data.email;
                 this.isAuthenticated = true;
+                this.level = data.level;
+                this.exp = data.exp;
                 this.messageService.success(this.t('auth.registrationSuccess'));
                 this.checkAuth();
             } catch (error: unknown) {
@@ -89,7 +108,7 @@ export const useUserStore = defineStore('user', {
                 await this.userApi.logout();
                 this.clearUserState();
                 this.messageService.info(this.t('auth.logoutSuccess'));
-                this.router.push(RouteNames.MAIN);
+                this.router.push(RoutePaths.MAIN);
             } catch (error: unknown) {
                 if (error instanceof AxiosError) {
                     const message =

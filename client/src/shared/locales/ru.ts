@@ -155,6 +155,8 @@ export const ru = {
             key: 'Клавиша',
             keyCount: 'Кол-во нажатий',
             errorsRate: 'Частота ошибок',
+            lesson: 'Урок',
+            layout: 'Раскладка',
         },
         finger: 'Палец',
         fingers: {
@@ -194,9 +196,18 @@ export const ru = {
         nextLessons: 'Следующие уроки',
         prevLesson: 'Предыдущий урок',
         nextLesson: 'Следующий урок',
+        press: 'Нажмите',
+        toRestart: 'для перезапуска урока',
+        toLessons: 'Вернуться к всем урокам',
     },
 
     ui: {
         noData: 'Нет данных',
+    },
+
+    level: {
+        levelUp: 'Поздравляем, вы повысили уровень!',
+        level: 'Уровень',
+        lvl: 'Ур.',
     },
 };

@@ -152,6 +152,8 @@ export const en = {
             key: 'Key',
             keyCount: 'Pressed (total)',
             errorsRate: 'Errors rate',
+            lesson: 'Lesson',
+            layout: 'Layout',
         },
         finger: 'Finger',
         fingers: {
@@ -190,9 +192,18 @@ export const en = {
         nextLessons: 'Next lessons',
         prevLesson: 'Previous lesson',
         nextLesson: 'Next lesson',
+        press: 'Press',
+        toRestart: 'to restart lesson',
+        toLessons: 'Back to all lessons',
     },
 
     ui: {
         noData: 'No data',
+    },
+
+    level: {
+        levelUp: 'Congratulations, you have leveled up!',
+        level: 'Level',
+        lvl: 'Lvl.',
     },
 };

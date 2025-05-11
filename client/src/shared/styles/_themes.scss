@@ -10,6 +10,7 @@ body {
         --blue-adaptive-color: #{color.adjust($blue, $lightness: 10%)};
         --red-adaptive-color: #{$red};
         --green-adaptive-color: #{$green};
+        --yellow-adaptive-color: #{color.adjust($yellow, $lightness: 10%)};
 
         --header-background-color: var(--primary-color);
         --header-text-color: var(--background-color);
@@ -62,6 +63,25 @@ body {
 
         --scroll-thumb: rgba(100, 100, 100, 0.3);
         --scroll-thumb-hover: rgba(100, 100, 100, 0.5);
+
+        --star-color: #{$dark-yellow};
+        --star-fill: #{$yellow};
+
+        --level-color-1: #b0bec5;
+        --level-color-2: #90caf9;
+        --level-color-3: #81c784;
+        --level-color-4: #ffb74d;
+        --level-color-5: #64b5f6;
+        --level-color-6: #9575cd;
+        --level-color-7: #4db6ac;
+        --level-color-8: #f06292;
+        --level-color-9: #ba68c8;
+        --level-color-10: #ff8a65;
+
+        --progress-bg: #{$light-gray};
+        --level-up-color: #a3d600;
+        --earned-progress-bg: #a3d600;
+        --earned-progress-color: #a3d600;
     }
 
     &.dark-theme {
@@ -72,6 +92,7 @@ body {
         --blue-adaptive-color: #{color.adjust($blue, $lightness: 20%)};
         --red-adaptive-color: #{color.adjust($red, $lightness: 20%)};
         --green-adaptive-color: #{color.adjust($green, $lightness: 20%)};
+        --yellow-adaptive-color: #{color.adjust($yellow, $lightness: 20%)};
 
         --header-background-color: var(--primary-color);
         --header-text-color: var(--background-color);
@@ -124,5 +145,24 @@ body {
 
         --scroll-thumb: rgba(180, 180, 180, 0.2);
         --scroll-thumb-hover: rgba(180, 180, 180, 0.35);
+
+        --star-color: var(--yellow-adaptive-color);
+        --star-fill: #{$yellow};
+
+        --level-color-1: #78909c;
+        --level-color-2: #42a5f5;
+        --level-color-3: #66bb6a;
+        --level-color-4: #ffa726;
+        --level-color-5: #42a5f5;
+        --level-color-6: #7e57c2;
+        --level-color-7: #26a69a;
+        --level-color-8: #ec407a;
+        --level-color-9: #ab47bc;
+        --level-color-10: #ff7043;
+
+        --progress-bg: #{$light-gray};
+        --level-up-color: #cafc03;
+        --earned-progress-bg: #cafc03;
+        --earned-progress-color: #cafc03;
     }
 }

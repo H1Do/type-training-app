@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { RouteLocationRaw } from 'vue-router';
+
 withDefaults(
     defineProps<{
-        to?: string;
+        to?: RouteLocationRaw | string;
         params?: Record<string, unknown>;
         replace?: boolean;
         disabled?: boolean;
@@ -19,7 +21,7 @@ withDefaults(
 <template>
     <template v-if="type === 'external'">
         <a
-            :href="to"
+            :href="to as string"
             target="_blank"
             rel="noopener noreferrer"
             class="app-link external"

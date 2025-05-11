@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouteNames } from '@/app/router/router';
+import { RoutePaths } from '@/app/router';
 import { useUserStore } from '@/entities/user';
 import { AppButton, AppIcon, LogoIcon } from '@/shared/ui';
 import AppLink from '@/shared/ui/AppLink.vue';
@@ -7,6 +7,7 @@ import HFlex from '@/shared/ui/HFlex.vue';
 import { useConfirmDialog, useModalService } from '@/shared/utils';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
+import LevelBadge from './LevelBadge.vue';
 
 const { t } = useI18n();
 const userStore = useUserStore();
@@ -32,16 +33,16 @@ const onLogout = async () => {
 <template>
     <header class="app-header">
         <div class="logo">
-            <AppLink :to="RouteNames.MAIN" class="app-link">
+            <AppLink :to="RoutePaths.MAIN" class="app-link">
                 <LogoIcon />
             </AppLink>
         </div>
         <nav class="nav">
-            <AppLink :to="RouteNames.MAIN" class="app-link">
+            <AppLink :to="RoutePaths.MAIN" class="app-link">
                 <AppIcon name="HomeIcon" class="app-link-icon" size="1.25rem" />
                 <span class="app-link-text">{{ t('header.main') }}</span>
             </AppLink>
-            <AppLink :to="RouteNames.STATS" class="app-link">
+            <AppLink :to="RoutePaths.STATS" class="app-link">
                 <AppIcon
                     name="ChartNoAxesColumn"
                     class="app-link-icon"
@@ -49,22 +50,23 @@ const onLogout = async () => {
                 />
                 <span class="app-link-text">{{ t('header.stats') }}</span>
             </AppLink>
-            <AppLink :to="RouteNames.LESSONS" class="app-link">
+            <AppLink :to="RoutePaths.LESSONS" class="app-link">
                 <AppIcon name="Book" class="app-link-icon" size="1.25rem" />
                 <span class="app-link-text">{{ t('header.lessons') }}</span>
             </AppLink>
-            <AppLink :to="RouteNames.TRAINING" class="app-link">
+            <AppLink :to="RoutePaths.TRAINING" class="app-link">
                 <AppIcon name="Keyboard" class="app-link-icon" size="1.25rem" />
                 <span class="app-link-text">{{ t('header.training') }}</span>
             </AppLink>
-            <AppLink :to="RouteNames.SETTINGS" class="app-link">
+            <AppLink :to="RoutePaths.SETTINGS" class="app-link">
                 <AppIcon name="Settings" class="app-link-icon" size="1.25rem" />
                 <span class="app-link-text">{{ t('header.settings') }}</span>
             </AppLink>
         </nav>
         <div class="user-actions">
             <HFlex v-if="isAuthenticated" gap="1rem" align="center">
-                <AppLink :to="RouteNames.PROFILE" class="app-link">
+                <AppLink :to="RoutePaths.PROFILE" class="app-link">
+                    <LevelBadge :level="userStore.level" />
                     <AppIcon name="User" class="app-link-icon" size="1.25rem" />
                     <span class="app-link-text">{{ username }}</span>
                 </AppLink>
@@ -82,7 +84,7 @@ const onLogout = async () => {
                     <span class="app-link-text">{{ t('header.logout') }}</span>
                 </AppButton>
             </HFlex>
-            <AppLink v-else :to="RouteNames.AUTH" class="app-link">
+            <AppLink v-else :to="RoutePaths.AUTH" class="app-link">
                 <AppIcon
                     name="LogInIcon"
                     class="app-link-icon"
@@ -100,6 +102,7 @@ const onLogout = async () => {
 @use '@/shared/styles/variables' as *;
 
 .app-header {
+    position: relative;
     width: 60%;
     margin-inline: auto;
     border-radius: $header-border-radius;
@@ -111,6 +114,15 @@ const onLogout = async () => {
     align-items: center;
     background-color: var(--header-background-color);
     color: var(--header-text-color);
+}
+
+.nav {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: $gap;
 }
 
 .nav,

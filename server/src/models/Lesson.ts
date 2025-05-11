@@ -41,6 +41,16 @@ const LessonSchema = new Schema<LessonDoc>(
             type: Number,
             required: true,
         },
+        prevLessonId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Lesson',
+            default: null,
+        },
+        nextLessonId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Lesson',
+            default: null,
+        },
     },
     {
         timestamps: true,

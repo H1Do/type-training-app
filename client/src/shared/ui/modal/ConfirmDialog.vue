@@ -73,24 +73,24 @@ const onConfirm = () => emit('resolve', true);
         margin-top: 24px;
 
         .cancel {
-            background-color: var(--decline-color);
-            border-color: var(--decline-color);
-            color: $white;
+            color: var(--red-adaptive-color);
+            border-color: var(--red-adaptive-color);
 
             &:hover {
-                background-color: var(--decline-color-hover);
+                background-color: var(--red-adaptive-color);
                 color: $white;
+                border-color: var(--red-adaptive-color);
             }
         }
 
         .accept {
-            background-color: var(--accept-color);
-            border-color: var(--accept-color);
-            color: $white;
+            color: var(--green-adaptive-color);
+            border-color: var(--green-adaptive-color);
 
             &:hover {
-                background-color: var(--accept-color-hover);
+                background-color: var(--green-adaptive-color);
                 color: $white;
+                border-color: var(--green-adaptive-color);
             }
         }
     }

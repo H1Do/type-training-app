@@ -1,5 +1,6 @@
 import { Types } from 'mongoose';
 import { Finger, Layout } from './keyboardTypes';
+import { Document } from 'mongoose';
 
 export enum TrainingMode {
     Letters = 'letters',
@@ -31,6 +32,7 @@ export interface InputEventRecord {
 }
 
 export interface FinishSessionRequest {
+    sessionId: string;
     startedAt: number;
     finishedAt: number;
     input: string[];
@@ -40,8 +42,7 @@ export interface FinishSessionRequest {
     sequence?: string[];
 }
 
-export interface TrainingSessionDoc {
-    _id: string;
+export interface TrainingSessionDoc extends Document {
     userId: string;
     mode: TrainingMode;
     layout: Layout;

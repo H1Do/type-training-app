@@ -6,6 +6,7 @@ import {
 } from './trainingTypes';
 import { Layout } from './keyboardTypes';
 import { StatsPeriod } from './statsTypes';
+import { FinishLessonRequest } from './lessonsTypes';
 
 export interface RequestWithUser<
     TBody = unknown,
@@ -44,10 +45,7 @@ export type StatsQueryRequest = RequestWithUser<
 >;
 
 export type LessonCompleteRequest = RequestWithUser<
-    {
-        cpm: number;
-        accuracy: number;
-    },
+    FinishLessonRequest,
     { id: string }
 >;
 

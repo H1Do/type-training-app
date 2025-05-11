@@ -1,4 +1,6 @@
+import type { InputEventRecord } from './keyboard';
 import type { Layout } from './layout';
+import type { ExpReward } from './level';
 import type { TrainingStats } from './stats';
 
 export interface TrainingSession {
@@ -11,13 +13,7 @@ export interface TrainingResult {
     startedAt: number;
     finishedAt: number;
     input: string[];
-    events: {
-        type: 'input' | 'backspace';
-        actual?: string;
-        expected?: string;
-        time: number;
-        timestamp: number;
-    }[];
+    events: InputEventRecord[];
     layout: Layout;
     mode: TrainingMode;
     sequence: string[];
@@ -26,6 +22,7 @@ export interface TrainingResult {
 export interface TrainingFinishResponse {
     message: string;
     stats: TrainingStats;
+    exp: ExpReward | null;
 }
 
 export enum TrainingMode {

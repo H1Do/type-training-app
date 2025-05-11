@@ -6,6 +6,13 @@ import {
     LessonGetAllRequest,
     LessonGetByIdRequest,
 } from '@/types/requestTypes';
+import { calculateDetailedStats } from '@/utils/training/calculateStats';
+import {
+    MAX_CORRECTIONS_FOR_LESSON,
+    MAX_ERRORS_FOR_LESSON,
+} from '@/constants/stats';
+import { User } from '@/models/User';
+import { addExpToUser, calculateExp } from '@/utils/levelSystem';
 
 class LessonsController {
     async getAll(req: LessonGetAllRequest, res: Response, next: NextFunction) {
@@ -23,6 +30,7 @@ class LessonsController {
 
             const result = lessons.map((lesson) => ({
                 ...lesson,
+                id: lesson._id.toString(),
                 stars: progressMap.get(lesson._id.toString()) ?? 0,
             }));
 
@@ -60,6 +68,8 @@ class LessonsController {
                 title: lesson.title,
                 layout: lesson.layout,
                 sequence,
+                prevLessonId: lesson.prevLessonId,
+                nextLessonId: lesson.nextLessonId,
             });
         } catch (e) {
             next(e);
@@ -73,10 +83,10 @@ class LessonsController {
     ) {
         try {
             const { id } = req.params;
-            const { cpm, accuracy } = req.body;
+
+            const { input, events, finishedAt, startedAt, sequence } = req.body;
 
             const userId = req.user?.id;
-
             if (!userId)
                 return next(
                     ApiError.unauthorized(
@@ -93,25 +103,107 @@ class LessonsController {
                     ),
                 );
 
-            if (accuracy < lesson.minAccuracy) {
+            if (sequence.some((char) => !lesson.allowedChars.includes(char))) {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_sequence') ??
+                            'Invalid sequence',
+                    ),
+                );
+            }
+
+            const stats = calculateDetailedStats(
+                events,
+                startedAt,
+                finishedAt,
+                input,
+                sequence,
+            );
+
+            if (stats.accuracy < lesson.minAccuracy) {
                 return res.status(200).json({
                     stars: 0,
-                    message:
-                        req.t?.('messages.low_accuracy') ??
-                        'Minimum accuracy not reached',
+                    stats: {
+                        ...stats,
+                        layout: lesson.layout,
+                        lesson,
+                    },
+                    message: req.t?.('messages.low_accuracy')
+                        ? `${req.t?.('messages.low_accuracy')} (< ${
+                              lesson.minAccuracy
+                          }%)`
+                        : `Minimum accuracy not reached (< ${lesson.minAccuracy}%)`,
+                });
+            }
+
+            if (stats.corrections > MAX_CORRECTIONS_FOR_LESSON) {
+                return res.status(200).json({
+                    stars: 0,
+                    stats: {
+                        ...stats,
+                        layout: lesson.layout,
+                        lesson,
+                    },
+                    message: req.t?.('messages.too_many_corrections')
+                        ? ` ${req.t?.(
+                              'messages.too_many_corrections',
+                          )} (> ${MAX_CORRECTIONS_FOR_LESSON}) `
+                        : `Too many corrections (> ${MAX_CORRECTIONS_FOR_LESSON})`,
+                });
+            }
+
+            if (stats.textErrorsCount > MAX_ERRORS_FOR_LESSON) {
+                return res.status(200).json({
+                    stars: 0,
+                    stats: {
+                        ...stats,
+                        layout: lesson.layout,
+                        lesson,
+                    },
+                    message: req.t?.('messages.too_many_errors')
+                        ? ` ${req.t?.(
+                              'messages.too_many_errors',
+                          )} (> ${MAX_ERRORS_FOR_LESSON}) `
+                        : `Too many errors (${MAX_ERRORS_FOR_LESSON})`,
                 });
             }
 
             let stars = 0;
-            if (cpm >= lesson.cpmFor1) stars = 1;
-            if (cpm >= lesson.cpmFor2) stars = 2;
-            if (cpm >= lesson.cpmFor3) stars = 3;
+            if (stats.cpm >= lesson.cpmFor1) stars = 1;
+            if (stats.cpm >= lesson.cpmFor2) stars = 2;
+            if (stats.cpm >= lesson.cpmFor3) stars = 3;
 
             if (stars === 0) {
                 return res.status(200).json({
                     stars: 0,
+                    stats: {
+                        ...stats,
+                        layout: lesson.layout,
+                        lesson,
+                    },
                     message: req.t?.('messages.low_speed') ?? 'WPM too low',
                 });
+            }
+
+            const user = await User.findById(userId);
+            let exp = null;
+
+            if (user) {
+                const earnedExp = calculateExp({
+                    cpm: stats.cpm,
+                    accuracy: stats.accuracy,
+                    charCount: sequence.length,
+                });
+
+                const levelUpResult = addExpToUser(user, earnedExp);
+                await user.save();
+
+                exp = {
+                    earned: earnedExp,
+                    level: levelUpResult.newLevel,
+                    current: levelUpResult.currentExp,
+                    required: levelUpResult.requiredExp,
+                };
             }
 
             const progress = await UserLessonProgress.findOneAndUpdate(
@@ -123,7 +215,13 @@ class LessonsController {
             return res.status(200).json({
                 message:
                     req.t?.('messages.lesson_completed') ?? 'Lesson completed',
-                stars: progress.stars,
+                stats: {
+                    ...stats,
+                    layout: lesson.layout,
+                    lesson,
+                },
+                stars,
+                exp,
             });
         } catch (e) {
             next(e);

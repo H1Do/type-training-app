@@ -1,0 +1,8 @@
+export const MAX_ERRORS_FOR_LESSON = 5;
+export const MAX_CORRECTIONS_FOR_LESSON = 10;
+
+export const MIN_ACCURACY_FOR_LEADERBOARD = 90;
+export const MAX_CORRECTIONS_FOR_LEADERBOARD = 10;
+
+export const MIN_ACCURACY_FOR_STATS = 80;
+export const MAX_ERRORS_FOR_STATS = 10;

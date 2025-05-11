@@ -1,8 +1,9 @@
 import type { HttpClient } from './httpClient';
 import type {
-    CompleteLessonResult,
+    CompleteLessonResponse,
     LessonDetails,
     LessonProgress,
+    LessonResult,
 } from '../types';
 
 export class LessonsApi {
@@ -20,13 +21,10 @@ export class LessonsApi {
         return res.data;
     }
 
-    async completeLesson(
-        id: string,
-        stats: { cpm: number; accuracy: number },
-    ): Promise<CompleteLessonResult> {
-        const res = await this.httpClient.post<CompleteLessonResult>(
-            `/api/lessons/${id}/complete`,
-            stats,
+    async finishLesson(result: LessonResult): Promise<CompleteLessonResponse> {
+        const res = await this.httpClient.post<CompleteLessonResponse>(
+            `/api/lessons/${result.lessonId}/complete`,
+            result,
         );
         return res.data;
     }

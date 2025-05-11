@@ -1,5 +1,4 @@
 import type { Layout } from '../types';
-import type { TrainingStats } from '../types/stats';
 import type {
     TrainingFinishResponse,
     TrainingMode,
@@ -10,22 +9,6 @@ import type { HttpClient } from './httpClient';
 
 export class TrainingApi {
     constructor(private httpClient: HttpClient) {}
-
-    async prepareSequence(
-        mode: TrainingMode,
-        layout: Layout,
-        items: string | undefined,
-        length: number | undefined,
-        isWords: boolean | undefined,
-    ): Promise<string[]> {
-        const res = await this.httpClient.get<string[]>(
-            '/api/training/prepare',
-            {
-                params: { mode, layout, items, length, isWords },
-            },
-        );
-        return res.data;
-    }
 
     async startSession(
         mode: TrainingMode,
@@ -49,7 +32,7 @@ export class TrainingApi {
 
     async finishSession(
         result: TrainingResult,
-    ): Promise<{ stats: TrainingStats }> {
+    ): Promise<TrainingFinishResponse> {
         const res = await this.httpClient.post<TrainingFinishResponse>(
             `api/training/session/${result.sessionId}/finish`,
             result,

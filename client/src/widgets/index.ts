@@ -10,4 +10,6 @@ export { default as CharDisplay } from './CharDisplay.vue';
 export { default as CurrentStats } from './CurrentStats.vue';
 export { default as KeyboardMapStats } from './KeyboardMapStats.vue';
 export { default as FingerMapStats } from './FingerMapStats.vue';
+export { default as LevelProgress } from './LevelProgress.vue';
+export { default as LevelBadge } from './LevelBadge.vue';
 export * from './Keyboard/index';

@@ -1,4 +1,5 @@
 import type { Layout } from './layout';
+import type { LessonDetails } from './lessons';
 import type { TrainingMode } from './training';
 
 export type StatsPeriod = 'day' | 'week' | 'month' | 'all';
@@ -39,6 +40,21 @@ export interface TrainingStats {
     isRated: boolean;
     isLeaderboardEligible: boolean;
     mode: TrainingMode;
+    layout: Layout;
+}
+
+export interface LessonsStats {
+    accuracy: number;
+    averageReaction: number;
+    cpm: number;
+    totalTime: number;
+    count: number;
+    perCharStats: PerCharStat[];
+    fingerStats: FingerStat[];
+    corrections: number;
+    errorsCount: number;
+    textErrorsCount: number;
+    lesson: LessonDetails;
     layout: Layout;
 }
 

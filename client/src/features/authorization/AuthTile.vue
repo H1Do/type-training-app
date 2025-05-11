@@ -3,7 +3,7 @@ import { useAuthorizationStore } from './model/authorization';
 import { useUserStore } from '@/entities/user';
 import { useRouter } from 'vue-router';
 import { AppLink, VFlex } from '@/shared/ui';
-import { RouteNames } from '@/app/router';
+import { RoutePaths } from '@/app/router';
 import LoginForm from './ui/LoginForm.vue';
 import RegistrationForm from './ui/RegistrationForm.vue';
 import { useI18n } from 'vue-i18n';
@@ -16,7 +16,7 @@ const router = useRouter();
 const onSubmit = async () => {
     await authStore.submit();
     if (userStore.isAuthenticated) {
-        router.push(RouteNames.MAIN);
+        router.push(RoutePaths.MAIN);
     }
 };
 </script>

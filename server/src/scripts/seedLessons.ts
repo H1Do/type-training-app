@@ -12,10 +12,39 @@ async function seedLessons() {
                 'MONGODB_URL is not defined in the environment variables',
             );
         }
+
         await mongoose.connect(mongoUrl);
+
         await Lesson.deleteMany({});
-        await Lesson.insertMany([...qwertyLessons, ...ycukenLessons]);
-        console.log('Lessons seeded successfully');
+
+        const insertedLessons = await Lesson.insertMany([
+            ...qwertyLessons,
+            ...ycukenLessons,
+        ]);
+
+        const layoutGroups = insertedLessons.reduce<
+            Record<string, typeof insertedLessons>
+        >((acc, lesson) => {
+            if (!acc[lesson.layout]) acc[lesson.layout] = [];
+            acc[lesson.layout].push(lesson);
+            return acc;
+        }, {});
+
+        for (const group of Object.values(layoutGroups)) {
+            const sorted = group.sort((a, b) => a.order - b.order);
+            for (let i = 0; i < sorted.length; i++) {
+                const current = sorted[i];
+                const prev = sorted[i - 1]?._id ?? null;
+                const next = sorted[i + 1]?._id ?? null;
+
+                await Lesson.findByIdAndUpdate(current._id, {
+                    prevLessonId: prev,
+                    nextLessonId: next,
+                });
+            }
+        }
+
+        console.log('Lessons seeded and linked successfully');
         process.exit(0);
     } catch (error) {
         console.error('Seeding error:', error);
