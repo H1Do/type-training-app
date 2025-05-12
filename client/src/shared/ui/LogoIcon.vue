@@ -6,9 +6,8 @@
         viewBox="3.85 4.461538461538462 70.07000000000001 21.76923076923077"
         xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns="http://www.w3.org/2000/svg"
-        style="max-height: 500px"
-        width="70.07000000000001"
-        height="21.76923076923077"
+        width="77.07000000000001"
+        height="23.76923076923077"
         class="icon"
     >
         <g id="surface1">

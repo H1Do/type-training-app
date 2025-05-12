@@ -52,3 +52,9 @@ export type LessonCompleteRequest = RequestWithUser<
 export type LessonGetByIdRequest = RequestWithUser<undefined, { id: string }>;
 
 export type LessonGetAllRequest = RequestWithUser;
+
+export interface ResetPasswordRequest
+    extends RequestWithUser<{
+        token: string;
+        newPassword: string;
+    }> {}

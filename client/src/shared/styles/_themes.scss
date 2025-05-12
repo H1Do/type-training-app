@@ -11,6 +11,7 @@ body {
         --red-adaptive-color: #{$red};
         --green-adaptive-color: #{$green};
         --yellow-adaptive-color: #{color.adjust($yellow, $lightness: 10%)};
+        --orange-adaptive-color: #{$orange};
 
         --header-background-color: var(--primary-color);
         --header-text-color: var(--background-color);
@@ -93,6 +94,7 @@ body {
         --red-adaptive-color: #{color.adjust($red, $lightness: 20%)};
         --green-adaptive-color: #{color.adjust($green, $lightness: 20%)};
         --yellow-adaptive-color: #{color.adjust($yellow, $lightness: 20%)};
+        --orange-adaptive-color: #{color.adjust($orange, $lightness: 20%)};
 
         --header-background-color: var(--primary-color);
         --header-text-color: var(--background-color);

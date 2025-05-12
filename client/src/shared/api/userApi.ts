@@ -46,4 +46,39 @@ export class UserApi {
         const { data } = await this.httpClient.get<User>('api/user');
         return data;
     };
+
+    verifyEmail = async (token: string): Promise<{ message: string }> => {
+        const { data } = await this.httpClient.get<{ message: string }>(
+            `api/user/verify-email?token=${token}`,
+        );
+        return data;
+    };
+
+    requestPasswordReset = async (
+        email: string,
+    ): Promise<{ message: string }> => {
+        const { data } = await this.httpClient.post<{ message: string }>(
+            'api/user/forgot-password',
+            { email },
+        );
+        return data;
+    };
+
+    resetPassword = async (
+        token: string,
+        newPassword: string,
+    ): Promise<{ message: string }> => {
+        const { data } = await this.httpClient.post<{ message: string }>(
+            'api/user/reset-password',
+            { token, newPassword },
+        );
+        return data;
+    };
+
+    resendVerificationEmail = async (): Promise<{ message: string }> => {
+        const { data } = await this.httpClient.post<{ message: string }>(
+            'api/user/resend-verification',
+        );
+        return data;
+    };
 }

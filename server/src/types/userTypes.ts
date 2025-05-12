@@ -7,6 +7,7 @@ export interface UserDto {
     createdAt: Date;
     level: number;
     exp: number;
+    isVerified: boolean;
 }
 
 export interface UserDoc extends Document {
@@ -14,6 +15,8 @@ export interface UserDoc extends Document {
     password: string;
     email: string;
     createdAt: Date;
+    isVerified: boolean;
+    emailToken?: string;
     level: number;
     exp: number;
 }

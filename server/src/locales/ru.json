@@ -26,5 +26,30 @@
     "messages.low_accuracy": "Недостаточная точность",
     "messages.low_speed": "Слишком низкая скорость печати",
 
-    "errors.lesson_not_found": "Урок не найден"
+    "errors.lesson_not_found": "Урок не найден",
+
+    "messages.email_sent": "Письмо с подтверждением отправлено",
+    "messages.email_already_verified": "Почта уже подтверждена",
+    "messages.email_verified": "Почта успешно подтверждена",
+
+    "errors.invalid_or_expired_token": "Ссылка недействительна или устарела",
+
+    "messages.reset_email_sent": "Если почта найдена — письмо со ссылкой отправлено",
+    "messages.password_reset_success": "Пароль успешно сброшен",
+
+    "errors.token_invalid": "Недействительный токен",
+    "errors.email_not_found": "Почта не найдена",
+
+    "mail.verify_your_email": "Подтвердите вашу почту",
+    "mail.password_reset": "Восстановление пароля",
+
+    "mail.verify_title": "Добро пожаловать в KeySpark!",
+    "mail.verify_instruction": "Пожалуйста, подтвердите вашу почту для завершения регистрации:",
+    "mail.verify_button": "Подтвердить почту",
+
+    "mail.reset_title": "Сброс пароля",
+    "mail.reset_instruction": "Вы запросили сброс пароля. Нажмите на кнопку ниже:",
+    "mail.reset_button": "Сбросить пароль",
+
+    "mail.ignore_if_not_you": "Если вы не отправляли этот запрос — просто проигнорируйте письмо."
 }

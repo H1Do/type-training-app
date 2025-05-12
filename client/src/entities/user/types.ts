@@ -4,6 +4,7 @@ export interface User {
     createdAt: string;
     level: number;
     exp: number;
+    isVerified: boolean;
 }
 
 export interface UserState {
@@ -14,4 +15,5 @@ export interface UserState {
     level: number;
     exp: number;
     error: string;
+    isVerified: boolean;
 }

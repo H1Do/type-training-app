@@ -81,7 +81,7 @@ const submitForm = (event: Event) => {
                 id="login"
                 :value="modelValue.login"
                 @input="updateField('login', $event)"
-                :placeholder="t('auth.login')"
+                :placeholder="t('auth.username')"
             />
             <AppInput
                 type="password"
@@ -107,7 +107,7 @@ const submitForm = (event: Event) => {
                     v-if="userStore.error"
                     textStyle="error"
                     align="center"
-                    size="12px"
+                    size="0.75rem"
                 >
                     {{ userStore.error }}
                 </AppText>
@@ -116,4 +116,8 @@ const submitForm = (event: Event) => {
     </form>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.form {
+    width: 100%;
+}
+</style>

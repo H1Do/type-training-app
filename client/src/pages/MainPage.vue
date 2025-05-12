@@ -1,7 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import MainTile from '@/features/main/MainTile.vue';
+</script>
 
 <template>
-    <div>Main page</div>
+    <MainTile />
 </template>
 
 <style scoped lang="scss"></style>

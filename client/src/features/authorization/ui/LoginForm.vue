@@ -80,4 +80,8 @@ const submitForm = (event: Event) => {
     </form>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.form {
+    width: 100%;
+}
+</style>

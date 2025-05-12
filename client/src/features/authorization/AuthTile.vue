@@ -50,6 +50,13 @@ const onSubmit = async () => {
                     : t('auth.toLogin')
             }}
         </AppLink>
+        <AppLink
+            v-if="authStore.type === 'login'"
+            :to="RoutePaths.FORGOT_PASSWORD"
+            class="switch-link switch-link--forgot"
+        >
+            {{ t('auth.forgotPassword') }}
+        </AppLink>
     </VFlex>
 </template>
 
@@ -57,11 +64,15 @@ const onSubmit = async () => {
 @use '@/shared/styles/variables' as *;
 
 .tile {
-    max-width: $auth-tile-max-width;
+    width: $auth-width;
 }
 
 .switch-link {
     text-align: center;
+
+    &--forgot {
+        color: var(--red-adaptive-color);
+    }
 }
 
 .fade-enter-active,

@@ -20,6 +20,8 @@ const userSchema = new Schema<UserDoc>({
         type: Date,
         default: Date.now,
     },
+    isVerified: { type: Boolean, default: false },
+    emailToken: { type: String },
     level: {
         type: Number,
         required: true,

@@ -10,6 +10,9 @@ export enum RoutePaths {
     LESSON = '/lessons/:id',
     TRAINING = '/training',
     SETTINGS = '/settings',
+    VERIFY_EMAIL = '/verify-email',
+    FORGOT_PASSWORD = '/forgot-password',
+    RESET_PASSWORD = '/reset-password',
     NOT_FOUND = '/:pathMatch(.*)*',
 }
 
@@ -22,6 +25,9 @@ export enum RouteNames {
     LESSON = 'lesson',
     TRAINING = 'training',
     SETTINGS = 'settings',
+    VERIFY_EMAIL = 'verifyEmail',
+    FORGOT_PASSWORD = 'forgotPassword',
+    RESET_PASSWORD = 'resetPassword',
     NOT_FOUND = 'notFound',
 }
 
@@ -85,6 +91,27 @@ const routes = [
         name: RouteNames.NOT_FOUND,
         path: RoutePaths.NOT_FOUND,
         component: () => import('@/pages/NotFoundPage.vue'),
+    },
+    {
+        name: RouteNames.VERIFY_EMAIL,
+        path: RoutePaths.VERIFY_EMAIL,
+        component: () => import('@/pages/VerifyEmailPage.vue'),
+    },
+    {
+        name: RouteNames.FORGOT_PASSWORD,
+        path: RoutePaths.FORGOT_PASSWORD,
+        component: () => import('@/pages/ForgotPasswordPage.vue'),
+        meta: {
+            requiredAuthStatus: false,
+        },
+    },
+    {
+        name: RouteNames.RESET_PASSWORD,
+        path: RoutePaths.RESET_PASSWORD,
+        component: () => import('@/pages/ResetPasswordPage.vue'),
+        meta: {
+            requiredAuthStatus: false,
+        },
     },
 ];
 

@@ -12,6 +12,7 @@ export const useUserStore = defineStore('user', {
         level: 1,
         exp: 0,
         error: '',
+        isVerified: false,
     }),
     actions: {
         setLevel(level: number) {
@@ -42,6 +43,7 @@ export const useUserStore = defineStore('user', {
                 this.isAuthenticated = true;
                 this.level = data.level;
                 this.exp = data.exp;
+                this.isVerified = data.isVerified;
 
                 return true;
             } catch (error: unknown) {
@@ -134,6 +136,74 @@ export const useUserStore = defineStore('user', {
                     this.clearUserState(message);
                     this.messageService.error(message);
                     throw error;
+                }
+            }
+        },
+
+        async verifyEmail(token: string) {
+            try {
+                const data = await this.userApi.verifyEmail(token);
+                this.messageService.success(
+                    data.message ?? this.t('auth.emailVerified'),
+                );
+                this.checkAuth();
+            } catch (error) {
+                if (error instanceof AxiosError) {
+                    const message =
+                        error?.response?.data?.message ||
+                        this.t('auth.emailVerificationFailed');
+                    this.messageService.error(message);
+                }
+            }
+        },
+
+        async requestPasswordReset(email: string) {
+            try {
+                const data = await this.userApi.requestPasswordReset(email);
+                this.messageService.success(
+                    data.message ?? this.t('auth.resetRequestSent'),
+                );
+            } catch (error) {
+                if (error instanceof AxiosError) {
+                    const message =
+                        error?.response?.data?.message ||
+                        this.t('auth.resetRequestFailed');
+                    this.messageService.error(message);
+                }
+            }
+        },
+
+        async resetPassword(token: string, newPassword: string) {
+            try {
+                const data = await this.userApi.resetPassword(
+                    token,
+                    newPassword,
+                );
+                this.messageService.success(
+                    this.t(data.message ?? 'auth.passwordResetSuccess'),
+                );
+            } catch (error) {
+                if (error instanceof AxiosError) {
+                    const message =
+                        error?.response?.data?.message ||
+                        this.t('auth.passwordResetFailed');
+                    this.messageService.error(message);
+                }
+            }
+        },
+
+        async resendVerificationEmail() {
+            try {
+                const data = await this.userApi.resendVerificationEmail();
+                this.messageService.success(
+                    data.message ?? this.t('auth.verificationSent'),
+                );
+            } catch (error) {
+                if (error instanceof AxiosError) {
+                    const message =
+                        error?.response?.data?.message ||
+                        this.t('auth.verificationFailed');
+                    this.messageService.error(message);
                 }
             }
         },

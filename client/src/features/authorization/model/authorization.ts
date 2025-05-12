@@ -43,6 +43,9 @@ export const useAuthorizationStore = defineStore('authorization', {
         },
 
         toggleType() {
+            const userStore = useUserStore();
+
+            userStore.setError('');
             this.type = this.type === 'login' ? 'registration' : 'login';
         },
     },

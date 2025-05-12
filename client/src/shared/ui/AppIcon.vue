@@ -11,7 +11,6 @@ const props = withDefaults(
     }>(),
     {
         size: '1.5rem',
-        color: '#000',
         strokeWidth: '2px',
     },
 );

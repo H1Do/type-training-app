@@ -8,6 +8,7 @@ export const errorMiddleware: ErrorRequestHandler = (
     res: Response,
     next: NextFunction,
 ) => {
+    console.log(err);
     if (err instanceof ApiError) {
         res.status(err.status).json({
             status: 'error',

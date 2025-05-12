@@ -44,6 +44,7 @@ const messageService = useMessageService();
     color: var(--primary-color);
     transition: transform 0.3s ease, opacity 0.3s ease;
     word-break: break-word;
+    text-align: center;
 
     &:not(:last-child) {
         margin-bottom: 12px;

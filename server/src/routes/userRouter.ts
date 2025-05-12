@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { userController } from '../controllers/userController';
-import { AuthRequest } from '@/types/requestTypes';
+import { AuthRequest, ResetPasswordRequest } from '@/types/requestTypes';
 import { createAuthMiddleware } from '@/middleware/authMiddleware';
 import {
     strictRateLimiter,
@@ -53,3 +53,59 @@ userRouter.get('/', createAuthMiddleware(true), async (req, res, next) => {
         next(error);
     }
 });
+
+userRouter.get('/verify-email', async (req, res, next) => {
+    try {
+        await userController.verifyEmail(req as AuthRequest, res, next);
+    } catch (error) {
+        next(error);
+    }
+});
+
+userRouter.post(
+    '/forgot-password',
+    strictRateLimiter,
+    async (req, res, next) => {
+        try {
+            await userController.requestPasswordReset(
+                req as AuthRequest,
+                res,
+                next,
+            );
+        } catch (error) {
+            next(error);
+        }
+    },
+);
+
+userRouter.post(
+    '/reset-password',
+    strictRateLimiter,
+    async (req, res, next) => {
+        try {
+            await userController.resetPassword(
+                req as ResetPasswordRequest,
+                res,
+                next,
+            );
+        } catch (error) {
+            next(error);
+        }
+    },
+);
+
+userRouter.post(
+    '/resend-verification',
+    createAuthMiddleware(true),
+    async (req, res, next) => {
+        try {
+            await userController.resendVerificationEmail(
+                req as AuthRequest,
+                res,
+                next,
+            );
+        } catch (error) {
+            next(error);
+        }
+    },
+);
