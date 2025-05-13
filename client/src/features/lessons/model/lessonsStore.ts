@@ -39,6 +39,18 @@ export const useLessonsStore = defineStore('lessons', {
             if (!state.startedAt) return 0;
             return (state.finishedAt ?? Date.now()) - state.startedAt;
         },
+
+        getTotalStars: (state) => {
+            if (!state.lessons.length) return 0;
+            return state.lessons.length * 3;
+        },
+
+        getEarnedStars: (state) => {
+            if (!state.lessons.length) return 0;
+            return state.lessons.reduce((acc, lesson) => {
+                return acc + lesson.stars;
+            }, 0);
+        },
     },
 
     actions: {

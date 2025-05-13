@@ -2,6 +2,7 @@ import type {
     Layout,
     StatsPeriod,
     StatsResponse,
+    TopUsersByLevelResponse,
     TrainingMode,
 } from '../types';
 import type { HttpClient } from './httpClient';
@@ -21,6 +22,14 @@ export class StatsApi {
                 layout,
             },
         });
+        return res.data;
+    }
+
+    async getTopUsers(): Promise<TopUsersByLevelResponse> {
+        const res = await this.httpClient.get<TopUsersByLevelResponse>(
+            '/api/stats/top-users',
+            {},
+        );
         return res.data;
     }
 }

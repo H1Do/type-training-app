@@ -1,7 +1,10 @@
 import { Response, NextFunction } from 'express';
 import { TrainingStats } from '@/models/TrainingStats';
 import { ApiError } from '@/errors/ApiError';
-import { StatsQueryRequest } from '@/types/requestTypes';
+import {
+    StatsQueryRequest,
+    TopUsersByLevelRequest,
+} from '@/types/requestTypes';
 import { FingerStat, PerCharStat } from '@/types/statsTypes';
 import type {
     SessionDto,
@@ -174,6 +177,80 @@ export const StatsController = {
                 leaderboard,
                 userBestResult: userBest,
                 position,
+            });
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    async getTopUsersByLevel(
+        req: TopUsersByLevelRequest,
+        res: Response,
+        next: NextFunction,
+    ) {
+        try {
+            const userId = req.user?.id;
+            if (!userId)
+                return next(
+                    ApiError.unauthorized(
+                        req.t?.('errors.unauthorized') ?? 'Unauthorized',
+                    ),
+                );
+
+            const topUsersRaw = await TrainingStats.db
+                .collection('users')
+                .aggregate([
+                    { $sort: { level: -1, exp: -1 } },
+                    { $limit: 10 },
+                    {
+                        $project: {
+                            _id: 1,
+                            username: 1,
+                            level: 1,
+                            exp: 1,
+                        },
+                    },
+                ])
+                .toArray();
+
+            const topUsers = topUsersRaw.map((user) => ({
+                userId: user._id.toString(),
+                username: user.username,
+                level: user.level,
+                exp: user.exp,
+                isCurrentUser: user._id.toString() === userId,
+            }));
+
+            let userPosition: number | null = null;
+            const isInTop = topUsers.some((u) => u.userId === userId);
+
+            if (!isInTop) {
+                const currentUser = await TrainingStats.db
+                    .collection('users')
+                    .findOne(
+                        { id: userId },
+                        { projection: { level: 1, exp: 1 } },
+                    );
+
+                if (currentUser) {
+                    userPosition =
+                        (await TrainingStats.db
+                            .collection('users')
+                            .countDocuments({
+                                $or: [
+                                    { level: { $gt: currentUser.level } },
+                                    {
+                                        level: currentUser.level,
+                                        exp: { $gt: currentUser.exp },
+                                    },
+                                ],
+                            })) + 1;
+                }
+            }
+
+            return res.json({
+                topUsers,
+                userPosition,
             });
         } catch (e) {
             next(e);

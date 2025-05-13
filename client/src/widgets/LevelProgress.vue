@@ -103,7 +103,6 @@ const earnedProgress = computed(() =>
     height: 100%;
     transition: width $transition-duration ease;
     position: relative;
-    border-radius: inherit;
 }
 
 .progress-earned {

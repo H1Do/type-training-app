@@ -20,15 +20,30 @@ interface SettingsState {
 
 const STORAGE_KEY = 'app_settings';
 
-function loadSettings(): SettingsState {
+const detectDefaultLocalization = (): Localization => {
+    const lang = navigator.language.toLowerCase();
+
+    if (lang.startsWith('ru')) return Localization.RU;
+    return Localization.EN;
+};
+
+const detectDefaultTheme = (): Theme => {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? Theme.DARK
+        : Theme.LIGHT;
+};
+
+const loadSettings = (): SettingsState => {
     try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
             const parsed = JSON.parse(raw);
+
             return {
-                localization: parsed.localization ?? Localization.EN,
+                localization:
+                    parsed.localization ?? detectDefaultLocalization(),
                 layout: parsed.layout ?? Layout.QWERTY,
-                theme: parsed.theme ?? Theme.LIGHT,
+                theme: parsed.theme ?? detectDefaultTheme(),
                 difficulty: parsed.difficulty ?? Difficulty.Easy,
             };
         }
@@ -36,16 +51,16 @@ function loadSettings(): SettingsState {
         console.warn('Failed to load settings from localStorage', e);
     }
     return {
-        localization: Localization.EN,
+        localization: detectDefaultLocalization(),
         layout: Layout.QWERTY,
-        theme: Theme.LIGHT,
+        theme: detectDefaultTheme(),
         difficulty: Difficulty.Easy,
     };
-}
+};
 
-function saveSettings(state: SettingsState) {
+const saveSettings = (state: SettingsState) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
+};
 
 export const useSettingsStore = defineStore('settings', {
     state: (): SettingsState => loadSettings(),

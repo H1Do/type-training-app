@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import AppLoader from './AppLoader.vue';
+
 withDefaults(
     defineProps<{
         type?: 'button' | 'submit' | 'reset';
         buttonStyle?: 'primary' | 'highlighted' | 'error' | 'clear';
         disabled?: boolean;
         title?: string;
+        isLoading?: boolean;
     }>(),
     {
         type: 'button',
@@ -17,13 +20,14 @@ withDefaults(
 
 <template>
     <button
-        :disabled="disabled"
+        :disabled="disabled || isLoading"
         :type="type"
         :title="title"
         class="button"
         :class="`button--${buttonStyle}`"
     >
-        <slot />
+        <slot v-if="!isLoading" />
+        <AppLoader size="1.5rem" v-else />
     </button>
 </template>
 
@@ -39,6 +43,9 @@ withDefaults(
     cursor: pointer;
     transition: background-color $transition-duration,
         color $transition-duration;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &:hover {
         background-color: var(--primary-color);

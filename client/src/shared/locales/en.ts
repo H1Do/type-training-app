@@ -1,4 +1,28 @@
 export const en = {
+    main: {
+        description:
+            'is an app for learning and improving touch typing skills.',
+        benefits: {
+            stats: 'Live statistics during training',
+            lessons: 'Lessons for beginners and advanced users',
+            leveling: 'Leveling system, experience, and leaderboard',
+            difficulty: '4 difficulty settings to master blind typing',
+            syntax: 'Typing exercises for programming languages',
+        },
+        callToAction: 'Start now — register or log in!',
+        login: 'Log In / Register',
+        tryWithoutAuth: 'Or start training without an account!',
+        startTraining: 'Start Training',
+        welcome: 'Welcome',
+        cards: {
+            starsTitle: 'Progress by lessons',
+            starsDescription: 'Received',
+            statsTitle: 'Statistics',
+            statsDescription: 'View your training results',
+            training: 'Training',
+            trainingDescription: 'Training for speed and accuracy',
+        },
+    },
     training: {
         accuracy: 'Accuracy',
         cpm: 'CPM',
@@ -201,6 +225,7 @@ export const en = {
         sessions: {
             title: 'Click map',
         },
+        bestUsers: 'Top users',
     },
 
     lessons: {

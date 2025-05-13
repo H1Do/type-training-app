@@ -101,3 +101,16 @@ export interface StatsResponse {
     position: number | null;
     userBestResult?: UserBestResult | null;
 }
+
+export type TopUser = {
+    userId: string;
+    username: string;
+    level: number;
+    exp: number;
+    isCurrentUser: boolean;
+};
+
+export type TopUsersByLevelResponse = {
+    topUsers: TopUser[];
+    userPosition: number | null;
+};

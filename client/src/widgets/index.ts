@@ -12,4 +12,5 @@ export { default as KeyboardMapStats } from './KeyboardMapStats.vue';
 export { default as FingerMapStats } from './FingerMapStats.vue';
 export { default as LevelProgress } from './LevelProgress.vue';
 export { default as LevelBadge } from './LevelBadge.vue';
+export { default as LeaderboardByLevel } from './LeaderboardByLevel.vue';
 export * from './Keyboard/index';

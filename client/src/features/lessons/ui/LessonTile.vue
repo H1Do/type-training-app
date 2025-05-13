@@ -103,5 +103,8 @@ onUnmounted(() => {
 
 .restart-message {
     color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 </style>

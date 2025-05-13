@@ -283,7 +283,7 @@ class UserController {
             to: user.email,
             subject: req.t('mail.password_reset') ?? 'Password reset',
             html: getResetPasswordHtml(
-                `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}`,
+                `${process.env.CLIENT_URL}/reset-password?token=${resetToken}`,
                 req.t,
             ),
         });

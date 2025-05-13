@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useUserStore } from '@/entities/user';
 import { AppInput, AppButton, VFlex, AppText } from '@/shared/ui';
 import { useI18n } from 'vue-i18n';
@@ -11,11 +11,22 @@ const router = useRouter();
 
 const email = ref('');
 const userStore = useUserStore();
+const isLoading = ref(false);
 
 const onSubmit = async () => {
+    if (!email.value) {
+        userStore.setError(t('auth.allFieldsRequired'));
+        return;
+    }
+    isLoading.value = true;
     await userStore.requestPasswordReset(email.value);
+    isLoading.value = false;
     router.push(RoutePaths.AUTH);
 };
+
+onMounted(() => {
+    userStore.setError('');
+});
 </script>
 
 <template>
@@ -25,7 +36,17 @@ const onSubmit = async () => {
                 t('auth.resetPasswordTitle')
             }}</AppText>
             <AppInput v-model="email" type="email" placeholder="Ваш email" />
-            <AppButton type="submit">{{ t('auth.reset') }}</AppButton>
+            <AppButton type="submit" :isLoading="isLoading">{{
+                t('auth.reset')
+            }}</AppButton>
+            <AppText
+                v-if="userStore.error"
+                textStyle="error"
+                align="center"
+                size="0.75rem"
+            >
+                {{ userStore.error }}
+            </AppText>
         </VFlex>
     </form>
 </template>

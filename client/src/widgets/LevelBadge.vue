@@ -12,7 +12,7 @@ defineProps<{
     <div
         class="level-badge"
         :style="{ backgroundColor: `var(--level-color-${level})` }"
-        :title="`Level ${level}`"
+        :title="`${t('level.level')} ${level}`"
     >
         {{ t('level.lvl') }} {{ level }}
     </div>

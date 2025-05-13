@@ -51,7 +51,7 @@ const title = `#${props.lesson.order} - ${props.lesson.title}`;
 .lesson-card {
     background-color: var(--background-color);
     color: var(--primary-color);
-    border: $border-width solid var(--primary-color);
+    border: $border-width-big solid var(--primary-color);
     border-radius: $border-radius-bigger;
     padding: 0.75rem;
     cursor: pointer;

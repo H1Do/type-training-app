@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia';
 import { TrainingMode } from '@/shared/types/training';
-import { Layout, type StatsPeriod, type StatsResponse } from '@/shared/types';
+import {
+    Layout,
+    type StatsPeriod,
+    type StatsResponse,
+    type TopUsersByLevelResponse,
+} from '@/shared/types';
 import { AxiosError } from 'axios';
 
 export const useStatsStore = defineStore('stats', {
@@ -8,6 +13,8 @@ export const useStatsStore = defineStore('stats', {
         stats: null as StatsResponse | null,
         isLoading: false,
         error: null as string | null,
+
+        topUsers: null as TopUsersByLevelResponse | null,
 
         period: 'day' as StatsPeriod,
         layout: Layout.QWERTY as Layout,
@@ -29,6 +36,23 @@ export const useStatsStore = defineStore('stats', {
                     this.error =
                         error?.response?.data?.message ||
                         this.t('stats.fetchStatsFailed');
+                    this.messageService.error(this.error);
+                }
+            } finally {
+                this.isLoading = false;
+            }
+        },
+
+        async fetchTopUsers() {
+            this.isLoading = true;
+            this.error = null;
+            try {
+                this.topUsers = await this.statsApi.getTopUsers();
+            } catch (error: unknown) {
+                if (error instanceof AxiosError) {
+                    this.error =
+                        error?.response?.data?.message ||
+                        this.t('stats.fetchTopUsersFailed');
                     this.messageService.error(this.error);
                 }
             } finally {

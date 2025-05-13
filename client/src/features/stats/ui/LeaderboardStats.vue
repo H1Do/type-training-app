@@ -86,6 +86,10 @@ const userEntry = computed(() => {
 .leaderboard {
     width: $leaderboard-width;
 
+    &__rank {
+        flex-shrink: 0;
+    }
+
     &__list {
         width: 100%;
     }

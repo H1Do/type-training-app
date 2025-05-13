@@ -1,4 +1,17 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+withDefaults(
+    defineProps<{
+        width?: string;
+        height?: string;
+        invertedColors?: boolean;
+    }>(),
+    {
+        width: '77px',
+        height: '24px',
+        invertedColors: false,
+    },
+);
+</script>
 
 <template>
     <svg
@@ -6,9 +19,10 @@
         viewBox="3.85 4.461538461538462 70.07000000000001 21.76923076923077"
         xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns="http://www.w3.org/2000/svg"
-        width="77.07000000000001"
-        height="23.76923076923077"
+        :width="width"
+        :height="height"
         class="icon"
+        :class="{ invertedColors }"
     >
         <g id="surface1">
             <rect
@@ -63,5 +77,15 @@
 
 .background {
     fill: var(--header-background-color);
+}
+
+.invertedColors {
+    * {
+        fill: var(--header-background-color);
+    }
+
+    .background {
+        fill: var(--header-text-color);
+    }
 }
 </style>

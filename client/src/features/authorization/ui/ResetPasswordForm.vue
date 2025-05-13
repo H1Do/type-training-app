@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useUserStore } from '@/entities/user';
 import { AppInput, AppButton, AppText, VFlex } from '@/shared/ui';
@@ -37,6 +37,10 @@ const onSubmit = async () => {
     userStore.setError('');
     router.push(RoutePaths.AUTH);
 };
+
+onMounted(() => {
+    userStore.setError('');
+});
 </script>
 
 <template>
