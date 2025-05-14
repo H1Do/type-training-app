@@ -12,8 +12,14 @@ export const useUserStore = defineStore('user', {
         level: 1,
         exp: 0,
         error: '',
+        role: 'user',
         isVerified: false,
     }),
+    getters: {
+        isAdmin(): boolean {
+            return this.role === 'admin';
+        },
+    },
     actions: {
         setLevel(level: number) {
             this.level = level;
@@ -44,6 +50,7 @@ export const useUserStore = defineStore('user', {
                 this.level = data.level;
                 this.exp = data.exp;
                 this.isVerified = data.isVerified;
+                this.role = data.role;
 
                 return true;
             } catch (error: unknown) {

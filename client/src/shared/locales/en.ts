@@ -23,6 +23,7 @@ export const en = {
             trainingDescription: 'Training for speed and accuracy',
         },
     },
+
     training: {
         accuracy: 'Accuracy',
         cpm: 'CPM',
@@ -81,6 +82,7 @@ export const en = {
         logoutConfirm: 'Are you sure you want to logout?',
         logout: 'Logout',
         cancel: 'Cancel',
+        admin: 'Admin panel',
     },
 
     footer: {
@@ -248,5 +250,95 @@ export const en = {
         levelUp: 'Congratulations, you have leveled up!',
         level: 'Level',
         lvl: 'Lvl.',
+    },
+
+    admin: {
+        title: 'Administration panel',
+
+        errors: {
+            failed_to_load_users: 'Failed to load users',
+            failed_to_load_lessons: 'Failed to load lessons',
+            failed_to_load_user_stats: 'Failed to load user stats',
+            failed_to_block: 'Failed to block user',
+            failed_to_unblock: 'Failed to unblock user',
+            failed_to_create_lesson: 'Failed to create lesson',
+            failed_to_update_lesson: 'Failed to update lesson',
+            failed_to_delete_lesson: 'Failed to delete lesson',
+        },
+
+        messages: {
+            user_blocked: 'User has been blocked',
+            user_unblocked: 'User has been unblocked',
+            lesson_created: 'Lesson created successfully',
+            lesson_updated: 'Lesson updated successfully',
+            lesson_deleted: 'Lesson deleted successfully',
+        },
+
+        cards: {
+            lessons: 'Lesson Management',
+            users: 'Users Management',
+        },
+
+        charts: {
+            registrations: 'Registrations',
+        },
+
+        stats: {
+            totalUsers: 'Total users',
+            activeUsersToday: 'Active users today',
+            activeUsersWeek: 'Active users this week',
+            totalTrainings: 'Total trainings',
+            totalLessonsCompleted: 'Completed lessons',
+            mostPopularMode: 'Most popular mode',
+            avgAccuracy: 'Average accuracy',
+            avgCpm: 'Average speed (CPM)',
+        },
+
+        searchPlaceholder: 'Поиск по пользователям...',
+
+        actions: {
+            view_stats: 'Статистика',
+            block: 'Заблокировать',
+            unblock: 'Разблокировать',
+        },
+
+        goBack: 'Go back',
+        selectedUser: 'Selected user',
+        selectedUserStats: 'User stats',
+
+        lessons: {
+            title: 'Lesson title',
+            allowedChars: 'Allowed characters',
+            minAccuracy: 'Minimum accuracy (%)',
+            cpmFor1: 'CPM for 1 star',
+            cpmFor2: 'CPM for 2 stars',
+            cpmFor3: 'CPM for 3 stars',
+            order: 'Order',
+            layout: 'Layout',
+            description: 'Hold and ',
+            prevLessons: 'Previous lessons',
+            nextLessons: 'Next lessons',
+            prevLesson: 'Previous lesson',
+            nextLesson: 'Next lesson',
+            press: 'Press',
+            toRestart: 'to restart the lesson',
+            toLessons: 'Back to all lessons',
+            length: 'Symbols count',
+        },
+
+        buttons: {
+            save: 'Save',
+            cancel: 'Cancel',
+            edit: 'Edit',
+            create: 'Create',
+            delete: 'Delete',
+        },
+
+        users: 'Users',
+
+        confirmDelete: 'Delete lesson',
+        confirmDeleteMessage: 'Are you sure you want to delete this lesson?',
+
+        chars: 'chars',
     },
 };

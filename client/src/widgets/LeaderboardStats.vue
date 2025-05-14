@@ -1,24 +1,25 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { useStatsStore } from '../model/statsStore';
-import { useUserStore } from '@/entities/user';
 import { useI18n } from 'vue-i18n';
 import { HFlex, VFlex } from '@/shared/ui';
+import type { LeaderboardEntry, UserBestResult } from '@/shared/types/stats';
+
+const props = defineProps<{
+    leaderboard: LeaderboardEntry[];
+    userBestResult: UserBestResult | null;
+    userPosition: number | null;
+    currentUsername: string;
+}>();
 
 const { t } = useI18n();
 
-const statsStore = useStatsStore();
-const user = useUserStore();
-
 const userEntry = computed(() => {
-    if (!statsStore.stats || !statsStore.stats.userBestResult) return null;
-    const isInTop = (statsStore.stats?.leaderboard ?? []).some(
-        (e) => e.isCurrentUser,
-    );
+    if (!props.userBestResult) return null;
+    const isInTop = props.leaderboard.some((e) => e.isCurrentUser);
     return isInTop
         ? null
         : {
-              ...statsStore.stats.userBestResult,
+              ...props.userBestResult,
               isCurrentUser: true,
           };
 });
@@ -28,7 +29,7 @@ const userEntry = computed(() => {
     <VFlex class="leaderboard" gap="0.75rem">
         <VFlex class="leaderboard__list" gap="0.75rem" align="stretch">
             <HFlex
-                v-for="(entry, index) in statsStore.stats?.leaderboard ?? []"
+                v-for="(entry, index) in leaderboard"
                 :key="entry.userId + '-' + entry.cpm"
                 :class="[
                     'leaderboard__item',
@@ -39,12 +40,12 @@ const userEntry = computed(() => {
                 gap="0.5rem"
             >
                 <span class="leaderboard__info">#{{ index + 1 }}</span>
-                <span class="leaderboard__info leaderboard__info-username">{{
-                    entry.username
-                }}</span>
-                <span class="leaderboard__info"
-                    >{{ entry.cpm }} {{ t('stats.metrics.cpm') }}</span
-                >
+                <span class="leaderboard__info leaderboard__info-username">
+                    {{ entry.username }}
+                </span>
+                <span class="leaderboard__info">
+                    {{ entry.cpm }} {{ t('stats.metrics.cpm') }}
+                </span>
                 <span class="leaderboard__info">{{ entry.accuracy }}%</span>
             </HFlex>
 
@@ -62,19 +63,16 @@ const userEntry = computed(() => {
                 align="center"
                 gap="0.5rem"
             >
-                <span class="leaderboard__rank"
-                    >#{{ statsStore.stats?.position }}</span
-                >
-                <span class="leaderboard__info leaderboard__info-username">{{
-                    user.username
-                }}</span>
-                <span class="leaderboard__info"
-                    >{{ statsStore.stats?.userBestResult?.cpm }}
-                    {{ t('stats.metrics.cpm') }}</span
-                >
-                <span class="leaderboard__info"
-                    >{{ statsStore.stats?.userBestResult?.accuracy }}%</span
-                >
+                <span class="leaderboard__rank">#{{ userPosition }}</span>
+                <span class="leaderboard__info leaderboard__info-username">
+                    {{ currentUsername }}
+                </span>
+                <span class="leaderboard__info">
+                    {{ userBestResult?.cpm }} {{ t('stats.metrics.cpm') }}
+                </span>
+                <span class="leaderboard__info">
+                    {{ userBestResult?.accuracy }}%
+                </span>
             </HFlex>
         </VFlex>
     </VFlex>

@@ -98,6 +98,14 @@ const onSend = async () => {
                         t('header.settings')
                     }}</span>
                 </AppLink>
+                <AppLink :to="RoutePaths.ADMIN" class="app-link">
+                    <AppIcon
+                        name="ShieldUser"
+                        class="app-link-icon"
+                        size="1.25rem"
+                    />
+                    <span class="app-link-text">{{ t('header.admin') }}</span>
+                </AppLink>
             </nav>
             <div class="user-actions">
                 <HFlex v-if="isAuthenticated" gap="1rem" align="center">
@@ -176,6 +184,7 @@ const onSend = async () => {
     height: $header-height;
     padding-inline: $header-padding;
     font-size: $header-font-size;
+    width: $header-width;
     display: flex;
     justify-content: space-between;
     align-items: center;

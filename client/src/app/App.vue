@@ -42,7 +42,6 @@ body {
 .app {
     position: relative;
     width: 100%;
-    max-width: 1440px;
     height: 100vh;
     max-height: 100vh;
     margin: 0 auto;

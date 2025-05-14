@@ -67,6 +67,7 @@ $border-radius-bigger: 1.5rem;
 $border-radius-sm: 0.25rem;
 
 $header-font-size: 0.9rem;
+$header-width: 48rem;
 $header-height: 2rem;
 $header-padding: 0.75rem;
 $header-border-radius: 0 0 0.75rem 0.75rem;
@@ -75,7 +76,6 @@ $header-span-max-width: 12.5rem;
 $footer-font-size: 0.6rem;
 $footer-padding: 0.75rem;
 $footer-height: 1.5rem;
-$footer-border-radius: 0.25rem 0.25rem 0 0;
 
 $settings-buttons-width: 5.625rem;
 
@@ -111,13 +111,13 @@ $app-textarea-disabled-opacity: 0.7;
 
 // modals
 
-$z-index-modal: 1000;
+$z-index-modal: 10000;
 $container-background-color-modal: rgba(0, 0, 0, 0.5);
 $box-shadow-modal: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.3);
 
 // messages
 
-$z-index-message: 10000;
+$z-index-message: 100000;
 
 // keyboard
 

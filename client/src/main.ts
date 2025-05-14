@@ -16,6 +16,7 @@ import { createI18n } from 'vue-i18n';
 import { useSettingsStore } from './features/settings';
 import { Localization } from './shared/types';
 import { en, ru } from './shared/locales';
+import { AdminApi } from './shared/api/adminApi';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -25,6 +26,7 @@ const userApi = new UserApi(httpClient);
 const trainingApi = new TrainingApi(httpClient);
 const statsApi = new StatsApi(httpClient);
 const lessonsApi = new LessonsApi(httpClient);
+const adminApi = new AdminApi(httpClient);
 const modalService = new ModalService();
 const messageService = new MessageService();
 
@@ -57,6 +59,7 @@ pinia.use(({ store }) => {
     store.trainingApi = trainingApi;
     store.statsApi = statsApi;
     store.lessonsApi = lessonsApi;
+    store.adminApi = adminApi;
     store.modalService = modalService;
     store.messageService = messageService;
     store.router = router;

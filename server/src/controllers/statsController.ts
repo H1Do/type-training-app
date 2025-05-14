@@ -29,6 +29,33 @@ export const StatsController = {
 
             const { since = 'all', mode, layout } = req.query;
 
+            if (
+                typeof since !== 'string' ||
+                !['day', 'week', 'month', 'all'].includes(since)
+            ) {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_fields') ?? 'Invalid period',
+                    ),
+                );
+            }
+
+            if (mode && typeof mode !== 'string') {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_fields') ?? 'Invalid mode',
+                    ),
+                );
+            }
+
+            if (layout && typeof layout !== 'string') {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_fields') ?? 'Invalid layout',
+                    ),
+                );
+            }
+
             const filter: Record<string, any> = {
                 userId,
                 isRated: true,
@@ -258,7 +285,7 @@ export const StatsController = {
     },
 };
 
-function mergePerCharStat(sessions: TrainingStatsDoc[]): PerCharStat[] {
+export function mergePerCharStat(sessions: TrainingStatsDoc[]): PerCharStat[] {
     const map = new Map<
         string,
         { count: number; errorsCount: number; totalTime: number }
@@ -292,7 +319,7 @@ function mergePerCharStat(sessions: TrainingStatsDoc[]): PerCharStat[] {
     }));
 }
 
-function mergeFingerStats(sessions: TrainingStatsDoc[]): FingerStat[] {
+export function mergeFingerStats(sessions: TrainingStatsDoc[]): FingerStat[] {
     const map = new Map<
         string,
         {

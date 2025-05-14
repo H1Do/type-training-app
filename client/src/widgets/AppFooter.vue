@@ -29,7 +29,6 @@ const { t } = useI18n();
     font-size: $footer-font-size;
     height: $footer-height;
     padding-inline: $footer-padding;
-    border-radius: $footer-border-radius;
     background-color: var(--footer-background-color);
     color: var(--footer-text-color);
     display: flex;

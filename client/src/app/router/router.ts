@@ -14,6 +14,11 @@ export enum RoutePaths {
     FORGOT_PASSWORD = '/forgot-password',
     RESET_PASSWORD = '/reset-password',
     NOT_FOUND = '/:pathMatch(.*)*',
+
+    ADMIN = '/admin',
+    ADMIN_USERS = '/admin/users',
+    ADMIN_LESSONS = '/admin/lessons',
+    ADMIN_USER_STATS = '/admin/user-stats/:userId',
 }
 
 export enum RouteNames {
@@ -29,6 +34,11 @@ export enum RouteNames {
     FORGOT_PASSWORD = 'forgotPassword',
     RESET_PASSWORD = 'resetPassword',
     NOT_FOUND = 'notFound',
+
+    ADMIN = 'admin',
+    ADMIN_USERS = 'adminUsers',
+    ADMIN_LESSONS = 'adminLessons',
+    ADMIN_USER_STATS = 'adminUserStats',
 }
 
 const routes = [
@@ -113,6 +123,42 @@ const routes = [
             requiredAuthStatus: false,
         },
     },
+    {
+        name: RouteNames.ADMIN,
+        path: RoutePaths.ADMIN,
+        component: () => import('@/pages/admin/AdminDashboardPage.vue'),
+        meta: {
+            requiredAuthStatus: true,
+            requiredAdmin: true,
+        },
+    },
+    {
+        name: RouteNames.ADMIN_USERS,
+        path: RoutePaths.ADMIN_USERS,
+        component: () => import('@/pages/admin/UsersPage.vue'),
+        meta: {
+            requiredAuthStatus: true,
+            requiredAdmin: true,
+        },
+    },
+    {
+        name: RouteNames.ADMIN_LESSONS,
+        path: RoutePaths.ADMIN_LESSONS,
+        component: () => import('@/pages/admin/LessonsPage.vue'),
+        meta: {
+            requiredAuthStatus: true,
+            requiredAdmin: true,
+        },
+    },
+    {
+        name: RouteNames.ADMIN_USER_STATS,
+        path: RoutePaths.ADMIN_USER_STATS,
+        component: () => import('@/pages/admin/UserStatsPage.vue'),
+        meta: {
+            requiredAuthStatus: true,
+            requiredAdmin: true,
+        },
+    },
 ];
 
 export const router = createRouter({
@@ -124,9 +170,12 @@ router.beforeEach(async (to, _, next) => {
     const userStore = useUserStore();
 
     const reqAuth = to.meta.requiredAuthStatus;
+    const reqAdmin = to.meta.requiredAdmin;
 
     if (reqAuth && !userStore.isAuthenticated) {
         next({ path: RoutePaths.AUTH });
+    } else if (reqAdmin && !userStore.isAdmin) {
+        next({ path: RoutePaths.MAIN });
     } else if (reqAuth === false && userStore.isAuthenticated) {
         next({ path: RoutePaths.MAIN });
     } else {

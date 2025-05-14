@@ -1,2 +1,2 @@
-export const SYMBOLS_TRAINING_LENGTH = 100;
-export const WORDS_TRAINING_LENGTH = 50;
+export const SYMBOLS_TRAINING_LENGTH = 120;
+export const WORDS_TRAINING_LENGTH = 60;

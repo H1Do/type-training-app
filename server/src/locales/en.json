@@ -51,5 +51,16 @@
     "mail.reset_instruction": "You requested a password reset. Click the button below:",
     "mail.reset_button": "Reset Password",
 
-    "mail.ignore_if_not_you": "If you did not request this, simply ignore this email."
+    "mail.ignore_if_not_you": "If you did not request this, simply ignore this email.",
+
+    "errors.invalid_fields": "Invalid input data",
+    "errors.invalid_layout": "Invalid layout",
+    "errors.invalid_mode": "Invalid training mode",
+    "errors.invalid_id": "Invalid ID",
+    "errors.invalid_sequence": "Sequence contains disallowed characters",
+
+    "messages.too_many_corrections": "Too many corrections",
+    "messages.too_many_errors": "Too many errors",
+
+    "errors.blocked": "User is blocked"
 }

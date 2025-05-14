@@ -51,5 +51,16 @@
     "mail.reset_instruction": "Вы запросили сброс пароля. Нажмите на кнопку ниже:",
     "mail.reset_button": "Сбросить пароль",
 
-    "mail.ignore_if_not_you": "Если вы не отправляли этот запрос — просто проигнорируйте письмо."
+    "mail.ignore_if_not_you": "Если вы не отправляли этот запрос — просто проигнорируйте письмо.",
+
+    "errors.invalid_fields": "Некорректные данные",
+    "errors.invalid_layout": "Недопустимая раскладка",
+    "errors.invalid_mode": "Недопустимый режим тренировки",
+    "errors.invalid_id": "Недопустимый ID",
+    "errors.invalid_sequence": "Последовательность содержит запрещённые символы",
+
+    "messages.too_many_corrections": "Слишком много исправлений",
+    "messages.too_many_errors": "Слишком много ошибок",
+
+    "errors.blocked": "Пользователь заблокирован"
 }

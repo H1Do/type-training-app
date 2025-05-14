@@ -20,6 +20,7 @@ const userSchema = new Schema<UserDoc>({
         type: Date,
         default: Date.now,
     },
+    isBlocked: { type: Boolean, default: false },
     isVerified: { type: Boolean, default: false },
     emailToken: { type: String },
     level: {
@@ -31,6 +32,15 @@ const userSchema = new Schema<UserDoc>({
         type: Number,
         required: true,
         default: 0,
+    },
+    role: {
+        type: String,
+        required: true,
+        default: 'user',
+    },
+    lastSeen: {
+        type: Date,
+        default: Date.now,
     },
 });
 

@@ -6,3 +6,4 @@ export * from './training';
 export * from './stats';
 export * from './lessons';
 export * from './keyboard';
+export * from './admin';

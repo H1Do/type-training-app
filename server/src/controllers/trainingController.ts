@@ -50,6 +50,38 @@ class TrainingController {
                 );
             }
 
+            if (
+                typeof layout !== 'string' ||
+                typeof mode !== 'string' ||
+                (items && typeof items !== 'string') ||
+                (length && typeof length !== 'number') ||
+                (isWords != null && typeof isWords !== 'boolean')
+            ) {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_fields') ??
+                            'Invalid training start data',
+                    ),
+                );
+            }
+
+            if (!(layout in LayoutLangMap)) {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_layout') ?? 'Unknown layout',
+                    ),
+                );
+            }
+
+            if (!Object.values(TrainingMode).includes(mode)) {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_mode') ??
+                            'Unknown training mode',
+                    ),
+                );
+            }
+
             let sequence: string[];
 
             if (mode === TrainingMode.Custom) {
@@ -111,6 +143,46 @@ class TrainingController {
                 sequence: reqSequence,
             } = req.body;
             const userId = req.user?.id;
+
+            if (
+                typeof id !== 'string' ||
+                typeof startedAt !== 'number' ||
+                typeof finishedAt !== 'number' ||
+                !Array.isArray(input) ||
+                !Array.isArray(events)
+            ) {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_fields') ??
+                            'Invalid session finish data',
+                    ),
+                );
+            }
+
+            if (reqLayout && typeof reqLayout !== 'string') {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_layout') ?? 'Invalid layout',
+                    ),
+                );
+            }
+
+            if (reqMode && typeof reqMode !== 'string') {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_mode') ?? 'Invalid mode',
+                    ),
+                );
+            }
+
+            if (reqSequence && !Array.isArray(reqSequence)) {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_sequence') ??
+                            'Invalid sequence',
+                    ),
+                );
+            }
 
             if (!id || !userId) {
                 const stats = calculateDetailedStats(

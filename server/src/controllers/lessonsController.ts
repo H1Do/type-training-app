@@ -47,6 +47,14 @@ class LessonsController {
     ) {
         try {
             const { id } = req.params;
+            if (typeof id !== 'string' || id.length !== 24) {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_id') ?? 'Invalid lesson ID',
+                    ),
+                );
+            }
+
             const lesson = await Lesson.findById(id).lean();
 
             if (!lesson) {
@@ -83,8 +91,33 @@ class LessonsController {
     ) {
         try {
             const { id } = req.params;
+            if (typeof id !== 'string' || id.length !== 24) {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_id') ?? 'Invalid lesson ID',
+                    ),
+                );
+            }
 
             const { input, events, finishedAt, startedAt, sequence } = req.body;
+
+            if (
+                !Array.isArray(input) ||
+                !Array.isArray(events) ||
+                typeof startedAt !== 'number' ||
+                typeof finishedAt !== 'number' ||
+                !Array.isArray(sequence) ||
+                sequence.some(
+                    (char) => typeof char !== 'string' || char.length !== 1,
+                )
+            ) {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_fields') ??
+                            'Invalid lesson completion data',
+                    ),
+                );
+            }
 
             const userId = req.user?.id;
             if (!userId)

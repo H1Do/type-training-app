@@ -7,6 +7,7 @@ import { AuthRequest, ResetPasswordRequest } from '@/types/requestTypes';
 import { UserDto } from '@/types/userTypes';
 import { transporter } from '@/utils/mailer';
 import { getResetPasswordHtml, getVerifyEmailHtml } from '@/utils/email';
+import { isPasswordStrong } from '@/utils/user';
 
 const JWT_EXPIRES_IN = '7d';
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
@@ -28,6 +29,22 @@ class UserController {
                 ApiError.badRequest(
                     req.t?.('errors.all_fields_required') ??
                         'All fields are required',
+                ),
+            );
+        }
+
+        if (
+            typeof username !== 'string' ||
+            username.trim().length < 3 ||
+            typeof password !== 'string' ||
+            !isPasswordStrong(password) ||
+            typeof email !== 'string' ||
+            !email.includes('@')
+        ) {
+            return next(
+                ApiError.badRequest(
+                    req.t?.('errors.invalid_fields') ??
+                        'Invalid registration data',
                 ),
             );
         }
@@ -92,11 +109,33 @@ class UserController {
         }
 
         const user = await User.findOne({ email });
+
         if (!user) {
             return next(
                 ApiError.badRequest(
                     req.t?.('errors.invalid_credentials') ??
                         'Invalid email or password',
+                ),
+            );
+        }
+
+        if (user.isBlocked) {
+            return next(
+                ApiError.forbidden(
+                    req.t?.('errors.blocked') ?? 'User is blocked',
+                ),
+            );
+        }
+
+        if (
+            typeof email !== 'string' ||
+            !email.includes('@') ||
+            typeof password !== 'string' ||
+            password.length < 8
+        ) {
+            return next(
+                ApiError.badRequest(
+                    req.t?.('errors.invalid_fields') ?? 'Invalid login data',
                 ),
             );
         }
@@ -144,6 +183,19 @@ class UserController {
                 ApiError.badRequest(
                     req.t?.('errors.all_fields_required') ??
                         'All fields are required',
+                ),
+            );
+        }
+
+        if (
+            typeof oldPassword !== 'string' ||
+            oldPassword.length < 8 ||
+            typeof newPassword !== 'string' ||
+            !isPasswordStrong(newPassword)
+        ) {
+            return next(
+                ApiError.badRequest(
+                    req.t?.('errors.invalid_fields') ?? 'Invalid password data',
                 ),
             );
         }
@@ -207,6 +259,14 @@ class UserController {
             );
         }
 
+        if (user.isBlocked) {
+            return next(
+                ApiError.forbidden(
+                    req.t?.('errors.blocked') ?? 'User is blocked',
+                ),
+            );
+        }
+
         const userDto: UserDto = {
             id: user.id.toString(),
             username: user.username,
@@ -214,7 +274,10 @@ class UserController {
             createdAt: user.createdAt,
             level: user.level,
             exp: user.exp,
+            isBlocked: user.isBlocked,
             isVerified: user.isVerified,
+            role: user.role,
+            lastSeen: user.lastSeen,
         };
 
         return res.status(200).json(userDto);
@@ -261,6 +324,14 @@ class UserController {
     ) {
         const { email } = req.body;
 
+        if (typeof email !== 'string' || !email.includes('@')) {
+            return next(
+                ApiError.badRequest(
+                    req.t?.('errors.invalid_fields') ?? 'Invalid email',
+                ),
+            );
+        }
+
         const user = await User.findOne({ email });
         if (!user || !user.isVerified) {
             return res.status(200).json({
@@ -301,6 +372,19 @@ class UserController {
         next: NextFunction,
     ) {
         const { token, newPassword } = req.body;
+
+        if (
+            typeof token !== 'string' ||
+            !token ||
+            typeof newPassword !== 'string' ||
+            !isPasswordStrong(newPassword)
+        ) {
+            return next(
+                ApiError.badRequest(
+                    req.t?.('errors.invalid_fields') ?? 'Invalid reset data',
+                ),
+            );
+        }
 
         try {
             const payload = jwt.verify(

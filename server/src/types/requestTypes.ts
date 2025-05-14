@@ -60,3 +60,64 @@ export interface ResetPasswordRequest
     }> {}
 
 export type TopUsersByLevelRequest = RequestWithUser<undefined, {}, {}>;
+
+export type AdminGetUsersRequest = RequestWithUser<
+    undefined,
+    {},
+    {
+        q?: string;
+        limit?: string;
+        offset?: string;
+    }
+>;
+
+export type AdminUserIdRequest = RequestWithUser<undefined, { id: string }>;
+
+export type AdminCreateLessonRequest = RequestWithUser<{
+    title: string;
+    allowedChars: string;
+    length: number;
+    layout: string;
+    order: number;
+    cpmFor1: number;
+    cpmFor2: number;
+    cpmFor3: number;
+    minAccuracy: number;
+    prevLessonId?: string;
+    nextLessonId?: string;
+}>;
+
+export type AdminUpdateLessonRequest = RequestWithUser<
+    Partial<{
+        title: string;
+        allowedChars: string;
+        length: number;
+        layout: string;
+        order: number;
+        cpmFor1: number;
+        cpmFor2: number;
+        cpmFor3: number;
+        minAccuracy: number;
+        prevLessonId: string;
+        nextLessonId: string;
+    }>,
+    { id: string }
+>;
+
+export type AdminDeleteLessonRequest = RequestWithUser<
+    undefined,
+    { id: string }
+>;
+
+export type AdminGetLessonsRequest = RequestWithUser<undefined, {}, {}>;
+
+export type AdminUserStatsRequest = Request<
+    { id: string },
+    unknown,
+    unknown,
+    {
+        since?: StatsPeriod;
+        mode?: TrainingMode;
+        layout?: Layout;
+    }
+>;

@@ -8,6 +8,12 @@ import {
 } from '@/shared/types';
 import { AxiosError } from 'axios';
 
+const LOCAL_STORAGE_KEYS = {
+    period: 'stats.period',
+    layout: 'stats.layout',
+    mode: 'stats.mode',
+};
+
 export const useStatsStore = defineStore('stats', {
     state: () => ({
         stats: null as StatsResponse | null,
@@ -16,9 +22,15 @@ export const useStatsStore = defineStore('stats', {
 
         topUsers: null as TopUsersByLevelResponse | null,
 
-        period: 'day' as StatsPeriod,
-        layout: Layout.QWERTY as Layout,
-        mode: TrainingMode['100PopularWords'] as TrainingMode,
+        period:
+            (localStorage.getItem(LOCAL_STORAGE_KEYS.period) as StatsPeriod) ||
+            'day',
+        layout:
+            (localStorage.getItem(LOCAL_STORAGE_KEYS.layout) as Layout) ||
+            Layout.QWERTY,
+        mode:
+            (localStorage.getItem(LOCAL_STORAGE_KEYS.mode) as TrainingMode) ||
+            TrainingMode['100PopularWords'],
     }),
 
     actions: {
@@ -62,14 +74,17 @@ export const useStatsStore = defineStore('stats', {
 
         setPeriod(period: StatsPeriod) {
             this.period = period;
+            localStorage.setItem(LOCAL_STORAGE_KEYS.period, period);
         },
 
         setLayout(layout: Layout) {
             this.layout = layout;
+            localStorage.setItem(LOCAL_STORAGE_KEYS.layout, layout);
         },
 
         setMode(mode: TrainingMode) {
             this.mode = mode;
+            localStorage.setItem(LOCAL_STORAGE_KEYS.mode, mode);
         },
     },
 });

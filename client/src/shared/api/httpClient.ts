@@ -43,4 +43,27 @@ export class HttpClient {
     ): Promise<AxiosResponse<T>> {
         return this.$host.post<T>(url, data, config);
     }
+
+    put<T = unknown>(
+        url: string,
+        data?: unknown,
+        config?: AxiosRequestConfig,
+    ): Promise<AxiosResponse<T>> {
+        return this.$host.put<T>(url, data, config);
+    }
+
+    patch<T = unknown>(
+        url: string,
+        data?: unknown,
+        config?: AxiosRequestConfig,
+    ): Promise<AxiosResponse<T>> {
+        return this.$host.patch<T>(url, data, config);
+    }
+
+    delete<T = unknown>(
+        url: string,
+        config?: AxiosRequestConfig,
+    ): Promise<AxiosResponse<T>> {
+        return this.$host.delete<T>(url, config);
+    }
 }

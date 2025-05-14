@@ -16,5 +16,6 @@
     align-items: center;
     height: calc(100vh - #{$header-height} - #{$footer-height});
     background-color: var(--background-color);
+    overflow: auto;
 }
 </style>

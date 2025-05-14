@@ -63,7 +63,6 @@ const title = `#${props.lesson.order} - ${props.lesson.title}`;
     &:hover {
         background-color: var(--primary-color);
         color: var(--background-color);
-        box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.05);
     }
 
     &:active {

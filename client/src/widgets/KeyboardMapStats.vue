@@ -33,10 +33,10 @@ const keyStats = computed<Record<string, PerCharStat>>(() => {
 
     for (const row of props.layout) {
         for (const key of row) {
-            const lowerStat = props.perCharStats.find(
+            const lowerStat = props.perCharStats?.find(
                 (s) => s.char === key.lower,
             );
-            const upperStat = props.perCharStats.find(
+            const upperStat = props.perCharStats?.find(
                 (s) => s.char === key.upper,
             );
 

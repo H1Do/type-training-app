@@ -2,6 +2,7 @@ import { TrainingApi, UserApi, LessonsApi, StatsApi } from '../api';
 import { ModalService } from '../providers/modal';
 import { MessageService } from '../providers/message';
 import type { Router } from 'vue-router';
+import type { AdminApi } from '../api/adminApi';
 
 declare module 'pinia' {
     export interface PiniaCustomProperties {
@@ -9,6 +10,7 @@ declare module 'pinia' {
         trainingApi: TrainingApi;
         statsApi: StatsApi;
         lessonsApi: LessonsApi;
+        adminApi: AdminApi;
         modalService: ModalService;
         messageService: MessageService;
         router: Router;

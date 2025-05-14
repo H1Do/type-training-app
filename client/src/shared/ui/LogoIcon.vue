@@ -6,8 +6,8 @@ withDefaults(
         invertedColors?: boolean;
     }>(),
     {
-        width: '77px',
-        height: '24px',
+        width: '4.8125rem',
+        height: '1.5rem',
         invertedColors: false,
     },
 );

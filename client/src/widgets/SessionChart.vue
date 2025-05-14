@@ -11,10 +11,8 @@ import {
     PointElement,
 } from 'chart.js';
 import { computed, ref } from 'vue';
-import { useStatsStore } from '../model/statsStore';
-import { Theme, type StatMetric } from '@/shared/types';
 import { MetricSelector } from '@/widgets';
-import { useSettingsStore } from '@/features/settings';
+import { Theme, type SessionDto, type StatMetric } from '@/shared/types';
 
 ChartJS.register(
     Title,
@@ -26,25 +24,26 @@ ChartJS.register(
     PointElement,
 );
 
-const statsStore = useStatsStore();
-const settingsStore = useSettingsStore();
+const props = defineProps<{
+    sessions: SessionDto[] | undefined;
+    theme: Theme;
+}>();
 
 const metric = ref<StatMetric>('accuracy');
 
 const chartData = computed(() => {
-    const sessions = statsStore.stats?.sessions ?? [];
-    const labels = sessions.map((s) =>
+    const labels = props.sessions?.map((s) =>
         new Date(s.createdAt).toLocaleDateString(),
     );
 
     const datasets: import('chart.js').ChartDataset<'line'>[] = [
         {
             label: '',
-            data: sessions.map((s) => Number(s[metric.value] || 0)),
+            data:
+                props.sessions?.map((s) => Number(s[metric.value] || 0)) ?? [],
             backgroundColor:
-                settingsStore.theme === Theme.LIGHT ? '#1a1a1a' : '#f9f9f9',
-            borderColor:
-                settingsStore.theme === Theme.LIGHT ? '#1a1a1a' : '#f9f9f9',
+                props.theme === Theme.LIGHT ? '#1a1a1a' : '#f9f9f9',
+            borderColor: props.theme === Theme.LIGHT ? '#1a1a1a' : '#f9f9f9',
             tension: 0.3,
         },
     ];
@@ -52,44 +51,29 @@ const chartData = computed(() => {
     return { labels, datasets };
 });
 
-const chartOptions: import('chart.js').ChartOptions<'line'> = {
+const chartOptions = computed(() => ({
     responsive: true,
     maintainAspectRatio: false,
     scales: {
         x: {
-            ticks: {
-                display: false,
-            },
-            grid: {
-                display: false,
-            },
-            border: {
-                display: false,
-            },
+            ticks: { display: false },
+            grid: { display: false },
+            border: { display: false },
         },
         y: {
             ticks: {
-                color:
-                    settingsStore.theme === Theme.LIGHT ? '#1a1a1a' : '#f9f9f9',
+                color: props.theme === Theme.LIGHT ? '#1a1a1a' : '#f9f9f9',
             },
             beginAtZero: true,
-            grid: {
-                display: false,
-            },
-            border: {
-                display: false,
-            },
+            grid: { display: false },
+            border: { display: false },
         },
     },
     plugins: {
-        legend: {
-            display: false,
-        },
-        title: {
-            display: false,
-        },
+        legend: { display: false },
+        title: { display: false },
     },
-};
+}));
 </script>
 
 <template>

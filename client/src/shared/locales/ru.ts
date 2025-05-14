@@ -24,6 +24,7 @@ export const ru = {
             trainingDescription: 'Тренировка на скорость и точность',
         },
     },
+
     training: {
         accuracy: 'Точность',
         cpm: 'СВМ',
@@ -83,6 +84,7 @@ export const ru = {
         logoutConfirm: 'Вы уверены, что хотите выйти?',
         logout: 'Выйти',
         cancel: 'Отмена',
+        admin: 'Админ панель',
     },
 
     footer: {
@@ -253,5 +255,95 @@ export const ru = {
         levelUp: 'Поздравляем, вы повысили уровень!',
         level: 'Уровень',
         lvl: 'Ур.',
+    },
+
+    admin: {
+        title: 'Панель администратора',
+        users: 'Пользователи',
+
+        errors: {
+            failed_to_load_users: 'Не удалось загрузить пользователей',
+            failed_to_load_lessons: 'Не удалось загрузить уроки',
+            failed_to_load_user_stats:
+                'Не удалось загрузить статистику пользователя',
+            failed_to_block: 'Не удалось заблокировать пользователя',
+            failed_to_unblock: 'Не удалось разблокировать пользователя',
+            failed_to_create_lesson: 'Не удалось создать урок',
+            failed_to_update_lesson: 'Не удалось обновить урок',
+            failed_to_delete_lesson: 'Не удалось удалить урок',
+        },
+
+        messages: {
+            user_blocked: 'Пользователь заблокирован',
+            user_unblocked: 'Пользователь разблокирован',
+            lesson_created: 'Урок создан',
+            lesson_updated: 'Урок обновлён',
+            lesson_deleted: 'Урок удалён',
+        },
+
+        cards: {
+            lessons: 'Редактирование уроков',
+            users: 'Управление пользователями',
+        },
+
+        charts: {
+            registrations: 'Регистраций',
+        },
+
+        stats: {
+            totalUsers: 'Всего пользователей',
+            activeUsersToday: 'Активных пользователей за сегодня',
+            activeUsersWeek: 'Активных пользователей за неделю',
+            totalTrainings: 'Всего тренировок',
+            totalLessonsCompleted: 'Завершённых уроков',
+            mostPopularMode: 'Популярный режим',
+            avgAccuracy: 'Средняя точность',
+            avgCpm: 'Средняя скорость (СВМ)',
+        },
+
+        searchPlaceholder: 'Поиск по пользователям...',
+
+        actions: {
+            view_stats: 'Статистика',
+            block: 'Заблокировать',
+            unblock: 'Разблокировать',
+        },
+
+        goBack: 'Вернуться назад',
+        selectedUser: 'Выбранный пользователь',
+        selectedUserStats: 'Статистика пользователя',
+
+        lessons: {
+            title: 'Название урока',
+            allowedChars: 'Допустимые символы',
+            minAccuracy: 'Минимальная точность (%)',
+            cpmFor1: 'СВМ для 1 звезды',
+            cpmFor2: 'СВМ для 2 звёзд',
+            cpmFor3: 'СВМ для 3 звёзд',
+            order: 'Порядок',
+            layout: 'Раскладка',
+            description: 'Зажмите и ',
+            prevLessons: 'Предыдущие уроки',
+            nextLessons: 'Следующие уроки',
+            prevLesson: 'Предыдущий урок',
+            nextLesson: 'Следующий урок',
+            press: 'Нажмите',
+            toRestart: 'для перезапуска урока',
+            toLessons: 'Вернуться к всем урокам',
+            length: 'Количество символов',
+        },
+
+        buttons: {
+            save: 'Сохранить',
+            cancel: 'Отмена',
+            edit: 'Редактировать',
+            create: 'Создать',
+            delete: 'Удалить',
+        },
+
+        confirmDelete: 'Удаление урока',
+        confirmDeleteMessage: 'Вы уверены, что хотите удалить этот урок?',
+
+        chars: 'символов',
     },
 };
