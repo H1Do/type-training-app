@@ -10,7 +10,6 @@ import {
 } from './shared/api';
 import { MessageService, ModalService } from './app/providers';
 import { router } from './app/router';
-import { useUserStore } from './entities/user';
 import './shared/styles/style.scss';
 import { createI18n } from 'vue-i18n';
 import { useSettingsStore } from './features/settings';
@@ -65,9 +64,6 @@ pinia.use(({ store }) => {
     store.router = router;
     store.t = i18n.global.t;
 });
-
-const userStore = useUserStore();
-await userStore.checkAuth();
 
 app.provide('userApi', userApi);
 app.provide('modalService', modalService);

@@ -2,12 +2,14 @@
 import AppFooter from '@/widgets/AppFooter.vue';
 import AppHeader from '@/widgets/AppHeader.vue';
 import PageWrapper from '@/widgets/PageWrapper.vue';
-import { watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import { ErrorBoundary, MessageProvider, ModalProvider } from './providers';
 import { Theme } from '@/shared/types';
 import { useSettingsStore } from '@/features/settings/model/settings';
+import { useUserStore } from '@/entities/user';
 
 const settingsStore = useSettingsStore();
+const userStore = useUserStore();
 
 watch(
     () => settingsStore.theme,
@@ -17,6 +19,10 @@ watch(
     },
     { immediate: true },
 );
+
+onMounted(async () => {
+    await userStore.checkAuth();
+});
 </script>
 
 <template>
