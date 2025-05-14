@@ -43,7 +43,7 @@ export const adminController = {
             ]);
 
             const result = users.map((u) => ({
-                id: u._id.toString(),
+                id: u.id.toString(),
                 username: u.username,
                 email: u.email,
                 isBlocked: u.isBlocked,
@@ -122,7 +122,7 @@ export const adminController = {
             const lessons = await Lesson.find().sort({ order: 1 }).lean();
 
             const result = lessons.map((l) => ({
-                id: l._id.toString(),
+                id: l.id.toString(),
                 title: l.title,
                 allowedChars: l.allowedChars,
                 layout: l.layout,
@@ -193,7 +193,7 @@ export const adminController = {
 
             const sessions: TrainingStatsDoc[] = await TrainingStats.find(
                 filter,
-            ).lean();
+            ).lean<TrainingStatsDoc[]>();
 
             const leaderboardFilter: Record<string, any> = {
                 isLeaderboardEligible: true,
@@ -285,7 +285,7 @@ export const adminController = {
             })
                 .sort({ cpm: -1 })
                 .select('_id cpm accuracy')
-                .lean();
+                .lean<TrainingStatsDoc>();
 
             let position: number | null = null;
 

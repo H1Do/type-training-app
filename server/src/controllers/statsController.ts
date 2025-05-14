@@ -11,6 +11,7 @@ import type {
     StatsPeriod,
     TrainingStatsDoc,
 } from '@/types/statsTypes';
+import { HydratedDocument } from 'mongoose';
 
 export const StatsController = {
     async getUserStats(
@@ -75,9 +76,9 @@ export const StatsController = {
             if (mode) filter.mode = mode;
             if (layout) filter.layout = layout;
 
-            const sessions: TrainingStatsDoc[] = await TrainingStats.find(
-                filter,
-            ).lean();
+            const sessions = await TrainingStats.find(filter).lean<
+                TrainingStatsDoc[]
+            >();
 
             const leaderboardFilter: Record<string, any> = {
                 isLeaderboardEligible: true,
@@ -163,7 +164,7 @@ export const StatsController = {
             })
                 .sort({ cpm: -1 })
                 .select('_id cpm accuracy')
-                .lean();
+                .lean<Pick<TrainingStatsDoc, '_id' | 'cpm' | 'accuracy'>>();
 
             let position: number | null = null;
 

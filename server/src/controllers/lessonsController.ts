@@ -13,13 +13,16 @@ import {
 } from '@/constants/stats';
 import { User } from '@/models/User';
 import { addExpToUser, calculateExp } from '@/utils/levelSystem';
+import { LessonDoc } from '@/types/lessonsTypes';
 
 class LessonsController {
     async getAll(req: LessonGetAllRequest, res: Response, next: NextFunction) {
         try {
             const userId = req.user?.id;
 
-            const lessons = await Lesson.find().sort({ order: 1 }).lean();
+            const lessons = await Lesson.find()
+                .sort({ order: 1 })
+                .lean<LessonDoc[]>();
             const progresses = userId
                 ? await UserLessonProgress.find({ userId }).lean()
                 : [];
@@ -30,8 +33,8 @@ class LessonsController {
 
             const result = lessons.map((lesson) => ({
                 ...lesson,
-                id: lesson._id.toString(),
-                stars: progressMap.get(lesson._id.toString()) ?? 0,
+                id: lesson.id.toString(),
+                stars: progressMap.get(lesson.id.toString()) ?? 0,
             }));
 
             res.status(200).json(result);
@@ -55,7 +58,7 @@ class LessonsController {
                 );
             }
 
-            const lesson = await Lesson.findById(id).lean();
+            const lesson = await Lesson.findById(id).lean<LessonDoc>();
 
             if (!lesson) {
                 return next(
@@ -127,7 +130,7 @@ class LessonsController {
                     ),
                 );
 
-            const lesson = await Lesson.findById(id).lean();
+            const lesson = await Lesson.findById(id).lean<LessonDoc>();
             if (!lesson)
                 return next(
                     ApiError.notFound(

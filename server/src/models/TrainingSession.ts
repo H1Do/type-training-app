@@ -28,7 +28,9 @@ const trainingSessionSchema = new mongoose.Schema<TrainingSessionDoc>({
     statsId: { type: Schema.Types.ObjectId, ref: 'TrainingStats' },
 });
 
-export const TrainingSession = mongoose.model(
-    'TrainingSession',
-    trainingSessionSchema,
-);
+export const TrainingSession =
+    mongoose.models.TrainingSession ||
+    mongoose.model<TrainingSessionDoc>(
+        'TrainingSession',
+        trainingSessionSchema,
+    );

@@ -44,7 +44,6 @@ const TrainingStatsSchema = new Schema<TrainingStatsDoc>({
     createdAt: { type: Date, default: Date.now },
 });
 
-export const TrainingStats = mongoose.model(
-    'TrainingStats',
-    TrainingStatsSchema,
-);
+export const TrainingStats =
+    mongoose.models.TrainingStats ||
+    mongoose.model<TrainingStatsDoc>('TrainingStats', TrainingStatsSchema);

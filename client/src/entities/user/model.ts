@@ -53,13 +53,7 @@ export const useUserStore = defineStore('user', {
                 this.role = data.role;
 
                 return true;
-            } catch (error: unknown) {
-                if (error instanceof AxiosError) {
-                    const message =
-                        error?.response?.data?.message ||
-                        this.t('auth.checkAuthFailed');
-                    this.messageService.warning(message);
-                }
+            } catch {
                 return false;
             }
         },

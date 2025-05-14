@@ -1,46 +1,17 @@
 import { LessonDoc, UserLessonProgressDoc } from '@/types/lessonsTypes';
-import { Schema, model } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const LessonSchema = new Schema<LessonDoc>(
     {
-        title: {
-            type: String,
-            required: true,
-        },
-        allowedChars: {
-            type: String,
-            required: true,
-        },
-        length: {
-            type: Number,
-            required: true,
-            default: 60,
-        },
-        layout: {
-            type: String,
-            required: true,
-        },
-        cpmFor1: {
-            type: Number,
-            required: true,
-        },
-        cpmFor2: {
-            type: Number,
-            required: true,
-        },
-        cpmFor3: {
-            type: Number,
-            required: true,
-        },
-        minAccuracy: {
-            type: Number,
-            required: true,
-            default: 90,
-        },
-        order: {
-            type: Number,
-            required: true,
-        },
+        title: { type: String, required: true },
+        allowedChars: { type: String, required: true },
+        length: { type: Number, required: true, default: 60 },
+        layout: { type: String, required: true },
+        cpmFor1: { type: Number, required: true },
+        cpmFor2: { type: Number, required: true },
+        cpmFor3: { type: Number, required: true },
+        minAccuracy: { type: Number, required: true, default: 90 },
+        order: { type: Number, required: true },
         prevLessonId: {
             type: Schema.Types.ObjectId,
             ref: 'Lesson',
@@ -82,8 +53,12 @@ const UserLessonProgressSchema = new Schema<UserLessonProgressDoc>(
 
 UserLessonProgressSchema.index({ userId: 1, lessonId: 1 }, { unique: true });
 
-export const UserLessonProgress = model(
-    'UserLessonProgress',
-    UserLessonProgressSchema,
-);
-export const Lesson = model('Lesson', LessonSchema);
+export const Lesson =
+    mongoose.models.Lesson || mongoose.model<LessonDoc>('Lesson', LessonSchema);
+
+export const UserLessonProgress =
+    mongoose.models.UserLessonProgress ||
+    mongoose.model<UserLessonProgressDoc>(
+        'UserLessonProgress',
+        UserLessonProgressSchema,
+    );
