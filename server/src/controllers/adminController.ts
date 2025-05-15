@@ -43,7 +43,7 @@ export const adminController = {
             ]);
 
             const result = users.map((u) => ({
-                id: u.id.toString(),
+                id: u._id,
                 username: u.username,
                 email: u.email,
                 isBlocked: u.isBlocked,
@@ -122,7 +122,7 @@ export const adminController = {
             const lessons = await Lesson.find().sort({ order: 1 }).lean();
 
             const result = lessons.map((l) => ({
-                id: l.id.toString(),
+                id: l._id,
                 title: l.title,
                 allowedChars: l.allowedChars,
                 layout: l.layout,
@@ -224,11 +224,11 @@ export const adminController = {
                 .unwind('$user');
 
             const leaderboard = leaderboardRaw.map((entry) => ({
-                userId: entry._id.toString(),
+                userId: entry._id,
                 username: entry.user.username,
                 cpm: entry.cpm,
                 accuracy: entry.accuracy,
-                isCurrentUser: entry._id.toString() === id,
+                isCurrentUser: entry._id === id,
             }));
 
             if (!sessions.length) {

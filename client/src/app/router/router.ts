@@ -169,16 +169,24 @@ export const router = createRouter({
 router.beforeEach(async (to, _, next) => {
     const userStore = useUserStore();
 
+    if (!userStore.isAuthenticated) {
+        await userStore.checkAuth();
+    }
+
     const reqAuth = to.meta.requiredAuthStatus;
     const reqAdmin = to.meta.requiredAdmin;
 
     if (reqAuth && !userStore.isAuthenticated) {
-        next({ path: RoutePaths.AUTH });
-    } else if (reqAdmin && !userStore.isAdmin) {
-        next({ path: RoutePaths.MAIN });
-    } else if (reqAuth === false && userStore.isAuthenticated) {
-        next({ path: RoutePaths.MAIN });
-    } else {
-        next();
+        return next({ path: RoutePaths.AUTH });
     }
+
+    if (reqAdmin && !userStore.isAdmin) {
+        return next({ path: RoutePaths.MAIN });
+    }
+
+    if (reqAuth === false && userStore.isAuthenticated) {
+        return next({ path: RoutePaths.MAIN });
+    }
+
+    return next();
 });

@@ -268,7 +268,7 @@ class UserController {
         }
 
         const userDto: UserDto = {
-            id: user.id.toString(),
+            id: user._id,
             username: user.username,
             email: user.email,
             createdAt: user.createdAt,

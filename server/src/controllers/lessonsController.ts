@@ -28,13 +28,13 @@ class LessonsController {
                 : [];
 
             const progressMap = new Map(
-                progresses.map((p) => [p.lessonId.toString(), p.stars]),
+                progresses.map((p) => [p.lessonId, p.stars]),
             );
 
             const result = lessons.map((lesson) => ({
                 ...lesson,
-                id: lesson.id.toString(),
-                stars: progressMap.get(lesson.id.toString()) ?? 0,
+                id: lesson._id,
+                stars: progressMap.get(lesson._id) ?? 0,
             }));
 
             res.status(200).json(result);
