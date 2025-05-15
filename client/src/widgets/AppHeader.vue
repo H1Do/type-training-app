@@ -13,7 +13,7 @@ const userStore = useUserStore();
 const modalService = useModalService();
 
 const { logout } = userStore;
-const { isAuthenticated, username, isVerified } = storeToRefs(userStore);
+const { isAuthenticated, username, isVerified, isAdmin } = storeToRefs(userStore);
 
 const isBannerVisible = ref(false);
 const isEmailSent = ref(false);
@@ -98,7 +98,7 @@ const onSend = async () => {
                         t('header.settings')
                     }}</span>
                 </AppLink>
-                <AppLink :to="RoutePaths.ADMIN" class="app-link">
+                <AppLink v-if='isAdmin' :to="RoutePaths.ADMIN" class="app-link">
                     <AppIcon
                         name="ShieldUser"
                         class="app-link-icon"
