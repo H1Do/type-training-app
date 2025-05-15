@@ -109,11 +109,11 @@ export const StatsController = {
                 .unwind('$user');
 
             const leaderboard = leaderboardRaw.map((entry) => ({
-                userId: entry._id,
+                userId: entry._id.toString(),
                 username: entry.user.username,
                 cpm: entry.cpm,
                 accuracy: entry.accuracy,
-                isCurrentUser: entry._id === userId,
+                isCurrentUser: entry._id.toString() === userId,
             }));
 
             if (!sessions.length) {
@@ -242,11 +242,11 @@ export const StatsController = {
                 .toArray();
 
             const topUsers = topUsersRaw.map((user) => ({
-                userId: user._id,
+                userId: user._id.toString(),
                 username: user.username,
                 level: user.level,
                 exp: user.exp,
-                isCurrentUser: user._id === userId,
+                isCurrentUser: user._id.toString() === userId,
             }));
 
             let userPosition: number | null = null;

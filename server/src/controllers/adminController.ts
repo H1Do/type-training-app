@@ -1,7 +1,6 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction, Request } from 'express';
 import { User } from '@/models/User';
 import { Lesson, UserLessonProgress } from '@/models/Lesson';
-import { TrainingStats } from '@/models/TrainingStats';
 import { ApiError } from '@/errors/ApiError';
 import { Types } from 'mongoose';
 import {
@@ -13,6 +12,7 @@ import {
     AdminUserIdRequest,
     AdminUserStatsRequest,
 } from '@/types/requestTypes';
+import { TrainingStats } from '@/models/TrainingStats';
 import { TrainingMode } from '@/types/trainingTypes';
 import { SessionDto, StatsPeriod, TrainingStatsDoc } from '@/types/statsTypes';
 import { mergeFingerStats, mergePerCharStat } from './statsController';
@@ -50,12 +50,7 @@ export const adminController = {
                 isVerified: u.isVerified,
             }));
 
-            res.status(200).json({
-                users: result,
-                total,
-                limit,
-                offset,
-            });
+            res.status(200).json({ users: result, total, limit, offset });
         } catch (e) {
             next(e);
         }
@@ -70,20 +65,38 @@ export const adminController = {
             const { id } = req.params;
 
             if (!Types.ObjectId.isValid(id)) {
-                return next(ApiError.badRequest('Invalid user ID'));
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_id') ?? 'Invalid user ID',
+                    ),
+                );
             }
 
             if (req.user?.id === id) {
-                return next(ApiError.badRequest('You cannot block yourself'));
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_fields') ??
+                            'You cannot block yourself',
+                    ),
+                );
             }
 
             const user = await User.findById(id);
-            if (!user) return next(ApiError.notFound('User not found'));
+            if (!user)
+                return next(
+                    ApiError.notFound(
+                        req.t?.('errors.user_not_found') ?? 'User not found',
+                    ),
+                );
 
             user.isBlocked = true;
             await user.save();
 
-            res.status(200).json({ message: 'User blocked successfully' });
+            res.status(200).json({
+                message:
+                    req.t?.('messages.user_blocked') ??
+                    'User blocked successfully',
+            });
         } catch (e) {
             next(e);
         }
@@ -98,16 +111,29 @@ export const adminController = {
             const { id } = req.params;
 
             if (!Types.ObjectId.isValid(id)) {
-                return next(ApiError.badRequest('Invalid user ID'));
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_id') ?? 'Invalid user ID',
+                    ),
+                );
             }
 
             const user = await User.findById(id);
-            if (!user) return next(ApiError.notFound('User not found'));
+            if (!user)
+                return next(
+                    ApiError.notFound(
+                        req.t?.('errors.user_not_found') ?? 'User not found',
+                    ),
+                );
 
             user.isBlocked = false;
             await user.save();
 
-            res.status(200).json({ message: 'User unblocked successfully' });
+            res.status(200).json({
+                message:
+                    req.t?.('messages.user_unblocked') ??
+                    'User unblocked successfully',
+            });
         } catch (e) {
             next(e);
         }
@@ -142,190 +168,91 @@ export const adminController = {
         }
     },
 
-    async getUserStats(
-        req: AdminUserStatsRequest,
+    async updateLesson(
+        req: AdminUpdateLessonRequest,
         res: Response,
         next: NextFunction,
     ) {
         try {
             const { id } = req.params;
-            const { since = 'all', mode, layout } = req.query;
 
             if (!Types.ObjectId.isValid(id)) {
-                return next(ApiError.badRequest('Invalid user ID'));
-            }
-
-            if (
-                typeof since !== 'string' ||
-                !['day', 'week', 'month', 'all'].includes(since)
-            ) {
-                return next(ApiError.badRequest('Invalid period'));
-            }
-
-            if (mode && typeof mode !== 'string') {
-                return next(ApiError.badRequest('Invalid mode'));
-            }
-
-            if (layout && typeof layout !== 'string') {
-                return next(ApiError.badRequest('Invalid layout'));
-            }
-
-            const userId = new Types.ObjectId(id);
-
-            const filter: Record<string, any> = {
-                userId,
-                isRated: true,
-            };
-
-            if (since !== 'all') {
-                const now = Date.now();
-                const msMap: Record<Exclude<StatsPeriod, 'all'>, number> = {
-                    day: 1000 * 60 * 60 * 24,
-                    week: 1000 * 60 * 60 * 24 * 7,
-                    month: 1000 * 60 * 60 * 24 * 30,
-                };
-
-                filter.createdAt = { $gte: new Date(now - msMap[since]) };
-            }
-
-            if (mode) filter.mode = mode;
-            if (layout) filter.layout = layout;
-
-            const sessions: TrainingStatsDoc[] = await TrainingStats.find(
-                filter,
-            ).lean<TrainingStatsDoc[]>();
-
-            const leaderboardFilter: Record<string, any> = {
-                isLeaderboardEligible: true,
-            };
-            if (since !== 'all') leaderboardFilter.createdAt = filter.createdAt;
-            if (mode) leaderboardFilter.mode = mode;
-            if (layout) leaderboardFilter.layout = layout;
-
-            const leaderboardRaw = await TrainingStats.aggregate([
-                { $match: leaderboardFilter },
-                { $sort: { cpm: -1 } },
-                {
-                    $group: {
-                        _id: '$userId',
-                        cpm: { $first: '$cpm' },
-                        accuracy: { $first: '$accuracy' },
-                    },
-                },
-                { $sort: { cpm: -1 } },
-                { $limit: 10 },
-            ])
-                .lookup({
-                    from: 'users',
-                    localField: '_id',
-                    foreignField: '_id',
-                    as: 'user',
-                })
-                .unwind('$user');
-
-            const leaderboard = leaderboardRaw.map((entry) => ({
-                userId: entry._id,
-                username: entry.user.username,
-                cpm: entry.cpm,
-                accuracy: entry.accuracy,
-                isCurrentUser: entry._id === id,
-            }));
-
-            if (!sessions.length) {
-                return res.json({
-                    totalSessions: 0,
-                    accuracy: 100,
-                    cpm: 0,
-                    averageReaction: 0,
-                    perCharStats: [],
-                    fingerStats: [],
-                    leaderboard,
-                    position: null,
-                    sessions: [],
-                    count: 0,
-                    errorsCount: 0,
-                    totalTextErrorsCount: 0,
-                    totalTime: 0,
-                    userBestResult: null,
-                });
-            }
-
-            const totalSessions = sessions.length;
-
-            const totalInputs = sessions.reduce(
-                (acc, s) =>
-                    acc + s.perCharStats?.reduce((a, c) => a + c.count, 0),
-                0,
-            );
-            const totalCorrect = sessions.reduce(
-                (acc, s) =>
-                    acc +
-                    s.perCharStats?.reduce(
-                        (a, c) => a + (c.count - c.errorsCount),
-                        0,
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_id') ?? 'Invalid lesson ID',
                     ),
-                0,
-            );
-
-            const accuracy = Math.round((totalCorrect / totalInputs) * 100);
-            const cpm = Math.round(
-                sessions.reduce((a, s) => a + s.cpm, 0) / totalSessions,
-            );
-            const averageReaction = Math.round(
-                sessions.reduce((a, s) => a + s.averageReaction, 0) /
-                    totalSessions,
-            );
-
-            const userBest = await TrainingStats.findOne({
-                userId,
-                isLeaderboardEligible: true,
-                ...(since !== 'all' && { createdAt: filter.createdAt }),
-                ...(mode && { mode }),
-                ...(layout && { layout }),
-            })
-                .sort({ cpm: -1 })
-                .select('_id cpm accuracy')
-                .lean<TrainingStatsDoc>();
-
-            let position: number | null = null;
-
-            if (userBest) {
-                position = await TrainingStats.countDocuments({
-                    ...leaderboardFilter,
-                    cpm: { $gt: userBest.cpm },
-                });
-                position += 1;
+                );
             }
 
-            const sessionDtos: SessionDto[] = sessions.map((s) => ({
-                accuracy: s.accuracy,
-                averageReaction: s.averageReaction,
-                cpm: s.cpm,
-                count: s.count,
-                errorsCount: s.errorsCount,
-                textErrorsCount: s.textErrorsCount,
-                errorsRate: s.errorsCount / s.count,
-                createdAt: s.createdAt,
-            }));
+            const updateData = req.body;
+            const lesson = await Lesson.findByIdAndUpdate(id, updateData, {
+                new: true,
+            });
 
-            return res.json({
-                totalSessions,
-                accuracy,
-                cpm,
-                averageReaction,
-                count: totalInputs,
-                errorsCount: totalInputs - totalCorrect,
-                totalTextErrorsCount: sessions.reduce(
-                    (a, s) => a + s.textErrorsCount,
-                    0,
-                ),
-                totalTime: sessions.reduce((acc, s) => acc + s.totalTime, 0),
-                perCharStats: mergePerCharStat(sessions),
-                fingerStats: mergeFingerStats(sessions),
-                sessions: sessionDtos,
-                leaderboard,
-                userBestResult: userBest,
-                position,
+            if (!lesson)
+                return next(
+                    ApiError.notFound(
+                        req.t?.('errors.lesson_not_found') ??
+                            'Lesson not found',
+                    ),
+                );
+
+            res.status(200).json(lesson);
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    async deleteLesson(
+        req: AdminDeleteLessonRequest,
+        res: Response,
+        next: NextFunction,
+    ) {
+        try {
+            const { id } = req.params;
+
+            if (!Types.ObjectId.isValid(id)) {
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_id') ?? 'Invalid lesson ID',
+                    ),
+                );
+            }
+
+            const lesson = await Lesson.findById(id);
+            if (!lesson)
+                return next(
+                    ApiError.notFound(
+                        req.t?.('errors.lesson_not_found') ??
+                            'Lesson not found',
+                    ),
+                );
+
+            const { layout, order, prevLessonId, nextLessonId } = lesson;
+
+            if (prevLessonId) {
+                await Lesson.findByIdAndUpdate(prevLessonId, {
+                    nextLessonId: nextLessonId ?? null,
+                });
+            }
+
+            if (nextLessonId) {
+                await Lesson.findByIdAndUpdate(nextLessonId, {
+                    prevLessonId: prevLessonId ?? null,
+                });
+            }
+
+            await Lesson.findByIdAndDelete(id);
+
+            await Lesson.updateMany(
+                { layout, order: { $gt: order } },
+                { $inc: { order: -1 } },
+            );
+
+            res.status(200).json({
+                message:
+                    req.t?.('messages.lesson_deleted') ??
+                    'Lesson deleted and order adjusted',
             });
         } catch (e) {
             next(e);
@@ -359,7 +286,12 @@ export const adminController = {
                 typeof cpmFor3 !== 'number' ||
                 typeof minAccuracy !== 'number'
             ) {
-                return next(ApiError.badRequest('Invalid lesson data'));
+                return next(
+                    ApiError.badRequest(
+                        req.t?.('errors.invalid_fields') ??
+                            'Invalid lesson data',
+                    ),
+                );
             }
 
             const lastLesson = await Lesson.findOne({ layout }).sort({
@@ -393,74 +325,6 @@ export const adminController = {
         }
     },
 
-    async updateLesson(
-        req: AdminUpdateLessonRequest,
-        res: Response,
-        next: NextFunction,
-    ) {
-        try {
-            const { id } = req.params;
-
-            if (!Types.ObjectId.isValid(id)) {
-                return next(ApiError.badRequest('Invalid lesson ID'));
-            }
-
-            const updateData = req.body;
-            const lesson = await Lesson.findByIdAndUpdate(id, updateData, {
-                new: true,
-            });
-
-            if (!lesson) return next(ApiError.notFound('Lesson not found'));
-
-            res.status(200).json(lesson);
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    async deleteLesson(
-        req: AdminDeleteLessonRequest,
-        res: Response,
-        next: NextFunction,
-    ) {
-        try {
-            const { id } = req.params;
-
-            if (!Types.ObjectId.isValid(id)) {
-                return next(ApiError.badRequest('Invalid lesson ID'));
-            }
-
-            const lesson = await Lesson.findById(id);
-            if (!lesson) return next(ApiError.notFound('Lesson not found'));
-
-            const { layout, order, prevLessonId, nextLessonId } = lesson;
-
-            if (prevLessonId) {
-                await Lesson.findByIdAndUpdate(prevLessonId, {
-                    nextLessonId: nextLessonId ?? null,
-                });
-            }
-
-            if (nextLessonId) {
-                await Lesson.findByIdAndUpdate(nextLessonId, {
-                    prevLessonId: prevLessonId ?? null,
-                });
-            }
-
-            await Lesson.findByIdAndDelete(id);
-
-            await Lesson.updateMany(
-                { layout, order: { $gt: order } },
-                { $inc: { order: -1 } },
-            );
-
-            res.status(200).json({
-                message: 'Lesson deleted and order adjusted',
-            });
-        } catch (e) {
-            next(e);
-        }
-    },
     async getAdminStats(req: Request, res: Response, next: NextFunction) {
         try {
             const now = new Date();
@@ -587,6 +451,196 @@ export const adminController = {
                 avgAccuracy,
                 avgCpm,
                 registrationsByDay: registrationsByDayAgg,
+            });
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    async getUserStats(
+        req: AdminUserStatsRequest,
+        res: Response,
+        next: NextFunction,
+    ) {
+        try {
+            const { id } = req.params;
+            const { since = 'all', mode, layout } = req.query;
+
+            if (!Types.ObjectId.isValid(id)) {
+                return next(ApiError.badRequest('Invalid user ID'));
+            }
+
+            if (
+                typeof since !== 'string' ||
+                !['day', 'week', 'month', 'all'].includes(since)
+            ) {
+                return next(ApiError.badRequest('Invalid period'));
+            }
+
+            if (mode && typeof mode !== 'string') {
+                return next(ApiError.badRequest('Invalid mode'));
+            }
+
+            if (layout && typeof layout !== 'string') {
+                return next(ApiError.badRequest('Invalid layout'));
+            }
+
+            const userId = new Types.ObjectId(id);
+
+            const filter: Record<string, any> = {
+                userId,
+                isRated: true,
+            };
+
+            if (since !== 'all') {
+                const now = Date.now();
+                const msMap: Record<Exclude<StatsPeriod, 'all'>, number> = {
+                    day: 1000 * 60 * 60 * 24,
+                    week: 1000 * 60 * 60 * 24 * 7,
+                    month: 1000 * 60 * 60 * 24 * 30,
+                };
+
+                filter.createdAt = { $gte: new Date(now - msMap[since]) };
+            }
+
+            if (mode) filter.mode = mode;
+            if (layout) filter.layout = layout;
+
+            const sessions: TrainingStatsDoc[] = await TrainingStats.find(
+                filter,
+            ).lean<TrainingStatsDoc[]>();
+
+            const leaderboardFilter: Record<string, any> = {
+                isLeaderboardEligible: true,
+            };
+            if (since !== 'all') leaderboardFilter.createdAt = filter.createdAt;
+            if (mode) leaderboardFilter.mode = mode;
+            if (layout) leaderboardFilter.layout = layout;
+
+            const leaderboardRaw = await TrainingStats.aggregate([
+                { $match: leaderboardFilter },
+                { $sort: { cpm: -1 } },
+                {
+                    $group: {
+                        _id: '$userId',
+                        cpm: { $first: '$cpm' },
+                        accuracy: { $first: '$accuracy' },
+                    },
+                },
+                { $sort: { cpm: -1 } },
+                { $limit: 10 },
+            ])
+                .lookup({
+                    from: 'users',
+                    localField: '_id',
+                    foreignField: '_id',
+                    as: 'user',
+                })
+                .unwind('$user');
+
+            const leaderboard = leaderboardRaw.map((entry) => ({
+                userId: entry._id.toString(),
+                username: entry.user.username,
+                cpm: entry.cpm,
+                accuracy: entry.accuracy,
+                isCurrentUser: entry._id.toString() === id,
+            }));
+
+            if (!sessions.length) {
+                return res.json({
+                    totalSessions: 0,
+                    accuracy: 100,
+                    cpm: 0,
+                    averageReaction: 0,
+                    perCharStats: [],
+                    fingerStats: [],
+                    leaderboard,
+                    position: null,
+                    sessions: [],
+                    count: 0,
+                    errorsCount: 0,
+                    totalTextErrorsCount: 0,
+                    totalTime: 0,
+                    userBestResult: null,
+                });
+            }
+
+            const totalSessions = sessions.length;
+
+            const totalInputs = sessions.reduce(
+                (acc, s) =>
+                    acc + s.perCharStats?.reduce((a, c) => a + c.count, 0),
+                0,
+            );
+            const totalCorrect = sessions.reduce(
+                (acc, s) =>
+                    acc +
+                    s.perCharStats?.reduce(
+                        (a, c) => a + (c.count - c.errorsCount),
+                        0,
+                    ),
+                0,
+            );
+
+            const accuracy = Math.round((totalCorrect / totalInputs) * 100);
+            const cpm = Math.round(
+                sessions.reduce((a, s) => a + s.cpm, 0) / totalSessions,
+            );
+            const averageReaction = Math.round(
+                sessions.reduce((a, s) => a + s.averageReaction, 0) /
+                    totalSessions,
+            );
+
+            const userBest = await TrainingStats.findOne({
+                userId,
+                isLeaderboardEligible: true,
+                ...(since !== 'all' && { createdAt: filter.createdAt }),
+                ...(mode && { mode }),
+                ...(layout && { layout }),
+            })
+                .sort({ cpm: -1 })
+                .select('_id cpm accuracy')
+                .lean<TrainingStatsDoc>();
+
+            let position: number | null = null;
+
+            if (userBest) {
+                position = await TrainingStats.countDocuments({
+                    ...leaderboardFilter,
+                    cpm: { $gt: userBest.cpm },
+                });
+                position += 1;
+            }
+
+            const sessionDtos: SessionDto[] = sessions.map((s) => ({
+                accuracy: s.accuracy,
+                averageReaction: s.averageReaction,
+                cpm: s.cpm,
+                count: s.count,
+                errorsCount: s.errorsCount,
+                textErrorsCount: s.textErrorsCount,
+                errorsRate: s.errorsCount / s.count,
+                createdAt: s.createdAt,
+            }));
+
+            return res.json({
+                totalSessions,
+                accuracy,
+                cpm,
+                averageReaction,
+                count: totalInputs,
+                errorsCount: totalInputs - totalCorrect,
+                totalTextErrorsCount: sessions.reduce(
+                    (a, s) => a + s.textErrorsCount,
+                    0,
+                ),
+                totalTime: sessions.reduce((acc, s) => acc + s.totalTime, 0),
+                perCharStats: mergePerCharStat(sessions),
+                fingerStats: mergeFingerStats(sessions),
+                sessions: sessionDtos,
+                leaderboard,
+                userBestResult: userBest,
+                position,
             });
         } catch (e) {
             next(e);
