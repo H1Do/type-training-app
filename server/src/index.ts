@@ -1,3 +1,4 @@
+import "module-alias/register";
 import express, { json } from 'express';
 import { connectDB } from './db';
 import dotenv from 'dotenv';
