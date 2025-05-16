@@ -25,6 +25,9 @@ withDefaults(
             target="_blank"
             rel="noopener noreferrer"
             class="app-link external"
+            :class="{
+                disabled,
+            }"
             v-bind="$attrs"
         >
             <slot />
@@ -37,6 +40,9 @@ withDefaults(
             :params="params"
             :replace="replace"
             class="app-link"
+            :class="{
+                disabled,
+            }"
             v-bind="$attrs"
         >
             <slot />
@@ -63,7 +69,7 @@ withDefaults(
         color: var(--secondary-color);
     }
 
-    &:disabled {
+    &.disabled {
         opacity: $app-link-disabled-opacity;
         cursor: not-allowed;
         pointer-events: none;

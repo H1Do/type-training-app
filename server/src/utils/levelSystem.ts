@@ -6,6 +6,9 @@ export const expTable: number[] = [
 
 export const MAX_LEVEL = 10;
 
+const WORDS_COEFFICIENT = 1;
+const SYMBOLS_COEFFICIENT = 2.5;
+
 export function getExpForLevel(level: number): number {
     if (level < 1 || level >= MAX_LEVEL) return Infinity;
     return expTable[level];
@@ -15,16 +18,23 @@ export function calculateExp({
     cpm,
     accuracy,
     charCount,
+    mode,
 }: {
     cpm: number;
     accuracy: number;
     charCount: number;
+    mode: 'words' | 'symbols';
 }): number {
     const base = charCount / 20;
     const accuracyFactor = Math.max(0, accuracy / 100);
     const speedFactor = Math.min(1, cpm / 300);
 
-    const result = base * accuracyFactor * speedFactor * 5;
+    const result =
+        base *
+        accuracyFactor *
+        speedFactor *
+        5 *
+        (mode === 'words' ? WORDS_COEFFICIENT : SYMBOLS_COEFFICIENT);
 
     return Math.max(1, Math.round(result));
 }

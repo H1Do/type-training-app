@@ -4,6 +4,7 @@ import mongoose, { Schema } from 'mongoose';
 const LessonSchema = new Schema<LessonDoc>(
     {
         title: { type: String, required: true },
+        titleRu: { type: String, required: true },
         allowedChars: { type: String, required: true },
         length: { type: Number, required: true, default: 60 },
         layout: { type: String, required: true },

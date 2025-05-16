@@ -28,6 +28,7 @@ const emit = defineEmits<{
 const { t } = useI18n();
 
 const title = ref('');
+const titleRu = ref('');
 const allowedChars = ref('');
 const length = ref(60);
 const layout = ref<Layout>(Layout.QWERTY);
@@ -42,6 +43,7 @@ watch(
     (lesson) => {
         if (lesson) {
             title.value = lesson.title;
+            titleRu.value = lesson.titleRu;
             allowedChars.value = lesson.allowedChars;
             length.value = lesson.length;
             layout.value = lesson.layout;
@@ -97,6 +99,7 @@ const onCancel = () => emit('resolve');
 const onConfirm = () => {
     const data = {
         title: title.value.trim(),
+        titleRu: titleRu.value.trim(),
         allowedChars: allowedChars.value.trim(),
         length: length.value,
         layout: layout.value,
@@ -134,6 +137,13 @@ const onConfirm = () => {
             <VFlex>
                 <AppText size="0.75rem">{{ t('admin.lessons.title') }}</AppText>
                 <AppInput v-model="title" />
+            </VFlex>
+
+            <VFlex>
+                <AppText size="0.75rem">{{
+                    t('admin.lessons.titleRu')
+                }}</AppText>
+                <AppInput v-model="titleRu" />
             </VFlex>
 
             <VFlex>

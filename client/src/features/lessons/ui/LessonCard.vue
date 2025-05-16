@@ -3,12 +3,15 @@ import type { LessonProgress } from '@/shared/types/lessons';
 import { AppHint, AppIcon, AppText, HFlex, VFlex } from '@/shared/ui';
 import { useRouter } from 'vue-router';
 import { computed } from 'vue';
+import { useSettingsStore } from '@/features/settings';
+import { Localization } from '@/shared/types';
 
 const props = defineProps<{
     lesson: LessonProgress;
 }>();
 
 const router = useRouter();
+const settingsStore = useSettingsStore();
 
 const stars = computed(() =>
     Array.from({ length: 3 }, (_, i) => i < props.lesson.stars),
@@ -18,7 +21,11 @@ const onClick = () => {
     router.push(`/lessons/${props.lesson.id}`);
 };
 
-const title = `#${props.lesson.order} - ${props.lesson.title}`;
+const title = `#${props.lesson.order} - ${
+    settingsStore.localization === Localization.EN
+        ? props.lesson.title
+        : props.lesson.titleRu
+}`;
 </script>
 
 <template>

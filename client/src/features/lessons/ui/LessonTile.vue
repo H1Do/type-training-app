@@ -8,6 +8,7 @@ import { useSettingsStore } from '@/features/settings';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import { RouteNames } from '@/app/router';
+import { Localization } from '@/shared/types';
 
 const { t } = useI18n();
 const router = useRouter();
@@ -46,7 +47,11 @@ onUnmounted(() => {
 
 <template>
     <VFlex v-if="lesson" gap="1rem" align="center">
-        <AppText size="1.5rem" :weight="500">{{ lesson.title }}</AppText>
+        <AppText size="1.5rem" :weight="500">{{
+            settingsStore.localization === Localization.EN
+                ? lesson.title
+                : lesson.titleRu
+        }}</AppText>
         <HFlex justify="between" class="buttons">
             <AppButton :disabled="!prevLessonId" @click="goTo(prevLessonId)">
                 {{ t('lessons.prevLesson') }}

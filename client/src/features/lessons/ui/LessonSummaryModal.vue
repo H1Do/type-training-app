@@ -4,14 +4,16 @@ import {
     AppIcon,
     AppLink,
     AppModal,
+    AppText,
     HFlex,
     VFlex,
 } from '@/shared/ui';
 import { useLessonsStore } from '../model/lessonsStore';
-import type {
-    LessonsStats,
-    PerItemStat,
-    PerItemStatMetric,
+import {
+    Localization,
+    type LessonsStats,
+    type PerItemStat,
+    type PerItemStatMetric,
 } from '@/shared/types';
 import { computed, ref } from 'vue';
 import { useSettingsStore } from '@/features/settings';
@@ -37,6 +39,7 @@ const props = defineProps<{
     stats: LessonsStats;
     stars: 1 | 2 | 3;
     exp: ExpReward | null;
+    message: string;
     isLevelUp: boolean;
 }>();
 
@@ -73,7 +76,13 @@ const onCancel = () => {
         <VFlex align="center" gap="1rem">
             <HFlex align="center" gap="1rem">
                 <h2 class="modal__title">
-                    {{ `${t('stats.trainingResult')} (${stats.lesson.title})` }}
+                    {{
+                        `${t('stats.trainingResult')} (${
+                            settingsStore.localization === Localization.EN
+                                ? stats.lesson.title
+                                : stats.lesson.titleRu
+                        })`
+                    }}
                 </h2>
 
                 <HFlex gap="0.5rem">
@@ -97,13 +106,21 @@ const onCancel = () => {
                 :isLevelUp="isLevelUp"
             />
 
+            <AppText v-if="message">
+                {{ message }}
+            </AppText>
+
             <HFlex align="start" gap="1rem">
                 <VFlex justify="between" class="stats" gap="0.25rem">
                     <VFlex class="stats__item" align="start">
                         <span class="stats__item-title">{{
                             t('stats.metrics.lesson')
                         }}</span>
-                        <span>{{ stats.lesson.title }}</span>
+                        <span>{{
+                            settingsStore.localization === Localization.EN
+                                ? stats.lesson.title
+                                : stats.lesson.titleRu
+                        }}</span>
                     </VFlex>
                     <VFlex class="stats__item" align="start">
                         <span class="stats__item-title">{{

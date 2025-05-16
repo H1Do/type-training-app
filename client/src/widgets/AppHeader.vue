@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { RoutePaths } from '@/app/router';
 import { useUserStore } from '@/entities/user';
-import { AppButton, AppIcon, AppLink, HFlex, LogoIcon } from '@/shared/ui';
+import {
+    AppButton,
+    AppHint,
+    AppIcon,
+    AppLink,
+    HFlex,
+    LogoIcon,
+} from '@/shared/ui';
 import { useConfirmDialog, useModalService } from '@/shared/utils';
 import { storeToRefs } from 'pinia';
 import { useI18n } from 'vue-i18n';
@@ -13,7 +20,8 @@ const userStore = useUserStore();
 const modalService = useModalService();
 
 const { logout } = userStore;
-const { isAuthenticated, username, isVerified, isAdmin } = storeToRefs(userStore);
+const { isAuthenticated, username, isVerified, isAdmin } =
+    storeToRefs(userStore);
 
 const isBannerVisible = ref(false);
 const isEmailSent = ref(false);
@@ -66,18 +74,46 @@ const onSend = async () => {
                     />
                     <span class="app-link-text">{{ t('header.main') }}</span>
                 </AppLink>
-                <AppLink :to="RoutePaths.STATS" class="app-link">
-                    <AppIcon
-                        name="ChartNoAxesColumn"
-                        class="app-link-icon"
-                        size="1.25rem"
-                    />
-                    <span class="app-link-text">{{ t('header.stats') }}</span>
-                </AppLink>
-                <AppLink :to="RoutePaths.LESSONS" class="app-link">
-                    <AppIcon name="Book" class="app-link-icon" size="1.25rem" />
-                    <span class="app-link-text">{{ t('header.lessons') }}</span>
-                </AppLink>
+                <AppHint
+                    :hint="
+                        !isAuthenticated ? t('header.authRequired') : undefined
+                    "
+                >
+                    <AppLink
+                        :to="RoutePaths.STATS"
+                        class="app-link"
+                        :disabled="!isAuthenticated"
+                    >
+                        <AppIcon
+                            name="ChartNoAxesColumn"
+                            class="app-link-icon"
+                            size="1.25rem"
+                        />
+                        <span class="app-link-text">{{
+                            t('header.stats')
+                        }}</span>
+                    </AppLink>
+                </AppHint>
+                <AppHint
+                    :hint="
+                        !isAuthenticated ? t('header.authRequired') : undefined
+                    "
+                >
+                    <AppLink
+                        :to="RoutePaths.LESSONS"
+                        class="app-link"
+                        :disabled="!isAuthenticated"
+                    >
+                        <AppIcon
+                            name="Book"
+                            class="app-link-icon"
+                            size="1.25rem"
+                        />
+                        <span class="app-link-text">{{
+                            t('header.lessons')
+                        }}</span>
+                    </AppLink>
+                </AppHint>
                 <AppLink :to="RoutePaths.TRAINING" class="app-link">
                     <AppIcon
                         name="Keyboard"
@@ -98,7 +134,7 @@ const onSend = async () => {
                         t('header.settings')
                     }}</span>
                 </AppLink>
-                <AppLink v-if='isAdmin' :to="RoutePaths.ADMIN" class="app-link">
+                <AppLink v-if="isAdmin" :to="RoutePaths.ADMIN" class="app-link">
                     <AppIcon
                         name="ShieldUser"
                         class="app-link-icon"

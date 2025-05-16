@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { layoutNameMap } from '@/features/settings/model/settings';
-import type { AdminLesson } from '@/shared/types';
+import {
+    layoutNameMap,
+    useSettingsStore,
+} from '@/features/settings/model/settings';
+import { Localization, type AdminLesson } from '@/shared/types';
 import {
     AppButton,
     AppHint,
@@ -13,6 +16,8 @@ import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
+const settingsStore = useSettingsStore();
+
 const props = defineProps<{
     lesson: AdminLesson;
 }>();
@@ -22,7 +27,11 @@ const emit = defineEmits<{
     (e: 'delete', id: string): void;
 }>();
 
-const title = `#${props.lesson.order} - ${props.lesson.title}`;
+const title = `#${props.lesson.order} - ${
+    settingsStore.localization === Localization.EN
+        ? props.lesson.title
+        : props.lesson.titleRu
+}`;
 </script>
 
 <template>

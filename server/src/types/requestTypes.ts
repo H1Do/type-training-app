@@ -6,7 +6,7 @@ import {
 } from './trainingTypes';
 import { Layout } from './keyboardTypes';
 import { StatsPeriod } from './statsTypes';
-import { FinishLessonRequest } from './lessonsTypes';
+import { FinishLessonRequest, LessonDoc } from './lessonsTypes';
 
 export interface RequestWithUser<
     TBody = unknown,
@@ -73,34 +73,12 @@ export type AdminGetUsersRequest = RequestWithUser<
 
 export type AdminUserIdRequest = RequestWithUser<undefined, { id: string }>;
 
-export type AdminCreateLessonRequest = RequestWithUser<{
-    title: string;
-    allowedChars: string;
-    length: number;
-    layout: string;
-    order: number;
-    cpmFor1: number;
-    cpmFor2: number;
-    cpmFor3: number;
-    minAccuracy: number;
-    prevLessonId?: string;
-    nextLessonId?: string;
-}>;
+export type AdminCreateLessonRequest = RequestWithUser<
+    Omit<LessonDoc, 'createdAt' | 'updatedAt'>
+>;
 
 export type AdminUpdateLessonRequest = RequestWithUser<
-    Partial<{
-        title: string;
-        allowedChars: string;
-        length: number;
-        layout: string;
-        order: number;
-        cpmFor1: number;
-        cpmFor2: number;
-        cpmFor3: number;
-        minAccuracy: number;
-        prevLessonId: string;
-        nextLessonId: string;
-    }>,
+    Partial<Omit<LessonDoc, 'createdAt' | 'updatedAt'>>,
     { id: string }
 >;
 

@@ -150,6 +150,7 @@ export const adminController = {
             const result = lessons.map((l) => ({
                 id: l._id,
                 title: l.title,
+                titleRu: l.titleRu,
                 allowedChars: l.allowedChars,
                 layout: l.layout,
                 order: l.order,
@@ -354,6 +355,7 @@ export const adminController = {
                             TrainingMode.Numbers,
                             TrainingMode.Programming,
                             TrainingMode.Symbols,
+                            TrainingMode.Custom,
                         ],
                     },
                 }),
@@ -369,6 +371,7 @@ export const adminController = {
                                     TrainingMode.Numbers,
                                     TrainingMode.Programming,
                                     TrainingMode.Symbols,
+                                    TrainingMode.Custom,
                                 ],
                             },
                         },

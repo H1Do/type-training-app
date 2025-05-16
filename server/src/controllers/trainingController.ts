@@ -266,6 +266,13 @@ class TrainingController {
                     cpm: stats.cpm,
                     accuracy: stats.accuracy,
                     charCount: session.sequence.length,
+                    mode: [
+                        TrainingMode.Letters,
+                        TrainingMode.Numbers,
+                        TrainingMode.Symbols,
+                    ].includes(mode)
+                        ? 'symbols'
+                        : 'words',
                 });
 
                 const levelUpResult = addExpToUser(user, earnedExp);

@@ -6,6 +6,7 @@ import type { LessonsStats } from './stats';
 export interface Lesson {
     id: string;
     title: string;
+    titleRu: string;
     layout: Layout;
     allowedChars: string;
     length: number;
@@ -25,6 +26,7 @@ export interface LessonProgress extends Lesson {
 export interface LessonDetails {
     id: string;
     title: string;
+    titleRu: string;
     layout: Layout;
     sequence: string[];
     prevLessonId?: string;

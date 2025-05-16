@@ -126,6 +126,7 @@ export const useLessonsStore = defineStore('lessons', {
                     stats: data.stats,
                     stars: data.stars,
                     exp: data.exp,
+                    message: data.message,
                     isLevelUp,
                 });
             } catch {

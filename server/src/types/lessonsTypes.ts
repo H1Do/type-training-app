@@ -4,6 +4,7 @@ import { InputEventRecord } from './trainingTypes';
 
 export interface LessonDoc extends Document {
     title: string;
+    titleRu: string;
     allowedChars: string;
     length: number;
     layout: Layout;

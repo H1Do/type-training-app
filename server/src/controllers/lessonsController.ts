@@ -28,13 +28,13 @@ class LessonsController {
                 : [];
 
             const progressMap = new Map(
-                progresses.map((p) => [p.lessonId, p.stars]),
+                progresses.map((p) => [p.lessonId.toString(), p.stars]),
             );
 
             const result = lessons.map((lesson) => ({
                 ...lesson,
-                id: lesson._id,
-                stars: progressMap.get(lesson._id) ?? 0,
+                id: lesson._id?.toString(),
+                stars: progressMap.get(lesson._id?.toString()) ?? 0,
             }));
 
             res.status(200).json(result);
@@ -77,6 +77,7 @@ class LessonsController {
             res.status(200).json({
                 id: lesson._id,
                 title: lesson.title,
+                titleRu: lesson.titleRu,
                 layout: lesson.layout,
                 sequence,
                 prevLessonId: lesson.prevLessonId,
@@ -229,6 +230,7 @@ class LessonsController {
                     cpm: stats.cpm,
                     accuracy: stats.accuracy,
                     charCount: sequence.length,
+                    mode: 'symbols',
                 });
 
                 const levelUpResult = addExpToUser(user, earnedExp);

@@ -83,6 +83,7 @@ export const en = {
         logout: 'Logout',
         cancel: 'Cancel',
         admin: 'Admin panel',
+        authRequired: 'Authentication required',
     },
 
     footer: {
@@ -307,7 +308,8 @@ export const en = {
         selectedUserStats: 'User stats',
 
         lessons: {
-            title: 'Lesson title',
+            title: 'Lesson title (EN)',
+            titleRu: 'Lesson title (RU)',
             allowedChars: 'Allowed characters',
             minAccuracy: 'Minimum accuracy (%)',
             cpmFor1: 'CPM for 1 star',

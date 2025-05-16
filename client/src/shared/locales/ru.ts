@@ -85,6 +85,7 @@ export const ru = {
         logout: 'Выйти',
         cancel: 'Отмена',
         admin: 'Админ панель',
+        authRequired: 'Требуется авторизация',
     },
 
     footer: {
@@ -314,7 +315,8 @@ export const ru = {
         selectedUserStats: 'Статистика пользователя',
 
         lessons: {
-            title: 'Название урока',
+            title: 'Название урока (EN)',
+            titleRu: 'Название урока (RU)',
             allowedChars: 'Допустимые символы',
             minAccuracy: 'Минимальная точность (%)',
             cpmFor1: 'СВМ для 1 звезды',
