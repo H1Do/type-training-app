@@ -42,6 +42,10 @@ const submitForm = (event: Event) => {
         userStore.setError(t('auth.allFieldsRequired'));
         return;
     }
+    if (props.modelValue.password.length < 8) {
+        userStore.setError(t('auth.passwordTooShort'));
+        return;
+    }
     emit('submit', props.modelValue);
 };
 </script>

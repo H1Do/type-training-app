@@ -1,4 +1,6 @@
 export const en = {
+    networkError: 'Network error',
+
     main: {
         description:
             'is an app for learning and improving touch typing skills.',
@@ -116,6 +118,7 @@ export const en = {
         toLogin: 'login',
         passwordWeak:
             'Password must be at least 8 characters and include uppercase, lowercase, numbers, and symbols.',
+        passwordTooShort: 'Password must be at least 8 characters',
         allFieldsRequired: 'All fields are required',
         passwordsDoNotMatch: 'Passwords do not match',
         forgotPassword: 'Forgot password?',

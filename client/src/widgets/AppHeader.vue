@@ -20,16 +20,16 @@ const userStore = useUserStore();
 const modalService = useModalService();
 
 const { logout } = userStore;
-const { isAuthenticated, username, isVerified, isAdmin } =
-    storeToRefs(userStore);
+const { isAuthenticated, username, isAdmin } = storeToRefs(userStore);
 
 const isBannerVisible = ref(false);
 const isEmailSent = ref(false);
 
 watch(
-    () => [isVerified, isAuthenticated],
-    ([isVerified, isAuthenticated]) => {
-        isBannerVisible.value = isAuthenticated && !isVerified;
+    () => [userStore.isVerified, userStore.isAuthenticated],
+    () => {
+        isBannerVisible.value =
+            userStore.isAuthenticated && !userStore.isVerified;
     },
     { immediate: true },
 );

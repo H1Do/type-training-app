@@ -70,10 +70,11 @@ export const useUserStore = defineStore('user', {
                 this.messageService.success(this.t('auth.loginSuccess'));
                 this.checkAuth();
             } catch (error: unknown) {
+                console.log(error);
                 if (error instanceof AxiosError) {
                     const message =
                         error?.response?.data?.message ||
-                        this.t('auth.invalidCredentials');
+                        this.t('networkError');
                     this.clearUserState(message);
                     this.messageService.error(message);
                 }
