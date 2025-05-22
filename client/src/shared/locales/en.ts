@@ -182,13 +182,13 @@ export const en = {
             base: 'Result will not be included in the statistics',
             notAuth: 'due to not being logged in',
             custom: 'because custom mode was selected',
-            lowAccuracy: 'due to low accuracy (less than 80%)',
-            tooManyTextErrors: 'due to too many text errors (more than 10)',
+            lowAccuracy: 'due to low accuracy (less than 50%)',
+            tooManyTextErrors: 'due to too many text errors (more than 20)',
         },
         leaderboardDisqualified: {
             base: 'Result will not count towards the leaderboard',
             lowAccuracy: 'due to low accuracy (less than 90%)',
-            tooManyCorrections: 'due to too many corrections (more than 10)',
+            tooManyCorrections: 'due to too many corrections (more than 20)',
         },
         metrics: {
             accuracy: 'Accuracy',

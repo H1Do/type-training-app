@@ -89,10 +89,10 @@ const onCancel = () => {
                 <span v-else-if="stats.mode === TrainingMode.Custom">
                     {{ t('stats.notCounted.custom') }}
                 </span>
-                <span v-else-if="stats.accuracy < 80">
+                <span v-else-if="stats.accuracy < 50">
                     {{ t('stats.notCounted.lowAccuracy') }}
                 </span>
-                <span v-else-if="stats.errorsCount > 10">
+                <span v-else-if="stats.errorsCount > 20">
                     {{ t('stats.notCounted.tooManyTextErrors') }}
                 </span>
             </AppText>
@@ -105,7 +105,7 @@ const onCancel = () => {
                 <span v-if="stats.accuracy < 90">
                     {{ t('stats.leaderboardDisqualified.lowAccuracy') }}
                 </span>
-                <span v-else-if="stats.corrections > 10">
+                <span v-else-if="stats.corrections > 20">
                     {{ t('stats.leaderboardDisqualified.tooManyCorrections') }}
                 </span>
             </AppText>

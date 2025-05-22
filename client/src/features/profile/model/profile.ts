@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { isPasswordStrong } from '@/shared/utils';
 
 export interface ChangePasswordFormState {
@@ -46,10 +46,23 @@ export const useChangePasswordForm = defineStore('changePasswordForm', {
             }
 
             try {
-                await this.userApi.changePassword(
-                    this.oldPassword,
-                    this.newPassword,
-                );
+                try {
+                    await this.userApi.changePassword(
+                        this.oldPassword,
+                        this.newPassword,
+                    );
+                    this.messageService.success(
+                        this.t('auth.passwordChangeSuccess'),
+                    );
+                } catch (error: unknown) {
+                    if (error instanceof AxiosError) {
+                        const message =
+                            error?.response?.data?.message ||
+                            this.t('auth.changePasswordFailed');
+                        this.messageService.error(message);
+                        throw false;
+                    }
+                }
                 return true;
             } catch (error) {
                 this.error =
