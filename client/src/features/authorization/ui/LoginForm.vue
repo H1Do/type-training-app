@@ -42,7 +42,10 @@ const submitForm = (event: Event) => {
         userStore.setError(t('auth.allFieldsRequired'));
         return;
     }
-    if (props.modelValue.password.length < 8) {
+    if (
+        props.modelValue.password.length < 8 ||
+        props.modelValue.password.length > 32
+    ) {
         userStore.setError(t('auth.passwordTooShort'));
         return;
     }

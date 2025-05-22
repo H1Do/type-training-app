@@ -11,7 +11,6 @@ import type {
     StatsPeriod,
     TrainingStatsDoc,
 } from '@/types/statsTypes';
-import { HydratedDocument } from 'mongoose';
 
 export const StatsController = {
     async getUserStats(

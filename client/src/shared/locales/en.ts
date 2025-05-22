@@ -117,8 +117,9 @@ export const en = {
         toRegistration: 'registration',
         toLogin: 'login',
         passwordWeak:
-            'Password must be at least 8 characters and include uppercase, lowercase, numbers, and symbols.',
-        passwordTooShort: 'Password must be at least 8 characters',
+            'Password must be at least 8 and not more than 32 characters and include uppercase, lowercase, numbers, and symbols.',
+        passwordTooShort:
+            'Password must be at least 8 and not more than 32 characters.',
         allFieldsRequired: 'All fields are required',
         passwordsDoNotMatch: 'Passwords do not match',
         forgotPassword: 'Forgot password?',
