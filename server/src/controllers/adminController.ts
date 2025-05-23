@@ -268,6 +268,7 @@ export const adminController = {
         try {
             const {
                 title,
+                titleRu,
                 allowedChars,
                 length,
                 layout,
@@ -301,6 +302,7 @@ export const adminController = {
 
             const newLesson = new Lesson({
                 title,
+                titleRu,
                 allowedChars,
                 length,
                 layout,
