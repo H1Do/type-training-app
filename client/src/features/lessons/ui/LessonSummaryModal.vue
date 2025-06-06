@@ -8,7 +8,7 @@ import {
     HFlex,
     VFlex,
 } from '@/shared/ui';
-import { useLessonsStore } from '../model/lessonsStore';
+import { useLessonsStore } from '../model/lessons';
 import {
     Localization,
     type LessonsStats,

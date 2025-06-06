@@ -12,7 +12,12 @@ withDefaults(
 </script>
 
 <template>
-    <AppIcon name="Loader" :size="size" class="loader" />
+    <AppIcon
+        name="Loader"
+        :size="size"
+        class="loader"
+        data-testid="app-loader"
+    />
 </template>
 
 <style scoped lang="scss">

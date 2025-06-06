@@ -12,7 +12,7 @@ import {
     AppHint,
 } from '@/shared/ui';
 import { useI18n } from 'vue-i18n';
-import { useAdminStore } from './model/adminStore';
+import { useAdminStore } from './model/admin';
 import { useRouter } from 'vue-router';
 import { RouteNames } from '@/app/router';
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, watch } from 'vue';
 import { AppButton, AppIcon, AppText, HFlex, VFlex } from '@/shared/ui';
-import { useTrainingStore } from './model/trainingStore';
+import { useTrainingStore } from './model/training';
 import { useI18n } from 'vue-i18n';
 import { TrainingMode } from '@/shared/types/training';
 import { useModal, useModalService } from '@/shared/utils';

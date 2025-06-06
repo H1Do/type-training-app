@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useLessonsStore } from '../model/lessonsStore';
+import { useLessonsStore } from '../model/lessons';
 import { computed, onMounted, onUnmounted } from 'vue';
 import { AppButton, AppText, HFlex, VFlex } from '@/shared/ui';
 import { CharDisplay, CurrentStats, KeyboardPlate } from '@/widgets';

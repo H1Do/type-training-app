@@ -16,7 +16,7 @@ import { computed, onMounted, ref, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Carousel, Slide } from 'vue3-carousel';
 import 'vue3-carousel/dist/carousel.css';
-import { useAdminStore } from './model/adminStore';
+import { useAdminStore } from './model/admin';
 import AdminLessonCard from './ui/AdminLessonCard.vue';
 import LessonEditModal, {
     type LessonEditResult,

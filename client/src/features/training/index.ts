@@ -1,2 +1,2 @@
-export { useTrainingStore } from './model/index';
+export { useTrainingStore } from './model/training';
 export { default as TrainingTile } from './TrainingTile.vue';

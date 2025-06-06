@@ -8,7 +8,7 @@ import {
     HFlex,
     VFlex,
 } from '@/shared/ui';
-import { useTrainingStore } from '../model/trainingStore';
+import { useTrainingStore } from '../model/training';
 import { KEYBOARD_LAYOUTS } from '@/shared/config/keyboardLayouts';
 import { useI18n } from 'vue-i18n';
 import { RouteNames } from '@/app/router';

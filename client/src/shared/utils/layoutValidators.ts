@@ -94,7 +94,7 @@ export function isYcukenOnly(str: string): boolean {
     const rusUpper = rusLower.map((ch) => ch.toUpperCase());
 
     const digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    const shiftDigits = ['%', '№', '-', '/', '"', ':', ',', '.', '_', '?'];
+    const shiftDigits = ['%', '№', '-', '/', '"', ':', ',', '.', '_', '?', '!'];
 
     const misc = ['+', '='];
 

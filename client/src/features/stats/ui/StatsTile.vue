@@ -2,7 +2,7 @@
 import { getColorByMetric } from '@/shared/utils';
 import StatsDashboard from '@/widgets/StatsDashboard.vue';
 import { watch } from 'vue';
-import { useStatsStore } from '../model/statsStore';
+import { useStatsStore } from '../model/stats';
 import { useUserStore } from '@/entities/user';
 import { useSettingsStore } from '@/features/settings';
 

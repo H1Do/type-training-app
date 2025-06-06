@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { AdminDashboardTile } from '@/features/admin';
-import { useAdminStore } from '@/features/admin/model/adminStore';
+import { useAdminStore } from '@/features/admin/model/admin';
 import { onMounted } from 'vue';
 
 const adminStore = useAdminStore();

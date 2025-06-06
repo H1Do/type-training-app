@@ -4,7 +4,7 @@ import { AppIcon, AppText, HFlex, VFlex } from '@/shared/ui';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import UserRegistrationChart from './ui/UserRegistrationChart.vue';
-import { useAdminStore } from './model/adminStore';
+import { useAdminStore } from './model/admin';
 import { useSettingsStore } from '../settings';
 import AdminStatsDisplay from './ui/AdminStatsDisplay.vue';
 

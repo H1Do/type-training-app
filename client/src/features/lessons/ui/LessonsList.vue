@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, computed, ref, type Ref } from 'vue';
-import { useLessonsStore } from '../model/lessonsStore';
+import { useLessonsStore } from '../model/lessons';
 import { KeyboardLayoutButton, useSettingsStore } from '@/features/settings';
 import {
     AppButton,

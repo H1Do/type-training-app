@@ -1,2 +1,2 @@
 export { StatsTile } from './ui';
-export { useStatsStore } from './model/statsStore';
+export { useStatsStore } from './model/stats';
