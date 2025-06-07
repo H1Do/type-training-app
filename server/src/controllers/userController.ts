@@ -71,7 +71,7 @@ class UserController {
         await user.save();
 
         await transporter.sendMail({
-            from: '"KeySpark" <no-reply@yourapp.com>',
+            from: '"KeySpark" <no-reply@keyspark.ru>',
             to: user.email,
             subject: req.t('mail.verify_your_email') ?? 'Verify your email',
             html: getVerifyEmailHtml(
@@ -350,7 +350,7 @@ class UserController {
         );
 
         await transporter.sendMail({
-            from: '"KeySpark" <no-reply@yourapp.com>',
+            from: '"KeySpark" <no-reply@keyspark.ru>',
             to: user.email,
             subject: req.t('mail.password_reset') ?? 'Password reset',
             html: getResetPasswordHtml(
@@ -446,7 +446,7 @@ class UserController {
         await user.save();
 
         await transporter.sendMail({
-            from: '"KeySpark" <no-reply@yourapp.com>',
+            from: '"KeySpark" <no-reply@keyspark.ru>',
             to: user.email,
             subject: req.t('mail.verify_your_email') ?? 'Verify your email',
             html: getVerifyEmailHtml(

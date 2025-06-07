@@ -298,7 +298,7 @@ class TrainingController {
     }
 }
 
-function generateSequence(
+export function generateSequence(
     mode: TrainingMode,
     layout: Layout,
     length?: number,
@@ -323,7 +323,7 @@ function generateSequence(
     return sequence;
 }
 
-function generateCustomSequence(
+export function generateCustomSequence(
     items: string[],
     length?: number,
     isWords?: boolean,

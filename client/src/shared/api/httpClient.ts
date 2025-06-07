@@ -11,7 +11,7 @@ export class HttpClient {
 
     constructor() {
         this.$host = axios.create({
-            baseURL: 'http://localhost:7000',
+            baseURL: import.meta.env.VITE_API_URL,
             withCredentials: true,
         });
 

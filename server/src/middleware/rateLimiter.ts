@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import rateLimit from 'express-rate-limit';
 
-const createHandler = (defaultMessage: string) => {
+export const createHandler = (defaultMessage: string) => {
     return (req: Request, res: Response) => {
         const message = req.t?.('errors.too_many_requests') ?? defaultMessage;
 
